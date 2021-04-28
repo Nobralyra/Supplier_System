@@ -4,12 +4,23 @@
 </head>
 <body th:fragment="top_menuElement">
 <!-- Kilde: https://www.youtube.com/watch?v=aiAf5eO5nx8-->
+
+<!-- https://getbootstrap.com/docs/5.0/components/navbar -->
 <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <div class="container-fluid">
-    <div class="navbar-nav mr-auto">
-        <!-- https://getbootstrap.com/docs/4.0/components/navs/-->
-        <a class="nav-item active nav-link" th:href="@{/registration/supplier}">Supplier</a>
-    </div>
+        <div class="collapse navbar-collapse" id="navbarWithDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Registration
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" th:href="@{/registration/supplier}">Supplier</a>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
