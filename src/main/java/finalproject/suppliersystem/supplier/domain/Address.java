@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -20,14 +21,24 @@ public class Address
     @Id
     private Long addressId;
 
+    @Column(length = 45)
+    @Size(max = 45)
     private String streetName;
 
+    @Column(length = 10)
+    @Size(max = 10)
     private String buildingNumber;
 
+    @Column(length = 45)
+    @Size(max = 45)
     private int postalCode;
 
+    @Column(length = 60)
+    @Size(max = 60)
     private String postalDistrict;
 
+    @Column(length = 55)
+    @Size(max = 55)
     @NotNull
     private String country;
 

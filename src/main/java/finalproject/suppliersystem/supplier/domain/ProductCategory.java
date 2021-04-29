@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -20,6 +21,8 @@ public class ProductCategory implements Comparable<ProductCategory>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productCategoryId;
 
+    @Column(length = 45)
+    @Size(max = 45)
     @NotNull
     private String productName;
 

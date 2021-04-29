@@ -1,10 +1,14 @@
 package finalproject.suppliersystem.supplier.domain;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,16 +26,27 @@ public class ContactInformation
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contactInformationId;
 
+    @Column(length = 8)
+    @Size(max = 8)
     private String callingCode;
 
+    @Column(length = 20)
+    @Size(max = 20)
     private String businessPhoneNumber;
 
+    @Column(length = 100)
+    @Size(max = 100, message = "Email must be between 0 and 100 characters")
+    @Email(message = "Email should be valid")
     private String businessEmail;
 
+    @Column(length = 100)
+    @Size(max = 100, message = "")
+    @URL
     private String webpage;
 
     /**
      * ContactInformation child (owner) of Supplier
+     * https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/
      */
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

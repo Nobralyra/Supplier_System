@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -19,10 +21,17 @@ public class ContactPerson
     @Id
     private Long contactPersonId;
 
+    @Column(length = 45)
+    @Size(max = 45)
     private String nameContactPerson;
 
+    @Column(length = 100)
+    @Size(max = 100, message = "Email must be between 0 and 100 characters")
+    @Email(message = "Email should be valid")
     private String emailContactPerson;
 
+    @Column(length = 20)
+    @Size(max = 20)
     private String phoneNumberContactPerson;
 
     //Child (owner)
