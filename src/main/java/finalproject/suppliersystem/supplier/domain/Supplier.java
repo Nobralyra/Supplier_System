@@ -1,37 +1,37 @@
 package finalproject.suppliersystem.supplier.domain;
 
+import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * https://projectlombok.org/features/Data
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class Supplier
+public class Supplier implements Comparable<Supplier>
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supplierId;
 
+    @NotNull
     private String supplierName;
 
+    @NotNull
     private int supplierNumber;
-
-    //Child (owner)
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade =  CascadeType.REMOVE)
-    @JoinColumn(name = "address_id")
-    @MapsId
-    private ContactInformation contactInformation;
 
     /**
      * Why use Set instead of List:
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
-     *
-     * Why use OrderBy: https://www.youtube.com/watch?v=p_ngp05KD-8&list=PL50BZOuKafAbXxVJiD9csunZfQOJ5X7hP
-     * https://thorben-janssen.com/ordering-vs-sorting-hibernate-use/
      */
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -41,6 +41,17 @@ public class Supplier
             joinColumns = @JoinColumn(name = "supplier_id"),
             inverseJoinColumns = @JoinColumn(name = "product_category_id")
     )
-    @OrderBy(value="productName ASC")
-    private SortedSet<ProductCategory> productCategorySet;
+    @SortNatural
+    private SortedSet<ProductCategory> productCategorySet = new TreeSet<>();
+
+    /**
+     * https://howtodoinjava.com/java/collections/java-comparable-interface/
+     * @param o
+     * @return
+     */
+    @Override
+    public int compareTo(Supplier o)
+    {
+        return this.getSupplierId().compareTo( o.getSupplierId() );
+    }
 }

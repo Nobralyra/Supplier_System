@@ -1,15 +1,23 @@
 package finalproject.suppliersystem.supplier.domain;
 
+import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Address
 {
+    /**
+     * Address Id is the same as Supplier's id because there is used @MapsId in the @OneToOne relationship
+     * between ContactInformation and Supplier, and Address has an @OneToOne with ContactInformation
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
 
     private String streetName;
@@ -20,11 +28,13 @@ public class Address
 
     private String postalDistrict;
 
+    @NotNull
     private String country;
 
     //Child (owner)
-    @OneToOne(fetch = FetchType.LAZY, optional = false, cascade =  CascadeType.REMOVE)
-    @JoinColumn(name = "address_id")
+    // https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
+    @JoinColumn(name = "supplier_id")
     private ContactInformation contactInformation;
 }
