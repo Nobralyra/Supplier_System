@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SortNatural;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -23,9 +26,14 @@ public class Supplier implements Comparable<Supplier>
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supplierId;
 
+    @Column(length = 100)
+    @Size(max = 100)
     @NotNull
     private String supplierName;
 
+    @Column(length = 5)
+    @Size(min = 5, max = 5)
+    @Positive
     @NotNull
     private int supplierNumber;
 
@@ -42,6 +50,7 @@ public class Supplier implements Comparable<Supplier>
             inverseJoinColumns = @JoinColumn(name = "product_category_id")
     )
     @SortNatural
+    @UniqueElements
     private SortedSet<ProductCategory> productCategorySet = new TreeSet<>();
 
     /**
