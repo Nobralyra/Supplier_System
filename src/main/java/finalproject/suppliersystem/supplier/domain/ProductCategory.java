@@ -1,2 +1,5 @@
-package finalproject.suppliersystem.supplier.domain;public class ProductCategory {
+package finalproject.suppliersystem.supplier.domain;
+
+public class ProductCategory
+{
 }
