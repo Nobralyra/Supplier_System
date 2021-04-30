@@ -40,8 +40,8 @@ public class ContactInformation
     private String businessEmail;
 
     @Column(length = 100)
-    @Size(max = 100, message = "")
-    @URL
+    @Size(max = 100, message = "URL must be between 0 and 100 characters")
+    @URL(message = "URL should be valid")
     private String webpage;
 
     /**
