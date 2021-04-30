@@ -25,14 +25,18 @@ public class ContactPerson
     @Size(max = 45)
     private String nameContactPerson;
 
-    @Column(length = 100)
-    @Size(max = 100, message = "Email must be between 0 and 100 characters")
-    @Email(message = "Email should be valid")
-    private String emailContactPerson;
+    @Column(length = 8)
+    @Size(max = 8)
+    private String callingCode;
 
     @Column(length = 20)
     @Size(max = 20)
     private String phoneNumberContactPerson;
+
+    @Column(length = 100)
+    @Size(max = 100, message = "Email must be between 0 and 100 characters")
+    @Email(message = "Email should be valid")
+    private String emailContactPerson;
 
     //Child (owner)
     @ManyToOne(fetch = FetchType.LAZY)
