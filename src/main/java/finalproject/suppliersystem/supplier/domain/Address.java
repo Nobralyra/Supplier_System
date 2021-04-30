@@ -27,10 +27,10 @@ public class Address
 
     @Column(length = 10)
     @Size(max = 10)
-    private String buildingNumber;
+    private String buildingInformation;
 
-    @Column(length = 45)
-    @Size(max = 45)
+    @Column(length = 10)
+    @Size(max = 10)
     private int postalCode;
 
     @Column(length = 60)
