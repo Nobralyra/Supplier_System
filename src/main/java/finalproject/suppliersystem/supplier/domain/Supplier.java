@@ -15,6 +15,9 @@ import java.util.TreeSet;
 
 /**
  * https://projectlombok.org/features/Data
+ *
+ * Validations:
+ * https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#validator-annotation-processor
  */
 @Data
 @AllArgsConstructor
