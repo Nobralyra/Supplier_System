@@ -1,15 +1,152 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: headerElement">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Supplier Registration</title>
 </head>
 <body>
+<!-- How the forms layout is made https://getbootstrap.com/docs/5.0/forms/layout/-->
 <div class="container-fluid page">
     <header th:replace="fragments/navbar :: navbarElement"></header>
-    <div class="col-sm">
-        <h1>Welcome</h1>
-    </div>
+    <form action="#" th:action="@{/registration/supplier}" class="row g-2" method="post">
+        <div class="col-12">
+            <h1>Supplier Registration</h1>
+        </div>
+
+        <div class="col-12">
+            <label class="form-label">Supplier Name</label>
+            <input type="text" class="form-control" placeholder="Supplier Name"
+                   th:field="*{supplier.supplierName}">
+            <span th:if="${#fields.hasErrors('supplier.supplierName')}" th:errors="*{supplier.supplierName}"></span>
+        </div>
+
+        <div class="col-12">
+            <h3>Contact information</h3>
+        </div>
+
+        <div class="col-sm">
+            <label class="form-label"></label>
+            <input type="text" class="form-control"
+                   th:field="*{contactInformation.callingCode}">
+            <span th:if="${#fields.hasErrors('contactInformation.callingCode')}"
+                  th:errors="*{contactInformation.callingCode}"></span>
+        </div>
+        <div class="col-sm-3">
+            <label class="form-label">Business Phone Number</label>
+            <input type="tel" class="form-control" placeholder="Business Phone Number"
+                   th:field="*{contactInformation.businessPhoneNumber}">
+            <span th:if="${#fields.hasErrors('contactInformation.businessPhoneNumber')}"
+                  th:errors="*{contactInformation.businessPhoneNumber}"></span>
+        </div>
+        <div class="col-sm-4">
+            <label class="form-label">Business Email</label>
+            <input type="email" class="form-control" placeholder="Business Email"
+                   th:field="*{contactInformation.businessEmail}">
+            <span th:if="${#fields.hasErrors('contactInformation.businessEmail')}"
+                  th:errors="*{contactInformation.businessEmail}"></span>
+        </div>
+        <div class="col-sm-4">
+            <label class="form-label">Webpage</label>
+            <input type="url" class="form-control" placeholder="Webpage"
+                   th:field="*{contactInformation.webpage}">
+            <span th:if="${#fields.hasErrors('contactInformation.webpage')}"
+                  th:errors="*{contactInformation.webpage}"></span>
+        </div>
+
+        <div class="col-12">
+            <h3>Address</h3>
+        </div>
+
+        <div class="col-sm-4">
+            <label class="form-label">Street Name</label>
+            <input type="text" class="form-control" placeholder="Street Name"
+                   th:field="*{address.streetName}">
+            <span th:if="${#fields.hasErrors('address.streetName')}"
+                  th:errors="*{address.streetName}"></span>
+        </div>
+        <div class="col-sm-4">
+            <label class="form-label">Building Information</label>
+            <input type="text" class="form-control" placeholder="Building Information"
+                   th:field="*{address.buildingInformation}">
+            <span th:if="${#fields.hasErrors('address.buildingInformation')}"
+                  th:errors="*{address.buildingInformation}"></span>
+        </div>
+        <div class="col-sm-4">
+            <label class="form-label">Postal Code</label>
+            <input type="text" class="form-control" placeholder="Postal Code"
+                   th:field="*{address.postalCode}">
+            <span th:if="${#fields.hasErrors('address.postalCode')}"
+                  th:errors="*{address.postalCode}"></span>
+        </div>
+        <div class="col-sm-4">
+            <label class="form-label">Postal District</label>
+            <input type="text" class="form-control" placeholder="Postal District"
+                   th:field="*{address.postalDistrict}">
+            <span th:if="${#fields.hasErrors('address.postalDistrict')}"
+                  th:errors="*{address.postalDistrict}"></span>
+        </div>
+        <div class="col-sm-4">
+            <label class="form-label">Country</label>
+            <input type="text" class="form-control" placeholder="Country"
+                   th:field="*{address.country}">
+            <span th:if="${#fields.hasErrors('address.country')}"
+                  th:errors="*{address.country}"></span>
+        </div>
+
+        <div class="col-12">
+            <h3>Contact Person</h3>
+        </div>
+
+        <div class="col-sm-4">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control"
+                   th:field="*{contactPerson.nameContactPerson}">
+            <span th:if="${#fields.hasErrors('contactPerson.nameContactPerson')}"
+                  th:errors="*{contactPerson.nameContactPerson}"></span>
+        </div>
+        <div class="col-sm">
+            <label class="form-label"></label>
+            <input type="text" class="form-control"
+                   th:field="*{contactPerson.callingCode}">
+            <span th:if="${#fields.hasErrors('contactPerson.callingCode')}"
+                  th:errors="*{contactPerson.callingCode}"></span>
+        </div>
+        <div class="col-sm-3">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" placeholder="Phone Number"
+                   th:field="*{contactPerson.phoneNumberContactPerson}">
+            <span th:if="${#fields.hasErrors('contactPerson.phoneNumberContactPerson')}"
+                  th:errors="*{contactPerson.phoneNumberContactPerson}"></span>
+        </div>
+        <div class="col-sm-4">
+            <label class="form-label">Email</label>
+            <input type="Email" class="form-control"
+                   th:field="*{contactPerson.emailContactPerson}">
+            <span th:if="${#fields.hasErrors('contactPerson.emailContactPerson')}"
+                  th:errors="*{contactPerson.emailContactPerson}"></span>
+        </div>
+        <div class="col-12">
+            <button type="button" class="btn btn-primary">Add extra Contact Person</button>
+        </div>
+
+        <div class="col-12">
+            <h3>Product Category</h3>
+        </div>
+
+        <div class="col-sm-3">
+            <select class="form-select" id="productName" th:field="*{productCategory}" multiple>
+                <option th:each="ProductCategory : ${productCategory}"
+                        th:value="${ProductCategory.productCategoryId}"
+                        th:text="${ProductCategory.productName}">
+                </option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+
+    </form>
     <footer th:replace="fragments/footer :: footerElement"></footer>
 
 </div>
