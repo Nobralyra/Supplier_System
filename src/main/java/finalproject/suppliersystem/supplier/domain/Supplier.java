@@ -35,9 +35,11 @@ public class Supplier implements Comparable<Supplier>
     private String supplierName;
 
     @Column(length = 5)
-    @Size(min = 5, max = 5)
-    @Positive
-    @NotNull
+    //dette skal genereres automatisk - nu bliver det ikke gjort
+    // intellij brokker sig lige nu over disse annotationer, når man prøver at gemme
+    //@Size(min = 5, max = 5)
+    //@Positive
+    //@NotNull
     private int supplierNumber;
 
     /**
