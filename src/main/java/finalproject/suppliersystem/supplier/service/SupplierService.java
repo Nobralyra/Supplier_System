@@ -1,14 +1,17 @@
 package finalproject.suppliersystem.supplier.service;
 
 import finalproject.suppliersystem.core.IService;
+import finalproject.suppliersystem.supplier.domain.Address;
+import finalproject.suppliersystem.supplier.domain.ContactInformation;
 import finalproject.suppliersystem.supplier.domain.Supplier;
+import finalproject.suppliersystem.supplier.repository.IAddressRepository;
+import finalproject.suppliersystem.supplier.repository.IContactInformationRepository;
 import finalproject.suppliersystem.supplier.repository.ISupplierRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +20,13 @@ import java.util.Optional;
 public class SupplierService implements IService<Supplier> {
 
     private final ISupplierRepository iSupplierRepository;
+    private final IAddressRepository iAddressRepository;
+    private final IContactInformationRepository iContactInformationRepository;
 
-    public SupplierService(ISupplierRepository iSupplierRepository) {
+    public SupplierService(ISupplierRepository iSupplierRepository, IAddressRepository iAddressRepository, IContactInformationRepository iContactInformationRepository) {
         this.iSupplierRepository = iSupplierRepository;
+        this.iAddressRepository = iAddressRepository;
+        this.iContactInformationRepository = iContactInformationRepository;
     }
 
     /**
@@ -31,32 +38,89 @@ public class SupplierService implements IService<Supplier> {
         iSupplierRepository.save(supplier);
     }
 
-    public boolean hasErrors(BindingResult bindingResult, Model model){
-
-        if(bindingResult.hasErrors()){
-            model.addAttribute("bindingResult", bindingResult);
-            return true;
-        }
-        return false;
+    /**
+     * Returns true or false for errors in validation
+     * @param bindingResultSupplier
+     * @param bindingResultContactInformation
+     * @param bindingResultAddress
+     * @param bindingResultContactPerson
+     * @return
+     */
+    public boolean hasErrors(BindingResult bindingResultSupplier,
+                             BindingResult bindingResultContactInformation,
+                             BindingResult bindingResultAddress,
+                             BindingResult bindingResultContactPerson){
+        return bindingResultSupplier.hasErrors()
+                || bindingResultContactInformation.hasErrors()
+                || bindingResultAddress.hasErrors()
+                || bindingResultContactPerson.hasErrors();
     }
 
-    /*
-    public boolean existAlready(List<Supplier> alSuppliers){
+
+    /**
+     * This method checks, if the data base contains a supplier with the same name
+     * and if this is the case, then it checks, if country, street name og postal district
+     * laso are the same.
+     * @param supplier
+     * @param address
+     * @return supplier already exists or not
+     */
+
+    public boolean existAlready(Supplier supplier, Address address){
+
         boolean createdAlready = false;
-        String brugernavn = "";
-        for(User u : alUsers){
-            if(u.getFirstName().equals(user.getFirstName())
-                    && u.getLastName().equals(user.getLastName())
-                    && u.getEmailAddress().equals(user.getEmailAddress())){
-                createdAlready = true;
-                brugernavn = u.getUsername();
+
+        /*
+          We need to compare following information:
+          supplier name and country, street name og postal district from Address
+          First we store this information about the supplier given as a parameter.
+         */
+        String supplierName = supplier.getSupplierName();
+        String countryName = address.getCountry();
+        String streetname = address.getStreetName();
+        String postalDistrict = address.getPostalDistrict();
+
+        /*
+          Do we have the same name in data base?
+         */
+        List<Supplier> alSuppliers = iSupplierRepository.findAll();
+        Long supplierFoundId = null;
+        boolean supplierNameFound = false;
+        for(Supplier s : alSuppliers){
+            if (s.getSupplierName().equals(supplierName)) {
+                supplierNameFound = true;
+                supplierFoundId = s.getSupplierId();
                 break;
             }
         }
-        if(createdAlready){
-            String created = "Brugeren er allerede oprettet med brugernavnet: " + brugernavn;
-            model.addAttribute("created", created);
-    }*/
+
+        /*
+          If supplierName is found in data base,
+          we need check the address information connected to that supplier in data base.
+          Supplier-tabel is connected to ContactInformation-tabel, that has a field "supplier_id" (FK).
+          Address-tabel has a field "contactInformationId" (FK) that is connected to ContactInformation
+          by "contact_information_id".
+         */
+
+        if(supplierNameFound) {
+            Optional<ContactInformation> contactInformationDB = iContactInformationRepository.findById(supplierFoundId);
+            if(contactInformationDB.isPresent()){
+                Long supplierIdIContactInformation = contactInformationDB.get().getSupplier().getSupplierId();
+
+                Optional<Address> addressDB = iAddressRepository.findById(supplierIdIContactInformation);
+                if(addressDB.isPresent()){
+                    String countryNameDB = addressDB.get().getCountry();
+                    String streetnameDB = addressDB.get().getStreetName();
+                    String postalDistrictDB = addressDB.get().getPostalDistrict();
+
+                    if(countryName.equals(countryNameDB)
+                            && streetname.equals(streetnameDB)
+                            && postalDistrict.equals(postalDistrictDB)) createdAlready = true;
+                }
+            }
+        }
+        return createdAlready;
+    }
 
 
     /**
@@ -82,9 +146,7 @@ public class SupplierService implements IService<Supplier> {
      */
 
     @Override
-    public List<Supplier> findAll() {
-        return new ArrayList<>(iSupplierRepository.findAll());
-    }
+    public List<Supplier> findAll() { return new ArrayList<>(iSupplierRepository.findAll()); }
 
     @Override
     public void deleteByID(Long id) { iSupplierRepository.deleteById(id);}

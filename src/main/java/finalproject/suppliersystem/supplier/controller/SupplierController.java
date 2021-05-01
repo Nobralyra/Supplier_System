@@ -1,91 +1,138 @@
 package finalproject.suppliersystem.supplier.controller;
 
-import finalproject.suppliersystem.supplier.domain.Address;
-import finalproject.suppliersystem.supplier.domain.ContactInformation;
-import finalproject.suppliersystem.supplier.domain.ContactPerson;
-import finalproject.suppliersystem.supplier.domain.Supplier;
-import finalproject.suppliersystem.supplier.service.ProductCategoryService;
-import finalproject.suppliersystem.supplier.service.SupplierService;
+import finalproject.suppliersystem.supplier.domain.*;
+import finalproject.suppliersystem.supplier.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
 @Controller
 public class SupplierController {
 
     private final SupplierService supplierService;
+    private final AddressService addressService;
+    private final ContactInformationService contactInformationService;
+    private final ContactPersonService contactPersonService;
     private final ProductCategoryService productCategoryService;
 
-    public SupplierController(SupplierService supplierService, ProductCategoryService productCategoryService) {
+    public SupplierController(SupplierService supplierService,
+                              AddressService addressService,
+                              ContactInformationService contactInformationService,
+                              ContactPersonService contactPersonService,
+                              ProductCategoryService productCategoryService) {
         this.supplierService = supplierService;
+        this.addressService = addressService;
+        this.contactInformationService = contactInformationService;
+        this.contactPersonService = contactPersonService;
         this.productCategoryService = productCategoryService;
     }
 
     /**
-     * Ville det være en ide at ændre til /registration/supplier i stedet for?
-     * Det samme med den mappe HTML'en ligger i?
+     * Al entities containing information about the supplier is sent to
+     * registration/supplier-site within the model
      * @param supplier
+     * @param contactInformation
+     * @param address
+     * @param contactPerson
      * @param model
-     * @return
+     * @return registration/supplier-HTML
      */
     @GetMapping("/registration/supplier")
-    public String showRegisterSupplier(Supplier supplier, ContactInformation contactInformation, Address address, ContactPerson contactPerson, Model model){
+    public String showRegisterSupplier(Supplier supplier,
+                                       ContactInformation contactInformation,
+                                       Address address,
+                                       ContactPerson contactPerson,
+                                       Model model){
         model.addAttribute("supplier", supplier);
         model.addAttribute("contactInformation", contactInformation);
         model.addAttribute("address", address);
         model.addAttribute("contactPerson", contactPerson);
-
-        // her kunne en product Category findAll() godt give mening, men skal den have sin egen service og repository?
+        //the user chooses one or several PorductCategories
         model.addAttribute("productCategory", productCategoryService.findAll());
         return "/registration/supplier";
     }
 
-
-    /*
-        @PostMapping("/bruger/opret_bruger")
-    public String createUser(@RequestParam String password2, @Valid User user, BindingResult bindingResult, Model model){
-
-        List<User> alUsers = userService.findAll();
-
-        boolean createdAlready = false;
-        String brugernavn = "";
-        for(User u : alUsers){
-            if(u.getFirstName().equals(user.getFirstName())
-                    && u.getLastName().equals(user.getLastName())
-                    && u.getEmailAddress().equals(user.getEmailAddress())){
-                createdAlready = true;
-                brugernavn = u.getUsername();
-                break;
-            }
-        }
-        if(createdAlready){
-            String created = "Brugeren er allerede oprettet med brugernavnet: " + brugernavn;
-            model.addAttribute("created", created);
-            return "/bruger/opret_bruger";
-        }
-
-        userService.save(user);
-        Long id = user.getId();
-        return "redirect:/bruger/bruger_side/" + id;
-    }
+    /**
+     * PostMapping receives data from HTML and Controller asks SupplierService to
+     * validate with Valid/BindingResult.
+     * Though, ProductCategories are not created in this connection, but the user
+     * only chooses one og several of them. So they are not validated either.
+     * @param supplier
+     * @param contactInformation
+     * @param address
+     * @param contactPerson
+     * @param productCategorySet
+     * @param bindingResultSupplier
+     * @param bindingResultContactInformation
+     * @param bindingResultAddress
+     * @param bindingResultContactPerson
+     * @param model
+     * @return
      */
 
     @PostMapping("/registration/supplier")
-    public String registerSupplier(@Valid Supplier supplier, BindingResult bindingResult, Model model){
+    public String registerSupplier(@Valid Supplier supplier,
+                                   @Valid ContactInformation contactInformation,
+                                   @Valid Address address,
+                                   @Valid ContactPerson contactPerson,
+                                   SortedSet<ProductCategory> productCategorySet,
+                                   BindingResult bindingResultSupplier,
+                                   BindingResult bindingResultContactInformation,
+                                   BindingResult bindingResultAddress,
+                                   BindingResult bindingResultContactPerson,
+                                   Model model){
 
-        if(supplierService.hasErrors(bindingResult, model)) return "/registration/supplier";
-        List<Supplier> alSuppliers = supplierService.findAll();
+        /*
+          alle forskellige bindingResults skal være på HTML-siden.
+          Fordi vi henter productKategorier fra databasen,
+          bliver navnene på kategorierne ikke valideret her.
+          Men vi må oprette kategorierne i databasen for at sortedSet ikke er tom.
+         */
+        if(supplierService.hasErrors(bindingResultSupplier, bindingResultContactInformation,
+                bindingResultAddress, bindingResultContactPerson)) {
+            return "/registration/supplier";
+        }
 
-        return "tester";
+        //created skal sættes ind på HTML-siden
+        if(supplierService.existAlready(supplier, address)) {
+            String created = "Supplier is already registred with the supplier number: " + supplier.getSupplierNumber();
+            model.addAttribute("created", created);
+            return "/registration/supplier";
+        }
+
+        supplierService.save(supplier);
+        contactInformationService.save(contactInformation);
+        contactInformation.setSupplier(supplier);
+        addressService.save(address);
+        address.setContactInformation(contactInformation);
+        contactPersonService.save(contactPerson);
+        contactPerson.setContactInformation(contactInformation);
+        /*
+          hvordan kommer de valgte kategorier fra HTML til PostMapping?
+          Der bliver sendt et sæt med alle og brugeren vælger et eller flere af dem.
+          Bliver det rigtigt nu? SortedSet er med i PostMapping og knyttes her til supplier:
+        */
+        supplier.setProductCategorySet(productCategorySet);
+
+        int supplierNumber= supplier.getSupplierNumber();
+        return "redirect: /registration/supplier/" + supplierNumber;
     }
 
-
-
+    //nu går dette til supplier confirmation-side,
+    // men når vi har lavet forsiden, kan bekræftelsen sendes dertil
+    @GetMapping("/registration/supplier/{supplierNumber}")
+    public String confirmRegistration(@PathVariable("supplierNumber") int supplierNumber, Model model){
+            model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registred.");
+            return "/registration/supplier_confirmation";
+    }
 
 }
 

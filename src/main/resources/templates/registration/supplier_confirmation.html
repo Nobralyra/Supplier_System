@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: headerElement">
+  <meta charset="UTF-8">
+  <title>Supplier Registration Confirmation</title>
+</head>
+<body>
+<div class="container-fluid page">
+  <header th:replace="fragments/navbar :: navbarElement"></header>
+
+  <h1>Supplier registration confirmation</h1>
+
+  <span th:text="${confirmation}" ></span>
+
+  <footer th:replace="fragments/footer :: footerElement"></footer>
+
+</div>
+</body>
+</html>

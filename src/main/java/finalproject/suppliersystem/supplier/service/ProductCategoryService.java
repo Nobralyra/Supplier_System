@@ -6,8 +6,10 @@ import finalproject.suppliersystem.supplier.repository.IProductCategoryRepositor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductCategoryService implements IService<ProductCategory>
@@ -33,15 +35,16 @@ public class ProductCategoryService implements IService<ProductCategory>
     }
 
     @Override
-    public void save(ProductCategory element)
+    public void save(ProductCategory productCategory)
     {
-
+        iProductCategoryRepository.save(productCategory);
     }
 
     @Override
     public ProductCategory findById(Long id)
     {
-        return null;
+        Optional<ProductCategory> productCategory = iProductCategoryRepository.findById(id);
+        return productCategory.orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -53,6 +56,6 @@ public class ProductCategoryService implements IService<ProductCategory>
     @Override
     public void deleteByID(Long id)
     {
-
+        iProductCategoryRepository.deleteById(id);
     }
 }
