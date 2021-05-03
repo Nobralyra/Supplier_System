@@ -23,7 +23,7 @@ public class ContactPerson
     private String nameContactPerson;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private CallingCode callingCode;
+    private CountyCallingCode countyCallingCode;
 
     @Column(length = 20)
     @Size(max = 20)
