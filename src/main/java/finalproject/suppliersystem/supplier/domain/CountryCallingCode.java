@@ -1,8 +1,6 @@
 package finalproject.suppliersystem.supplier.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -11,15 +9,15 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class CountyCallingCode
+public class CountryCallingCode
 {
     @Id
     @Column(length = 7)
     @Size(max = 7)
     private String callingCode;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private ContactInformation contactInformation;
+   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+   private ContactInformation contactInformation;
 
 //    @OneToMany(
 //            mappedBy = "callingCode",

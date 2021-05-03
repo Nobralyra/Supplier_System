@@ -31,7 +31,8 @@ public class SupplierController
 
     @Autowired
     public SupplierController(SupplierService supplierService,
-                              CountryCallingCodeService countryCallingCodeService, AddressService addressService,
+                              CountryCallingCodeService countryCallingCodeService,
+                              AddressService addressService,
                               ContactInformationService contactInformationService,
                               ContactPersonService contactPersonService,
                               ProductCategoryService productCategoryService)
@@ -56,18 +57,22 @@ public class SupplierController
      * @return registration/supplier-HTML
      */
     @GetMapping("/registration/supplier")
-    public String showRegisterSupplier(Supplier supplier, CountyCallingCode countyCallingCode,
+    public String showRegisterSupplier(Supplier supplier,
                                        ContactInformation contactInformation,
                                        Address address,
                                        ContactPerson contactPerson,
+                                       CountryCallingCode countryCallingCode,
+                                       Country country,
                                        Model model)
     {
         model.addAttribute("supplier", supplier);
         model.addAttribute("contactInformation", contactInformation);
         model.addAttribute("address", address);
         model.addAttribute("contactPerson", contactPerson);
+        model.addAttribute("countryCallingCode", countryCallingCode);
+        model.addAttribute("country", country);
         //the user chooses one or several ProductCategories
-        model.addAttribute("productCategory", productCategoryService.setFindAll());
+        model.addAttribute("productCategory", productCategoryService.findAll());
         return "/registration/supplier";
     }
 
@@ -92,6 +97,7 @@ public class SupplierController
 
     @PostMapping("/registration/supplier")
     public String registerSupplier(@Valid Supplier supplier,
+                                   @Valid CountryCallingCode countryCallingCode,
                                    @Valid ContactInformation contactInformation,
                                    @Valid Address address,
                                    @Valid ContactPerson contactPerson,
@@ -108,6 +114,7 @@ public class SupplierController
           Fordi vi henter productKategorier fra databasen,
           bliver navnene på kategorierne ikke valideret her.
           Men vi må oprette kategorierne i databasen for at sortedSet ikke er tom.
+
          */
         if (supplierService.hasErrors(bindingResultSupplier, bindingResultContactInformation,
                 bindingResultAddress, bindingResultContactPerson))
@@ -122,13 +129,22 @@ public class SupplierController
             model.addAttribute("created", created);
             return "/registration/supplier";
         }
-        supplierService.save(supplier);
-        CountyCallingCode countyCallingCodeTest = new CountyCallingCode(contactInformation.getCountyCallingCode().getCallingCode());
 
-        countryCallingCodeService.save(countyCallingCodeTest);
 
+        countryCallingCodeService.save(countryCallingCode);
+        contactInformation.setCountryCallingCode(countryCallingCode);
         contactInformation.setSupplier(supplier);
         contactInformationService.save(contactInformation);
+        supplierService.save(supplier);
+
+
+        //CountryCallingCode countryCallingCodeTest = new CountryCallingCode(contactInformation.getCountryCallingCode().getCallingCode());
+        //countryCallingCodeService.save(countryCallingCodeTest);
+
+
+
+
+
 
 //        contactInformationService.save(contactInformation);
 //        contactInformation.setSupplier(supplier);

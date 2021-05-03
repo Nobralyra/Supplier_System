@@ -1,8 +1,6 @@
 package finalproject.suppliersystem.supplier.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
@@ -22,8 +20,10 @@ public class ContactInformation
     @Id
     private Long supplierId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private CountyCallingCode countyCallingCode;
+    @ManyToOne(targetEntity = CountryCallingCode.class, fetch = FetchType.LAZY)
+    //@JoinColumn(name="calling_code")
+    //@MapsId
+    private CountryCallingCode countryCallingCode;
 
     @Column(length = 20)
     @Size(max = 20)
@@ -45,7 +45,7 @@ public class ContactInformation
      */
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(table="contact_information", name = "supplier_id")
     private Supplier supplier;
 
 

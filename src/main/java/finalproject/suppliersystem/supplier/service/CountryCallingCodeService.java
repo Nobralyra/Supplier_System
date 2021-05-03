@@ -1,7 +1,7 @@
 package finalproject.suppliersystem.supplier.service;
 
 import finalproject.suppliersystem.core.IService;
-import finalproject.suppliersystem.supplier.domain.CountyCallingCode;
+import finalproject.suppliersystem.supplier.domain.CountryCallingCode;
 import finalproject.suppliersystem.supplier.repository.ICountryCallingCodeRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CountryCallingCodeService implements IService<CountyCallingCode>
+public class CountryCallingCodeService implements IService<CountryCallingCode>
 {
     private final ICountryCallingCodeRepository iCountryCallingCodeRepository;
 
@@ -21,20 +21,20 @@ public class CountryCallingCodeService implements IService<CountyCallingCode>
     }
 
     @Override
-    public void save(CountyCallingCode element)
+    public void save(CountryCallingCode element)
     {
         iCountryCallingCodeRepository.save(element);
     }
 
     @Override
-    public CountyCallingCode findById(Long id)
+    public CountryCallingCode findById(Long id)
     {
-        Optional<CountyCallingCode> callingCode = iCountryCallingCodeRepository.findById(id);
+        Optional<CountryCallingCode> callingCode = iCountryCallingCodeRepository.findById(id);
         return callingCode.orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
-    public List<CountyCallingCode> findAll()
+    public List<CountryCallingCode> findAll()
     {
         return new ArrayList<>(iCountryCallingCodeRepository.findAll());
     }

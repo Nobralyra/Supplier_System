@@ -2,6 +2,7 @@ package finalproject.suppliersystem.supplier.domain;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -34,8 +35,6 @@ public class Supplier implements Comparable<Supplier>
     private String supplierName;
 
     @Column(length = 5)
-    //dette skal genereres automatisk - nu bliver det ikke gjort
-    // intellij brokker sig lige nu over disse annotationer, når man prøver at gemme
     //@Size(min = 5, max = 5)
     //@Positive
     //@NotNull
