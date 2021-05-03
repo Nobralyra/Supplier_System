@@ -23,12 +23,10 @@ public class ContactInformation
      * between ContactInformation and Supplier
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long contactInformationId;
+    private Long supplierId;
 
-    @Column(length = 8)
-    @Size(max = 8)
-    private String callingCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private CallingCode callingCode;
 
     @Column(length = 20)
     @Size(max = 20)

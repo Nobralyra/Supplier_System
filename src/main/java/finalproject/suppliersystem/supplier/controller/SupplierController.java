@@ -15,7 +15,8 @@ import java.util.Set;
 import java.util.SortedSet;
 
 @Controller
-public class SupplierController {
+public class SupplierController
+{
 
     private final SupplierService supplierService;
     private final AddressService addressService;
@@ -27,7 +28,8 @@ public class SupplierController {
                               AddressService addressService,
                               ContactInformationService contactInformationService,
                               ContactPersonService contactPersonService,
-                              ProductCategoryService productCategoryService) {
+                              ProductCategoryService productCategoryService)
+    {
         this.supplierService = supplierService;
         this.addressService = addressService;
         this.contactInformationService = contactInformationService;
@@ -38,6 +40,7 @@ public class SupplierController {
     /**
      * Al entities containing information about the supplier is sent to
      * registration/supplier-site within the model
+     *
      * @param supplier
      * @param contactInformation
      * @param address
@@ -50,12 +53,13 @@ public class SupplierController {
                                        ContactInformation contactInformation,
                                        Address address,
                                        ContactPerson contactPerson,
-                                       Model model){
+                                       Model model)
+    {
         model.addAttribute("supplier", supplier);
         model.addAttribute("contactInformation", contactInformation);
         model.addAttribute("address", address);
         model.addAttribute("contactPerson", contactPerson);
-        //the user chooses one or several PorductCategories
+        //the user chooses one or several ProductCategories
         model.addAttribute("productCategory", productCategoryService.findAll());
         return "/registration/supplier";
     }
@@ -65,6 +69,7 @@ public class SupplierController {
      * validate with Valid/BindingResult.
      * Though, ProductCategories are not created in this connection, but the user
      * only chooses one og several of them. So they are not validated either.
+     *
      * @param supplier
      * @param contactInformation
      * @param address
@@ -88,7 +93,8 @@ public class SupplierController {
                                    BindingResult bindingResultContactInformation,
                                    BindingResult bindingResultAddress,
                                    BindingResult bindingResultContactPerson,
-                                   Model model){
+                                   Model model)
+    {
 
         /*
           alle forskellige bindingResults skal være på HTML-siden.
@@ -96,13 +102,15 @@ public class SupplierController {
           bliver navnene på kategorierne ikke valideret her.
           Men vi må oprette kategorierne i databasen for at sortedSet ikke er tom.
          */
-        if(supplierService.hasErrors(bindingResultSupplier, bindingResultContactInformation,
-                bindingResultAddress, bindingResultContactPerson)) {
+        if (supplierService.hasErrors(bindingResultSupplier, bindingResultContactInformation,
+                bindingResultAddress, bindingResultContactPerson))
+        {
             return "/registration/supplier";
         }
 
         //created skal sættes ind på HTML-siden
-        if(supplierService.existAlready(supplier, address)) {
+        if (supplierService.existAlready(supplier, address))
+        {
             String created = "Supplier is already registred with the supplier number: " + supplier.getSupplierNumber();
             model.addAttribute("created", created);
             return "/registration/supplier";
@@ -122,16 +130,17 @@ public class SupplierController {
         */
         supplier.setProductCategorySet(productCategorySet);
 
-        int supplierNumber= supplier.getSupplierNumber();
+        int supplierNumber = supplier.getSupplierNumber();
         return "redirect: /registration/supplier/" + supplierNumber;
     }
 
     //nu går dette til supplier confirmation-side,
     // men når vi har lavet forsiden, kan bekræftelsen sendes dertil
     @GetMapping("/registration/supplier/{supplierNumber}")
-    public String confirmRegistration(@PathVariable("supplierNumber") int supplierNumber, Model model){
-            model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registred.");
-            return "/registration/supplier_confirmation";
+    public String confirmRegistration(@PathVariable("supplierNumber") int supplierNumber, Model model)
+    {
+        model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registred.");
+        return "/registration/supplier_confirmation";
     }
 
 }

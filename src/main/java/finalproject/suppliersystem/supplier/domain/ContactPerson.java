@@ -14,20 +14,16 @@ import javax.validation.constraints.Size;
 @Entity
 public class ContactPerson
 {
-    /**
-     * Address Id is the same as Supplier's id because there is used @MapsId in the @OneToOne relationship
-     * between ContactInformation and Supplier, and Address has an @OneToOne with ContactInformation
-     */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contactPersonId;
 
     @Column(length = 45)
     @Size(max = 45)
     private String nameContactPerson;
 
-    @Column(length = 8)
-    @Size(max = 8)
-    private String callingCode;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private CallingCode callingCode;
 
     @Column(length = 20)
     @Size(max = 20)

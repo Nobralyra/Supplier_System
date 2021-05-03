@@ -76,7 +76,7 @@ public class SupplierService implements IService<Supplier> {
           First we store this information about the supplier given as a parameter.
          */
         String supplierName = supplier.getSupplierName();
-        String countryName = address.getCountry();
+        //String countryName = address.getCountry();
         String streetname = address.getStreetName();
         String postalDistrict = address.getPostalDistrict();
 
@@ -109,13 +109,13 @@ public class SupplierService implements IService<Supplier> {
 
                 Optional<Address> addressDB = iAddressRepository.findById(supplierIdIContactInformation);
                 if(addressDB.isPresent()){
-                    String countryNameDB = addressDB.get().getCountry();
+                    //String countryNameDB = addressDB.get().getCountry();
                     String streetnameDB = addressDB.get().getStreetName();
                     String postalDistrictDB = addressDB.get().getPostalDistrict();
 
-                    if(countryName.equals(countryNameDB)
-                            && streetname.equals(streetnameDB)
-                            && postalDistrict.equals(postalDistrictDB)) createdAlready = true;
+//                    if(countryName.equals(countryNameDB)
+//                            && streetname.equals(streetnameDB)
+//                            && postalDistrict.equals(postalDistrictDB)) createdAlready = true;
                 }
             }
         }

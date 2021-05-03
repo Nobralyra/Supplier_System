@@ -19,7 +19,7 @@ public class Address
      * between ContactInformation and Supplier, and Address has an @OneToOne with ContactInformation
      */
     @Id
-    private Long addressId;
+    private Long supplierId;
 
     @Column(length = 45)
     @Size(max = 45)
@@ -37,10 +37,8 @@ public class Address
     @Size(max = 60)
     private String postalDistrict;
 
-    @Column(length = 55)
-    @Size(max = 55)
-    @NotNull
-    private String country;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Country country;
 
     //Child (owner)
     // https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/
