@@ -25,10 +25,10 @@ public class Country
     @NotNull
     private String countryName;
 
-    @OneToMany(
-            mappedBy = "country",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Address> addressList = new ArrayList<>();
+//    @OneToMany(
+//            mappedBy = "country",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private List<Address> addressList = new ArrayList<>();
 }
