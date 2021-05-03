@@ -3,6 +3,7 @@
 <head th:replace="fragments/header :: headerElement">
     <meta charset="UTF-8">
     <title>Supplier Registration</title>
+
 </head>
 <body>
 <!-- How the forms layout is made https://getbootstrap.com/docs/5.0/forms/layout/-->
@@ -26,10 +27,10 @@
 
         <div class="col-sm">
             <label class="form-label"></label>
-            <input type="text" class="form-control"
-                   th:field="*{contactInformation.callingCode}">
-            <span th:if="${#fields.hasErrors('contactInformation.callingCode')}"
-                  th:errors="*{contactInformation.callingCode}"></span>
+            <input type="tel" class="form-control" id="contactInformationCallingCode"
+                   th:field="*{contactInformation.countyCallingCode.callingCode}">
+            <span th:if="${#fields.hasErrors('contactInformation.countyCallingCode.callingCode')}"
+                  th:errors="*{contactInformation.countyCallingCode.callingCode}"></span>
         </div>
         <div class="col-sm-3">
             <label class="form-label">Business Phone Number</label>
@@ -88,9 +89,9 @@
         <div class="col-sm-4">
             <label class="form-label">Country</label>
             <input type="text" class="form-control" placeholder="Country"
-                   th:field="*{address.country}">
-            <span th:if="${#fields.hasErrors('address.country')}"
-                  th:errors="*{address.country}"></span>
+                   th:field="*{address.country.countryName}">
+            <span th:if="${#fields.hasErrors('address.country.countryName')}"
+                  th:errors="*{address.country.countryName}"></span>
         </div>
 
         <div class="col-12">
@@ -104,13 +105,13 @@
             <span th:if="${#fields.hasErrors('contactPerson.nameContactPerson')}"
                   th:errors="*{contactPerson.nameContactPerson}"></span>
         </div>
-        <div class="col-sm">
-            <label class="form-label"></label>
-            <input type="text" class="form-control"
-                   th:field="*{contactPerson.callingCode}">
-            <span th:if="${#fields.hasErrors('contactPerson.callingCode')}"
-                  th:errors="*{contactPerson.callingCode}"></span>
-        </div>
+<!--        <div class="col-sm">-->
+<!--            <label class="form-label"></label>-->
+<!--            <input type="text" class="form-control" id="contactPersonCallingCode"-->
+<!--                   th:field="*{contactPerson.countyCallingCode}">-->
+<!--            <span th:if="${#fields.hasErrors('contactPerson.countyCallingCode')}"-->
+<!--                  th:errors="*{contactPerson.countyCallingCode}"></span>-->
+<!--        </div>-->
         <div class="col-sm-3">
             <label class="form-label">Phone Number</label>
             <input type="tel" class="form-control" placeholder="Phone Number"
@@ -151,4 +152,19 @@
 
 </div>
 </body>
+
+<script type="text/javascript" src="/intlTelInput.min.js"></script>
+<script>
+    // Waits for the HTML and JavaScript to be loaded
+    var input = document.querySelector("#contactInformationCallingCode");
+    window.intlTelInput(input,({
+        // whether or not to allow the dropdown
+        allowDropdown: true,
+        // options here
+
+    }));
+
+</script>
+
+
 </html>
