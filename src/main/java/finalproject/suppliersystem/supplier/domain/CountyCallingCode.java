@@ -6,14 +6,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class CallingCode
+public class CountyCallingCode
 {
     @Id
     @Column(length = 7)
