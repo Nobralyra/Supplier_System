@@ -2,35 +2,42 @@ package finalproject.suppliersystem.supplier.controller;
 
 import finalproject.suppliersystem.supplier.domain.*;
 import finalproject.suppliersystem.supplier.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedSet;
 
 @Controller
+@Transactional
 public class SupplierController
 {
 
     private final SupplierService supplierService;
+    private final CountryCallingCodeService countryCallingCodeService;
     private final AddressService addressService;
     private final ContactInformationService contactInformationService;
     private final ContactPersonService contactPersonService;
     private final ProductCategoryService productCategoryService;
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Autowired
     public SupplierController(SupplierService supplierService,
-                              AddressService addressService,
+                              CountryCallingCodeService countryCallingCodeService, AddressService addressService,
                               ContactInformationService contactInformationService,
                               ContactPersonService contactPersonService,
                               ProductCategoryService productCategoryService)
     {
         this.supplierService = supplierService;
+        this.countryCallingCodeService = countryCallingCodeService;
         this.addressService = addressService;
         this.contactInformationService = contactInformationService;
         this.contactPersonService = contactPersonService;
@@ -49,7 +56,7 @@ public class SupplierController
      * @return registration/supplier-HTML
      */
     @GetMapping("/registration/supplier")
-    public String showRegisterSupplier(Supplier supplier,
+    public String showRegisterSupplier(Supplier supplier, CountyCallingCode countyCallingCode,
                                        ContactInformation contactInformation,
                                        Address address,
                                        ContactPerson contactPerson,
@@ -60,7 +67,7 @@ public class SupplierController
         model.addAttribute("address", address);
         model.addAttribute("contactPerson", contactPerson);
         //the user chooses one or several ProductCategories
-        model.addAttribute("productCategory", productCategoryService.findAll());
+        model.addAttribute("productCategory", productCategoryService.setFindAll());
         return "/registration/supplier";
     }
 
@@ -88,7 +95,7 @@ public class SupplierController
                                    @Valid ContactInformation contactInformation,
                                    @Valid Address address,
                                    @Valid ContactPerson contactPerson,
-                                   SortedSet<ProductCategory> productCategorySet,
+                                   ProductCategory productCategorySet,
                                    BindingResult bindingResultSupplier,
                                    BindingResult bindingResultContactInformation,
                                    BindingResult bindingResultAddress,
@@ -115,23 +122,30 @@ public class SupplierController
             model.addAttribute("created", created);
             return "/registration/supplier";
         }
-
         supplierService.save(supplier);
-        contactInformationService.save(contactInformation);
+        CountyCallingCode countyCallingCodeTest = new CountyCallingCode(contactInformation.getCountyCallingCode().getCallingCode());
+
+        countryCallingCodeService.save(countyCallingCodeTest);
+
         contactInformation.setSupplier(supplier);
-        addressService.save(address);
-        address.setContactInformation(contactInformation);
-        contactPersonService.save(contactPerson);
-        contactPerson.setContactInformation(contactInformation);
+        contactInformationService.save(contactInformation);
+
+//        contactInformationService.save(contactInformation);
+//        contactInformation.setSupplier(supplier);
+//        addressService.save(address);
+//        address.setContactInformation(contactInformation);
+//        contactPersonService.save(contactPerson);
+//        contactPerson.setContactInformation(contactInformation);
         /*
           hvordan kommer de valgte kategorier fra HTML til PostMapping?
           Der bliver sendt et sæt med alle og brugeren vælger et eller flere af dem.
           Bliver det rigtigt nu? SortedSet er med i PostMapping og knyttes her til supplier:
         */
-        supplier.setProductCategorySet(productCategorySet);
+        //supplier.setProductCategorySet(productCategorySet.);
 
-        int supplierNumber = supplier.getSupplierNumber();
-        return "redirect: /registration/supplier/" + supplierNumber;
+        //int supplierNumber = supplier.getSupplierNumber();
+        //return "redirect:/registration/supplier/" + supplierNumber;
+        return "redirect:/registration/supplier/";
     }
 
     //nu går dette til supplier confirmation-side,
