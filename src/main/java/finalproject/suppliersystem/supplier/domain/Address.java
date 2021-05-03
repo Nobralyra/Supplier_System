@@ -30,7 +30,6 @@ public class Address
     private String buildingInformation;
 
     @Column(length = 10)
-    @Size(max = 10)
     private int postalCode;
 
     @Column(length = 60)
