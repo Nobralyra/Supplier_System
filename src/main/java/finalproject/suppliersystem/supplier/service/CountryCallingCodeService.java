@@ -2,7 +2,7 @@ package finalproject.suppliersystem.supplier.service;
 
 import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.supplier.domain.CountyCallingCode;
-import finalproject.suppliersystem.supplier.repository.ICallingCodeRepository;
+import finalproject.suppliersystem.supplier.repository.ICountryCallingCodeRepository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -11,37 +11,37 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CallingCodeService implements IService<CountyCallingCode>
+public class CountryCallingCodeService implements IService<CountyCallingCode>
 {
-    private final ICallingCodeRepository iCallingCodeRepository;
+    private final ICountryCallingCodeRepository iCountryCallingCodeRepository;
 
-    public CallingCodeService(ICallingCodeRepository iCallingCodeRepository)
+    public CountryCallingCodeService(ICountryCallingCodeRepository iCountryCallingCodeRepository)
     {
-        this.iCallingCodeRepository = iCallingCodeRepository;
+        this.iCountryCallingCodeRepository = iCountryCallingCodeRepository;
     }
 
     @Override
     public void save(CountyCallingCode element)
     {
-        iCallingCodeRepository.save(element);
+        iCountryCallingCodeRepository.save(element);
     }
 
     @Override
     public CountyCallingCode findById(Long id)
     {
-        Optional<CountyCallingCode> callingCode = iCallingCodeRepository.findById(id);
+        Optional<CountyCallingCode> callingCode = iCountryCallingCodeRepository.findById(id);
         return callingCode.orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
     public List<CountyCallingCode> findAll()
     {
-        return new ArrayList<>(iCallingCodeRepository.findAll());
+        return new ArrayList<>(iCountryCallingCodeRepository.findAll());
     }
 
     @Override
     public void deleteByID(Long id)
     {
-        iCallingCodeRepository.deleteById(id);
+        iCountryCallingCodeRepository.deleteById(id);
     }
 }
