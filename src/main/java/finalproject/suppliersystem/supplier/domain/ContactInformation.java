@@ -1,6 +1,5 @@
 package finalproject.suppliersystem.supplier.domain;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +8,6 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -26,7 +23,7 @@ public class ContactInformation
     private Long supplierId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private CallingCode callingCode;
+    private CountyCallingCode countyCallingCode;
 
     @Column(length = 20)
     @Size(max = 20)
@@ -51,14 +48,15 @@ public class ContactInformation
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
 
-    //mappedby is the field name
-    // https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-    @OneToMany(
-            mappedBy = "contactInformation",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-            )
-    private List<ContactPerson> contactPersonList = new ArrayList<>();
+
+//    //mappedby is the field name
+//    // https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
+//    @OneToMany(
+//            mappedBy = "contactInformation",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//            )
+//    private List<ContactPerson> contactPersonList = new ArrayList<>();
 
 
 }
