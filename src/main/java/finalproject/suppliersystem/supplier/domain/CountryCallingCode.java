@@ -16,9 +16,6 @@ public class CountryCallingCode
     @Size(max = 7)
     private String callingCode;
 
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   private ContactInformation contactInformation;
-
 //    @OneToMany(
 //            mappedBy = "callingCode",
 //            cascade = CascadeType.ALL,
