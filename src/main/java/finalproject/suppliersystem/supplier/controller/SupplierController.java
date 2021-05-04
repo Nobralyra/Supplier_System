@@ -20,7 +20,6 @@ public class SupplierController
 {
 
     private final SupplierService supplierService;
-    private final CountryCallingCodeService countryCallingCodeService;
     private final AddressService addressService;
     private final ContactInformationService contactInformationService;
     private final ContactPersonService contactPersonService;
@@ -31,14 +30,12 @@ public class SupplierController
 
     @Autowired
     public SupplierController(SupplierService supplierService,
-                              CountryCallingCodeService countryCallingCodeService,
                               AddressService addressService,
                               ContactInformationService contactInformationService,
                               ContactPersonService contactPersonService,
                               CountryService countryService, ProductCategoryService productCategoryService)
     {
         this.supplierService = supplierService;
-        this.countryCallingCodeService = countryCallingCodeService;
         this.addressService = addressService;
         this.contactInformationService = contactInformationService;
         this.contactPersonService = contactPersonService;
@@ -62,7 +59,6 @@ public class SupplierController
                                        ContactInformation contactInformation,
                                        Address address,
                                        ContactPerson contactPerson,
-                                       CountryCallingCode countryCallingCode,
                                        Country country,
                                        Model model)
     {
@@ -70,7 +66,6 @@ public class SupplierController
         model.addAttribute("contactInformation", contactInformation);
         model.addAttribute("address", address);
         model.addAttribute("contactPerson", contactPerson);
-        model.addAttribute("countryCallingCode", countryCallingCode);
         model.addAttribute("country", country);
         //the user chooses one or several ProductCategories
         model.addAttribute("productCategory", productCategoryService.findAll());
@@ -98,7 +93,6 @@ public class SupplierController
 
     @PostMapping("/registration/supplier")
     public String registerSupplier(@Valid Supplier supplier,
-                                   @Valid CountryCallingCode countryCallingCode,
                                    @Valid ContactInformation contactInformation,
                                    @Valid Address address,
                                    @Valid ContactPerson contactPerson,
@@ -134,34 +128,11 @@ public class SupplierController
             model.addAttribute("created", created);
             return "/registration/supplier";
         }
-        
 
-        /*
-         Nu bliver der oprettet array med to callingCodes fx [45, 55].
-         Men fordi kolonnen callingCode både er ID i CountryCallingCode
-         og FK i ContactInformation og Contactperson, kan den ikke ændres
-         i disse childs.
-         */
-        String contactInformationCallingCode = countryCallingCode.getCallingCode().split(",")[0];
-        String contactPersonCallingCode = countryCallingCode.getCallingCode().split(",")[1];
-
-        //den første callingCode på HTML-siden sættes til ContactInformation
-        countryCallingCode.setCallingCode(contactInformationCallingCode);
-
-        countryCallingCodeService.save(countryCallingCode);
-        contactInformation.setCountryCallingCode(countryCallingCode);
         contactInformation.setSupplier(supplier);
         address.setContactInformation(contactInformation);
         address.setCountry(country);
         contactPerson.setContactInformation(contactInformation);
-
-        //der skal laves et nyt CountryCallingCode, som skal have den anden
-        // callingCode fra HTML-siden. Dette objekt giver vi til contactPerson.
-        CountryCallingCode countryCallingCodePerson = new CountryCallingCode();
-        countryCallingCodePerson.setCallingCode(contactPersonCallingCode);
-        countryCallingCodeService.save(countryCallingCodePerson);
-
-        contactPerson.setCountryCallingCode(countryCallingCodePerson);
 
         countryService.save(country);
         addressService.save(address);

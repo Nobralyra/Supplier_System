@@ -20,11 +20,6 @@ public class ContactInformation
     @Id
     private Long supplierId;
 
-    @ManyToOne(targetEntity = CountryCallingCode.class, fetch = FetchType.LAZY)
-    //@JoinColumn(name="calling_code")
-    //@MapsId
-    private CountryCallingCode countryCallingCode;
-
     @Column(length = 20)
     @Size(max = 20)
     private String businessPhoneNumber;
