@@ -38,7 +38,7 @@ public class ContactPerson
 
     //Child (owner)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(table = "contact_person", name = "supplier_id")
     @MapsId
     private ContactInformation contactInformation;
 }
