@@ -29,11 +29,11 @@ public class ProductCategory implements Comparable<ProductCategory>
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
      */
     @ManyToMany(mappedBy = "productCategorySet")
-    @SortNatural
-    private SortedSet<Supplier> supplierSet = new TreeSet<>();
-    //private List<Supplier> supplierSet = new ArrayList<>();
+    private Set<Supplier> supplierSet = new HashSet<>();
+    //@SortNatural
+    //private SortedSet<Supplier> supplierSet = new TreeSet<>();
 
-//    private Set<Supplier> supplierSet = new HashSet<>();
+
 
 
     /**

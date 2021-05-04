@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -80,7 +81,7 @@ public class SupplierController
      * @param contactInformation
      * @param address
      * @param contactPerson
-     * @param productCategorySet
+     * @param productCategory
      * @param bindingResultSupplier
      * @param bindingResultContactInformation
      * @param bindingResultAddress
@@ -100,7 +101,7 @@ public class SupplierController
                                    BindingResult bindingResultContactPerson,
                                    @Valid Country country,
                                    BindingResult bindingResultCountry,
-                                   ProductCategory productCategorySet,
+                                   @ModelAttribute ProductCategory productCategory,
                                    Model model)
     {
 
@@ -123,10 +124,21 @@ public class SupplierController
         address.setCountry(country);
         contactPerson.setContactInformation(contactInformation);
 
+        System.out.println(productCategory.getProductCategoryId());
+
+        System.out.println(supplier.getProductCategorySet());
+        System.out.println(productCategory.getProductName());
+        System.out.println(productCategory.getSupplierSet());
+//       productCategory.getSupplierSet().add(supplier);
+//        supplier.getProductCategorySet().add(productCategory);
+
         countryService.save(country);
         addressService.save(address);
         contactPersonService.save(contactPerson);
         contactInformationService.save(contactInformation);
+//        productCategoryService.save(productCategory);
+
+
         supplierService.save(supplier);
 
 
