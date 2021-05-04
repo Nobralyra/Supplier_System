@@ -30,12 +30,6 @@ public class ContactInformationService implements IService<ContactInformation> {
         return contactInformation.orElseThrow(EntityNotFoundException::new);
     }
 
-    public void updateCallingCode(Long id, String newCallingCode) {
-        ContactInformation contactInformation = findById(id);
-        contactInformation.getCountryCallingCode().setCallingCode(newCallingCode);
-    }
-
-
     @Override
     public List<ContactInformation> findAll() {
         return new ArrayList<>();

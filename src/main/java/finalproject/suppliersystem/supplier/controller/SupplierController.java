@@ -143,13 +143,23 @@ public class SupplierController
         String contactInformationCallingCode = countryCallingCode.getCallingCode().split(",")[0];
         String contactPersonCallingCode = countryCallingCode.getCallingCode().split(",")[1];
 
+        //den første callingCode på HTML-siden sættes til ContactInformation
+        countryCallingCode.setCallingCode(contactInformationCallingCode);
+
         countryCallingCodeService.save(countryCallingCode);
         contactInformation.setCountryCallingCode(countryCallingCode);
         contactInformation.setSupplier(supplier);
         address.setContactInformation(contactInformation);
         address.setCountry(country);
         contactPerson.setContactInformation(contactInformation);
-        contactPerson.setCountryCallingCode(countryCallingCode);
+
+        //der skal laves et nyt CountryCallingCode, som skal have den anden
+        // callingCode fra HTML-siden. Dette objekt giver vi til contactPerson.
+        CountryCallingCode countryCallingCodePerson = new CountryCallingCode();
+        countryCallingCodePerson.setCallingCode(contactPersonCallingCode);
+        countryCallingCodeService.save(countryCallingCodePerson);
+
+        contactPerson.setCountryCallingCode(countryCallingCodePerson);
 
         countryService.save(country);
         addressService.save(address);
