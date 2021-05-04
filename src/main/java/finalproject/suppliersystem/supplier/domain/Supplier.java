@@ -8,6 +8,7 @@ import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.*;
@@ -36,14 +37,9 @@ public class Supplier implements Comparable<Supplier>
     private Long supplierId;
 
     @Column(length = 100)
-    @Size(max = 100)
-    @NotNull
+    @Size(max = 100, message = "Street Name must be between 0 and 45 characters")
+    @NotBlank(message = "Please add the supplier name")
     private String supplierName;
-
-    /*
-    //@Positive
-    //@Not
-    private int supplierNumber;*/
 
     /**
      * Why use Set instead of List:
@@ -58,12 +54,6 @@ public class Supplier implements Comparable<Supplier>
             inverseJoinColumns = @JoinColumn(name = "product_category_id")
     )
     private Set<ProductCategory> productCategorySet = new HashSet<>();
-//    @SortNatural
-//    private SortedSet<ProductCategory> productCategorySet = new TreeSet<>();
-
-    //@UniqueElements
-
-
 
     /**
      * Can't rely on a natural identifier for equality checks, so instead we use the entity identifier.

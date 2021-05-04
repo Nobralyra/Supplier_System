@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class ProductCategory implements Comparable<ProductCategory>
 
     @Column(length = 45)
     @Size(max = 45)
-    @NotNull
+    @NotBlank(message = "Please choose at least one")
     private String productCategoryName;
 
     /**
@@ -30,10 +31,6 @@ public class ProductCategory implements Comparable<ProductCategory>
      */
     @ManyToMany(mappedBy = "productCategorySet")
     private Set<Supplier> supplierSet = new HashSet<>();
-    //@SortNatural
-    //private SortedSet<Supplier> supplierSet = new TreeSet<>();
-
-
 
 
     /**
