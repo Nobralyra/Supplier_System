@@ -3,6 +3,7 @@ package finalproject.suppliersystem.supplier.domain;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -13,6 +14,9 @@ import java.util.*;
 
 /**
  * https://projectlombok.org/features/Data
+ *
+ * SupplierId is customized to sequence with initial value 10.000.
+ * https://thorben-janssen.com/jpa-generate-primary-keys/
  *
  * Validations:
  * https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#validator-annotation-processor
@@ -26,7 +30,9 @@ import java.util.*;
 public class Supplier implements Comparable<Supplier>
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 5)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_generator")
+    @SequenceGenerator(name="my_generator", sequenceName = "supplier_seq", initialValue = 10_000, allocationSize=1)
     private Long supplierId;
 
     @Column(length = 100)
@@ -34,10 +40,10 @@ public class Supplier implements Comparable<Supplier>
     @NotNull
     private String supplierName;
 
-    @Column(length = 5)
+    /*
     //@Positive
-    //@NotEmp
-    private int supplierNumber;
+    //@Not
+    private int supplierNumber;*/
 
     /**
      * Why use Set instead of List:

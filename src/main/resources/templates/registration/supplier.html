@@ -13,7 +13,9 @@
             <h1>Supplier Registration</h1>
         </div>
 
-        <h2 th:text="${created}"></h2>
+        <div class="col-12">
+            <span th:text="${alreadyCreated}"></span>
+        </div>
 
         <div class="col-12">
             <label class="form-label">Supplier Name</label>
@@ -22,31 +24,10 @@
             <span th:if="${#fields.hasErrors('supplier.supplierName')}" th:errors="*{supplier.supplierName}"></span>
         </div>
 
-        <!--
-        <input type=hidden th:field="*{supplier.supplierNumber}" >
-        -->
-
         <div class="col-12">
             <h3>Contact information</h3>
         </div>
 
-        <div class="col-sm">
-            <label class="form-label"></label>
-            <input type="tel" class="form-control" id="contactInformationCallingCode"
-                   th:field="*{countryCallingCode.callingCode}">
-            <span th:if="${#fields.hasErrors('countryCallingCode.callingCode')}"
-                  th:errors="*{countryCallingCode.callingCode}"></span>
-        </div>
-
-        <!-- det gamle:
-        <div class="col-sm">
-            <label class="form-label"></label>
-            <input type="tel" class="form-control" id="contactInformationCallingCode"
-                   th:field="*{contactInformation.countryCallingCode.callingCode}">
-            <span th:if="${#fields.hasErrors('contactInformation.countryCallingCode.callingCode')}"
-                  th:errors="*{contactInformation.countryCallingCode.callingCode}"></span>
-        </div>
-        -->
         <div class="col-sm-3">
             <label class="form-label">Business Phone Number</label>
             <input type="tel" class="form-control" placeholder="Business Phone Number"
@@ -111,16 +92,6 @@
         </div>
 
 
-        <!---
-        <div class="col-sm-4">
-            <label class="form-label">Country</label>
-            <input type="text" class="form-control" placeholder="Country"
-                   th:field="*{address.country.countryName}">
-            <span th:if="${#fields.hasErrors('address.country.countryName')}"
-                  th:errors="*{address.country.countryName}"></span>
-        </div>
-        -->
-
         <div class="col-12">
             <h3>Contact Person</h3>
         </div>
@@ -134,23 +105,6 @@
         </div>
 
 
-        <div class="col-sm-4">
-            <label class="form-label"></label>
-            <input type="text" class="form-control" id="contactPersonCallingCode"
-                   th:field="*{countryCallingCode.callingCode}">
-            <span th:if="${#fields.hasErrors('countryCallingCode.callingCode')}"
-                  th:errors="*{countryCallingCode.callingCode}"></span>
-        </div>
-
-
-
-<!--        <div class="col-sm">-->
-<!--            <label class="form-label"></label>-->
-<!--            <input type="text" class="form-control" id="contactPersonCallingCode"-->
-<!--                   th:field="*{contactPerson.countyCallingCode}">-->
-<!--            <span th:if="${#fields.hasErrors('contactPerson.countyCallingCode')}"-->
-<!--                  th:errors="*{contactPerson.countyCallingCode}"></span>-->
-<!--        </div>-->
         <div class="col-sm-3">
             <label class="form-label">Phone Number</label>
             <input type="tel" class="form-control" placeholder="Phone Number"

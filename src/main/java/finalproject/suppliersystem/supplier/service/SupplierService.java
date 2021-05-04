@@ -2,10 +2,9 @@ package finalproject.suppliersystem.supplier.service;
 
 import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.supplier.domain.Address;
-import finalproject.suppliersystem.supplier.domain.ContactInformation;
+import finalproject.suppliersystem.supplier.domain.Country;
 import finalproject.suppliersystem.supplier.domain.Supplier;
 import finalproject.suppliersystem.supplier.repository.IAddressRepository;
-import finalproject.suppliersystem.supplier.repository.IContactInformationRepository;
 import finalproject.suppliersystem.supplier.repository.ISupplierRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -21,12 +20,10 @@ public class SupplierService implements IService<Supplier> {
 
     private final ISupplierRepository iSupplierRepository;
     private final IAddressRepository iAddressRepository;
-    private final IContactInformationRepository iContactInformationRepository;
 
-    public SupplierService(ISupplierRepository iSupplierRepository, IAddressRepository iAddressRepository, IContactInformationRepository iContactInformationRepository) {
+    public SupplierService(ISupplierRepository iSupplierRepository, IAddressRepository iAddressRepository) {
         this.iSupplierRepository = iSupplierRepository;
         this.iAddressRepository = iAddressRepository;
-        this.iContactInformationRepository = iContactInformationRepository;
     }
 
     /**
@@ -42,7 +39,6 @@ public class SupplierService implements IService<Supplier> {
      * Returns true or false for errors in validation
      *
      * @param bindingResultSupplier
-     * @param bindingResultCountryCallingCode
      * @param bindingResultContactInformation
      * @param bindingResultAddress
      * @param bindingResultContactPerson
@@ -51,44 +47,48 @@ public class SupplierService implements IService<Supplier> {
     public boolean hasErrors(BindingResult bindingResultSupplier,
                              BindingResult bindingResultContactInformation,
                              BindingResult bindingResultAddress,
-                             BindingResult bindingResultContactPerson){
-        return bindingResultSupplier.hasErrors()
+                             BindingResult bindingResultContactPerson,
+                             BindingResult bindingResultCountry, Model model){
+
+        if(bindingResultSupplier.hasErrors()
                 || bindingResultContactInformation.hasErrors()
                 || bindingResultAddress.hasErrors()
-                || bindingResultContactPerson.hasErrors();
+                || bindingResultContactPerson.hasErrors()
+                || bindingResultCountry.hasErrors()){
+
+            model.addAttribute("bindingResultSupplier", bindingResultSupplier);
+            model.addAttribute("bindingResultContactInformation", bindingResultContactInformation);
+            model.addAttribute("bindingResultAddress", bindingResultAddress);
+            model.addAttribute("bindingResultContactPerson", bindingResultContactPerson);
+            model.addAttribute("bindingResultCountry", bindingResultCountry);
+            return true; }
+
+        return false;
     }
 
 
     /**
      * This method checks, if the data base contains a supplier with the same name
      * and if this is the case, then it checks, if country, street name og postal district
-     * laso are the same.
+     * also are the same.
      * @param supplier
      * @param address
      * @return supplier already exists or not
      */
 
-    public boolean existAlready(Supplier supplier, Address address){
-
-        boolean createdAlready = false;
+    public boolean existAlready(Supplier supplier, Address address, Country country) {
 
         /*
           We need to compare following information:
           supplier name and country, street name og postal district from Address
-          First we store this information about the supplier given as a parameter.
+          First we check, if we have the same name in data base.
          */
-        String supplierName = supplier.getSupplierName();
-        //String countryName = address.getCountry();
-        String streetname = address.getStreetName();
-        String postalDistrict = address.getPostalDistrict();
 
-        /*
-          Do we have the same name in data base?
-         */
+        String supplierName = supplier.getSupplierName();
         List<Supplier> alSuppliers = iSupplierRepository.findAll();
         Long supplierFoundId = null;
         boolean supplierNameFound = false;
-        for(Supplier s : alSuppliers){
+        for (Supplier s : alSuppliers) {
             if (s.getSupplierName().equals(supplierName)) {
                 supplierNameFound = true;
                 supplierFoundId = s.getSupplierId();
@@ -99,29 +99,29 @@ public class SupplierService implements IService<Supplier> {
         /*
           If supplierName is found in data base,
           we need check the address information connected to that supplier in data base.
-          Supplier-tabel is connected to ContactInformation-tabel, that has a field "supplier_id" (FK).
-          Address-tabel has a field "contactInformationId" (FK) that is connected to ContactInformation
-          by "contact_information_id".
+          The id in address-tabel is the same ad supplier-id.
          */
 
-        if(supplierNameFound) {
-            Optional<ContactInformation> contactInformationDB = iContactInformationRepository.findById(supplierFoundId);
-            if(contactInformationDB.isPresent()){
-                Long supplierIdIContactInformation = contactInformationDB.get().getSupplier().getSupplierId();
+        if (supplierNameFound) {
 
-                Optional<Address> addressDB = iAddressRepository.findById(supplierIdIContactInformation);
-                if(addressDB.isPresent()){
-                    //String countryNameDB = addressDB.get().getCountry();
-                    String streetnameDB = addressDB.get().getStreetName();
-                    String postalDistrictDB = addressDB.get().getPostalDistrict();
+            String countryName = country.getCountryName();
+            String streetname = address.getStreetName();
+            String postalDistrict = address.getPostalDistrict();
 
-//                    if(countryName.equals(countryNameDB)
-//                            && streetname.equals(streetnameDB)
-//                            && postalDistrict.equals(postalDistrictDB)) createdAlready = true;
-                }
+            Optional<Address> addressDB = iAddressRepository.findById(supplierFoundId);
+            if (addressDB.isPresent()) {
+
+                String countryNameDB = addressDB.get().getCountry().getCountryName();
+                String streetnameDB = addressDB.get().getStreetName();
+                String postalDistrictDB = addressDB.get().getPostalDistrict();
+
+                return countryName.equals(countryNameDB)
+                        && streetname.equals(streetnameDB)
+                        && postalDistrict.equals(postalDistrictDB);
             }
         }
-        return createdAlready;
+     return false;
+
     }
 
 

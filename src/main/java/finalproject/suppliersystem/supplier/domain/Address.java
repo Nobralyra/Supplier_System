@@ -1,11 +1,13 @@
 package finalproject.suppliersystem.supplier.domain;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -22,18 +24,18 @@ public class Address
     private Long supplierId;
 
     @Column(length = 45)
-    @Size(max = 45)
+    @Size(max = 45, message = "Street Name must be between 0 and 45 characters")
     private String streetName;
 
     @Column(length = 10)
-    @Size(max = 10)
+    @Size(max = 10, message= "Building information must be between 0 and 10 characters")
     private String buildingInformation;
 
     @Column(length = 10)
     private int postalCode;
 
     @Column(length = 60)
-    @Size(max = 60)
+    @Size(max = 60, message= "Postal District must be between 0 and 60 characters")
     private String postalDistrict;
 
     @ManyToOne(fetch = FetchType.LAZY)
