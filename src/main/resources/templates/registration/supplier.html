@@ -30,7 +30,7 @@
 
         <div class="col-sm-3">
             <label class="form-label">Business Phone Number</label>
-            <input type="tel" class="form-control" placeholder="Business Phone Number"
+            <input type="tel" class="form-control" id="businessPhoneNumber" name="businessPhoneNumber"
                    th:field="*{contactInformation.businessPhoneNumber}">
             <span th:if="${#fields.hasErrors('contactInformation.businessPhoneNumber')}"
                   th:errors="*{contactInformation.businessPhoneNumber}"></span>
@@ -42,7 +42,7 @@
             <span th:if="${#fields.hasErrors('contactInformation.businessEmail')}"
                   th:errors="*{contactInformation.businessEmail}"></span>
         </div>
-        <div class="col-sm-4">
+        <div class="col-4">
             <label class="form-label">Webpage</label>
             <input type="url" class="form-control" placeholder="Webpage"
                    th:field="*{contactInformation.webpage}">
@@ -104,10 +104,9 @@
                   th:errors="*{contactPerson.nameContactPerson}"></span>
         </div>
 
-
         <div class="col-sm-3">
             <label class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" placeholder="Phone Number"
+            <input type="tel" class="form-control" id="phoneNumberContactPerson" name="phoneNumberContactPerson"
                    th:field="*{contactPerson.phoneNumberContactPerson}">
             <span th:if="${#fields.hasErrors('contactPerson.phoneNumberContactPerson')}"
                   th:errors="*{contactPerson.phoneNumberContactPerson}"></span>
@@ -146,17 +145,53 @@
 </div>
 </body>
 
-<script type="text/javascript" src="/intlTelInput.min.js"></script>
 <script>
     // Waits for the HTML and JavaScript to be loaded
-    var input = document.querySelector("#contactInformationCallingCode");
-    window.intlTelInput(input,({
-        // whether or not to allow the dropdown
-        allowDropdown: true,
-        // options here
 
-    }));
+    document.addEventListener("DOMContentLoaded", function(event) {
+        // For dropdown list of country calling codes
+        // https://github.com/jackocnr/intl-tel-input
+        var inputBusinessPhoneNumber = document.querySelector("#businessPhoneNumber");
 
+        var inputPhoneNumberContactPerson = document.querySelector("#phoneNumberContactPerson");
+
+        var phoneInputBusinessPhoneNumber = window.intlTelInput(inputBusinessPhoneNumber,({
+            // whether or not to allow the dropdown
+            allowDropdown: true,
+            initialCountry: 'fi',
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/utils.js",
+
+        }));
+
+        var phoneInputPhoneNumberContactPerson = window.intlTelInput(inputPhoneNumberContactPerson,({
+            // whether or not to allow the dropdown
+            allowDropdown: true,
+            initialCountry: 'fi',
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/utils.js"
+        }));
+
+        // How to get the international format number and store it in the input field
+        // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
+        var handleChangeOfBusinessPhoneNumber = function() {
+            var fullPhoneNumber = phoneInputBusinessPhoneNumber.getNumber();
+            document.getElementById("businessPhoneNumber").value = fullPhoneNumber;
+        };
+
+        // How to get the international format number and store it in the input field
+        // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
+        var handleChangeOfPhoneNumberContactPerson = function() {
+            var fullPhoneNumber = phoneInputPhoneNumberContactPerson.getNumber();
+            document.getElementById("phoneNumberContactPerson").value = fullPhoneNumber;
+        };
+
+        // listen to "keyup", but also "change" to update when the user selects a country
+        inputBusinessPhoneNumber.addEventListener('change', handleChangeOfBusinessPhoneNumber);
+        inputBusinessPhoneNumber.addEventListener('keyup', handleChangeOfBusinessPhoneNumber);
+
+        // listen to "keyup", but also "change" to update when the user selects a country
+        inputPhoneNumberContactPerson.addEventListener('change', handleChangeOfPhoneNumberContactPerson);
+        inputPhoneNumberContactPerson.addEventListener('keyup', handleChangeOfPhoneNumberContactPerson);
+    });
 </script>
 
 

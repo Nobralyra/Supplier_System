@@ -57,12 +57,12 @@ public class Supplier implements Comparable<Supplier>
             joinColumns = @JoinColumn(name = "supplier_id"),
             inverseJoinColumns = @JoinColumn(name = "product_category_id")
     )
-    @SortNatural
-    private SortedSet<ProductCategory> productCategorySet = new TreeSet<>();
-//    private List<ProductCategory> productCategorySet = new ArrayList<>();
+    private Set<ProductCategory> productCategorySet = new HashSet<>();
+//    @SortNatural
+//    private SortedSet<ProductCategory> productCategorySet = new TreeSet<>();
 
     //@UniqueElements
-//    private Set<ProductCategory> productCategorySet = new HashSet<>();
+
 
 
     /**
