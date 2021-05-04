@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
+import java.util.Arrays;
 
 @Controller
 @Transactional
@@ -25,9 +24,10 @@ public class SupplierController
     private final AddressService addressService;
     private final ContactInformationService contactInformationService;
     private final ContactPersonService contactPersonService;
+    private final CountryService countryService;
     private final ProductCategoryService productCategoryService;
-    @PersistenceContext
-    private EntityManager entityManager;
+    //@PersistenceContext
+    //private EntityManager entityManager;
 
     @Autowired
     public SupplierController(SupplierService supplierService,
@@ -35,13 +35,14 @@ public class SupplierController
                               AddressService addressService,
                               ContactInformationService contactInformationService,
                               ContactPersonService contactPersonService,
-                              ProductCategoryService productCategoryService)
+                              CountryService countryService, ProductCategoryService productCategoryService)
     {
         this.supplierService = supplierService;
         this.countryCallingCodeService = countryCallingCodeService;
         this.addressService = addressService;
         this.contactInformationService = contactInformationService;
         this.contactPersonService = contactPersonService;
+        this.countryService = countryService;
         this.productCategoryService = productCategoryService;
     }
 
@@ -101,23 +102,27 @@ public class SupplierController
                                    @Valid ContactInformation contactInformation,
                                    @Valid Address address,
                                    @Valid ContactPerson contactPerson,
+                                   @Valid Country country,
                                    ProductCategory productCategorySet,
+                                   BindingResult bindingResultCountryCallingCode,
                                    BindingResult bindingResultSupplier,
                                    BindingResult bindingResultContactInformation,
                                    BindingResult bindingResultAddress,
                                    BindingResult bindingResultContactPerson,
+                                   BindingResult bindingResultCountry,
                                    Model model)
     {
 
         /*
-          alle forskellige bindingResults skal være på HTML-siden.
           Fordi vi henter productKategorier fra databasen,
           bliver navnene på kategorierne ikke valideret her.
-          Men vi må oprette kategorierne i databasen for at sortedSet ikke er tom.
+          Tjekker heller ikke callingCode eller Country her. Eller?
 
          */
-        if (supplierService.hasErrors(bindingResultSupplier, bindingResultContactInformation,
-                bindingResultAddress, bindingResultContactPerson))
+        if (supplierService.hasErrors(bindingResultSupplier,
+                bindingResultContactInformation,
+                bindingResultAddress,
+                bindingResultContactPerson))
         {
             return "/registration/supplier";
         }
@@ -131,44 +136,58 @@ public class SupplierController
         }
         
 
+        /*
+         Nu bliver der oprettet array med to callingCodes fx [45, 55].
+         Men fordi kolonnen callingCode både er ID i CountryCallingCode
+         og FK i ContactInformation og Contactperson, kan den ikke ændres
+         i disse childs.
+         */
+        String contactInformationCallingCode = countryCallingCode.getCallingCode().split(",")[0];
+        String contactPersonCallingCode = countryCallingCode.getCallingCode().split(",")[1];
+
+        //den første callingCode på HTML-siden sættes til ContactInformation
+        countryCallingCode.setCallingCode(contactInformationCallingCode);
+
         countryCallingCodeService.save(countryCallingCode);
         contactInformation.setCountryCallingCode(countryCallingCode);
         contactInformation.setSupplier(supplier);
+        address.setContactInformation(contactInformation);
+        address.setCountry(country);
+        contactPerson.setContactInformation(contactInformation);
+
+        //der skal laves et nyt CountryCallingCode, som skal have den anden
+        // callingCode fra HTML-siden. Dette objekt giver vi til contactPerson.
+        CountryCallingCode countryCallingCodePerson = new CountryCallingCode();
+        countryCallingCodePerson.setCallingCode(contactPersonCallingCode);
+        countryCallingCodeService.save(countryCallingCodePerson);
+
+        contactPerson.setCountryCallingCode(countryCallingCodePerson);
+
+        countryService.save(country);
+        addressService.save(address);
+        contactPersonService.save(contactPerson);
         contactInformationService.save(contactInformation);
         supplierService.save(supplier);
 
 
-        //CountryCallingCode countryCallingCodeTest = new CountryCallingCode(contactInformation.getCountryCallingCode().getCallingCode());
-        //countryCallingCodeService.save(countryCallingCodeTest);
-
-
-
-
-
-
-//        contactInformationService.save(contactInformation);
-//        contactInformation.setSupplier(supplier);
-//        addressService.save(address);
-//        address.setContactInformation(contactInformation);
-//        contactPersonService.save(contactPerson);
-//        contactPerson.setContactInformation(contactInformation);
         /*
           hvordan kommer de valgte kategorier fra HTML til PostMapping?
           Der bliver sendt et sæt med alle og brugeren vælger et eller flere af dem.
           Bliver det rigtigt nu? SortedSet er med i PostMapping og knyttes her til supplier:
         */
-        //supplier.setProductCategorySet(productCategorySet.);
+        //supplier.setProductCategorySet(productCategorySet);
 
-        //int supplierNumber = supplier.getSupplierNumber();
-        //return "redirect:/registration/supplier/" + supplierNumber;
-        return "redirect:/registration/supplier/";
+        Long supplierId = supplier.getSupplierId();
+        return "redirect:/registration/supplier_confirmation/" + supplierId;
     }
 
     //nu går dette til supplier confirmation-side,
     // men når vi har lavet forsiden, kan bekræftelsen sendes dertil
-    @GetMapping("/registration/supplier/{supplierNumber}")
-    public String confirmRegistration(@PathVariable("supplierNumber") int supplierNumber, Model model)
+    @GetMapping("/registration/supplier_confirmation/{supplierId}")
+    public String confirmRegistration(@PathVariable("supplierId") Long supplierId, Model model)
     {
+
+        int supplierNumber = supplierService.findById(supplierId).getSupplierNumber();
         model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registred.");
         return "/registration/supplier_confirmation";
     }
