@@ -3,7 +3,6 @@
 <head th:replace="fragments/header :: headerElement">
     <meta charset="UTF-8">
     <title>Supplier Registration</title>
-
 </head>
 <body>
 <!-- How the forms layout is made https://getbootstrap.com/docs/5.0/forms/layout/-->
@@ -21,6 +20,10 @@
             <span th:if="${#fields.hasErrors('supplier.supplierName')}" th:errors="*{supplier.supplierName}"></span>
         </div>
 
+        <!--
+        <input type=hidden th:field="*{supplier.supplierNumber}" >
+        -->
+
         <div class="col-12">
             <h3>Contact information</h3>
         </div>
@@ -28,10 +31,20 @@
         <div class="col-sm">
             <label class="form-label"></label>
             <input type="tel" class="form-control" id="contactInformationCallingCode"
-                   th:field="*{contactInformation.countyCallingCode.callingCode}">
-            <span th:if="${#fields.hasErrors('contactInformation.countyCallingCode.callingCode')}"
-                  th:errors="*{contactInformation.countyCallingCode.callingCode}"></span>
+                   th:field="*{countryCallingCode.callingCode}">
+            <span th:if="${#fields.hasErrors('countryCallingCode.callingCode')}"
+                  th:errors="*{countryCallingCode.callingCode}"></span>
         </div>
+
+        <!-- det gamle:
+        <div class="col-sm">
+            <label class="form-label"></label>
+            <input type="tel" class="form-control" id="contactInformationCallingCode"
+                   th:field="*{contactInformation.countryCallingCode.callingCode}">
+            <span th:if="${#fields.hasErrors('contactInformation.countryCallingCode.callingCode')}"
+                  th:errors="*{contactInformation.countryCallingCode.callingCode}"></span>
+        </div>
+        -->
         <div class="col-sm-3">
             <label class="form-label">Business Phone Number</label>
             <input type="tel" class="form-control" placeholder="Business Phone Number"
