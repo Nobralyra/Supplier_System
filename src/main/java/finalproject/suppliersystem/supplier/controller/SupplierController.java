@@ -123,11 +123,17 @@ public class SupplierController
             return "/registration/supplier";
         }
         supplierService.save(supplier);
-        CountyCallingCode countyCallingCodeTest = new CountyCallingCode(contactInformation.getCountyCallingCode().getCallingCode());
+        CountyCallingCode countyCallingCode = new CountyCallingCode(contactInformation.getCountyCallingCode().getCallingCode());
 
-        countryCallingCodeService.save(countyCallingCodeTest);
+        // Needs to have a persist because it can not fetch the callingCode that is not yet saved, but can not be used after because it breaks the primary key
+        entityManager.persist(countyCallingCode);
+
+        // Needs to be used after the first time saved a calling code, if it is the same!
+        // Skal kigge på, hvordan man løser disse konflikter
+        //countryCallingCodeService.save(countyCallingCode);
 
         contactInformation.setSupplier(supplier);
+        contactInformation.setCountyCallingCode(countyCallingCode);
         contactInformationService.save(contactInformation);
 
 //        contactInformationService.save(contactInformation);
