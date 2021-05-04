@@ -105,13 +105,13 @@
             <span th:if="${#fields.hasErrors('contactPerson.nameContactPerson')}"
                   th:errors="*{contactPerson.nameContactPerson}"></span>
         </div>
-<!--        <div class="col-sm">-->
-<!--            <label class="form-label"></label>-->
-<!--            <input type="text" class="form-control" id="contactPersonCallingCode"-->
-<!--                   th:field="*{contactPerson.countyCallingCode}">-->
-<!--            <span th:if="${#fields.hasErrors('contactPerson.countyCallingCode')}"-->
-<!--                  th:errors="*{contactPerson.countyCallingCode}"></span>-->
-<!--        </div>-->
+        <div class="col-sm">
+            <label class="form-label"></label>
+            <input type="text" class="form-control" id="contactPersonCallingCode"
+                   th:field="*{contactPerson.countyCallingCode.callingCode}">
+            <span th:if="${#fields.hasErrors('contactPerson.countyCallingCode.callingCode')}"
+                  th:errors="*{contactPerson.countyCallingCode.callingCode}"></span>
+        </div>
         <div class="col-sm-3">
             <label class="form-label">Phone Number</label>
             <input type="tel" class="form-control" placeholder="Phone Number"
@@ -156,12 +156,20 @@
 <script type="text/javascript" src="/intlTelInput.min.js"></script>
 <script>
     // Waits for the HTML and JavaScript to be loaded
-    var input = document.querySelector("#contactInformationCallingCode");
-    window.intlTelInput(input,({
-        // whether or not to allow the dropdown
-        allowDropdown: true,
-        // options here
 
+    // For dropdown list of country calling codes
+    // https://github.com/jackocnr/intl-tel-input
+    // Why has USA only , and not a +1?
+    var inputContactInformationCallingCode = document.querySelector("#contactInformationCallingCode");
+    window.intlTelInput(inputContactInformationCallingCode,({
+        // whether or not to allow the dropdown
+        allowDropdown: true
+    }));
+
+    var inputFromContactPersonCallingCode = document.querySelector("#contactPersonCallingCode");
+    window.intlTelInput(inputFromContactPersonCallingCode,({
+        // whether or not to allow the dropdown
+        allowDropdown: true
     }));
 
 </script>
