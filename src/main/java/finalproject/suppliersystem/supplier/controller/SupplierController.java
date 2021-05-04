@@ -108,11 +108,15 @@ public class SupplierController
                 bindingResultContactInformation,
                 bindingResultAddress,
                 bindingResultContactPerson,
-                bindingResultCountry, model)) return "/registration/supplier";
+                bindingResultCountry, model)){
+            model.addAttribute("productCategory", productCategoryService.findAll());
+            return "/registration/supplier";
+        }
 
         if (supplierService.existAlready(supplier, address, country))
         {
             String alreadyCreated = "Supplier is already registred";
+            model.addAttribute("productCategory", productCategoryService.findAll());
             model.addAttribute("alreadyCreated", alreadyCreated);
             return "/registration/supplier";
         }
@@ -136,6 +140,8 @@ public class SupplierController
           Bliver det rigtigt nu? SortedSet er med i PostMapping og knyttes her til supplier:
         */
         //supplier.setProductCategorySet(productCategorySet);
+
+        System.out.println(productCategorySet.getSupplierSet().size());
 
         Long supplierId = supplier.getSupplierId();
         return "redirect:/registration/supplier_confirmation/" + supplierId;

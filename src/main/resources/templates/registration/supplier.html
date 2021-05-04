@@ -128,10 +128,10 @@
         </div>
 
         <div class="col-sm-3">
-            <select class="form-select" id="productName" th:field="*{productCategory}" multiple>
-                <option th:each="ProductCategory : ${productCategory}"
-                        th:value="${ProductCategory.productCategoryId}"
-                        th:text="${ProductCategory.productName}">
+            <select class="form-select" id="productCategoryName" th:field="*{supplier.productCategorySet}" multiple>
+                <option th:each="pc : ${productCategory}"
+                        th:value="${pc.productCategoryId}"
+                        th:text="${pc.getProductCategoryName}">
                 </option>
             </select>
         </div>

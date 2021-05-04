@@ -23,7 +23,7 @@ public class ProductCategory implements Comparable<ProductCategory>
     @Column(length = 45)
     @Size(max = 45)
     @NotNull
-    private String productName;
+    private String productCategoryName;
 
     /**
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
