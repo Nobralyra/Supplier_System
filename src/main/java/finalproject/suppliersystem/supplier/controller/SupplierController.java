@@ -129,7 +129,7 @@ public class SupplierController
             model.addAttribute("created", created);
             return "/registration/supplier";
         }
-
+        
 
         countryCallingCodeService.save(countryCallingCode);
         contactInformation.setCountryCallingCode(countryCallingCode);
