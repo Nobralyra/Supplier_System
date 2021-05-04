@@ -98,16 +98,18 @@ public class SupplierController
 
     @PostMapping("/registration/supplier")
     public String registerSupplier(@Valid Supplier supplier,
-                                   CountryCallingCode countryCallingCode,
+                                   @Valid CountryCallingCode countryCallingCode,
                                    @Valid ContactInformation contactInformation,
                                    @Valid Address address,
                                    @Valid ContactPerson contactPerson,
-                                   Country country,
+                                   @Valid Country country,
                                    ProductCategory productCategorySet,
+                                   BindingResult bindingResultCountryCallingCode,
                                    BindingResult bindingResultSupplier,
                                    BindingResult bindingResultContactInformation,
                                    BindingResult bindingResultAddress,
                                    BindingResult bindingResultContactPerson,
+                                   BindingResult bindingResultCountry,
                                    Model model)
     {
 
@@ -184,8 +186,6 @@ public class SupplierController
     @GetMapping("/registration/supplier_confirmation/{supplierId}")
     public String confirmRegistration(@PathVariable("supplierId") Long supplierId, Model model)
     {
-
-
 
         int supplierNumber = supplierService.findById(supplierId).getSupplierNumber();
         model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registred.");

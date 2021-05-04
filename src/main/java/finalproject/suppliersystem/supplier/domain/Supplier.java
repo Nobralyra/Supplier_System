@@ -35,9 +35,8 @@ public class Supplier implements Comparable<Supplier>
     private String supplierName;
 
     @Column(length = 5)
-    //@Size(min = 5, max = 5)
     //@Positive
-    //@NotNull
+    //@NotEmp
     private int supplierNumber;
 
     /**

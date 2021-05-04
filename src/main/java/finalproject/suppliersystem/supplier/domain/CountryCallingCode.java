@@ -16,14 +16,6 @@ public class CountryCallingCode
     @Size(max = 7)
     private String callingCode;
 
-    //to nedenstående kun her:
-
-   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   private ContactInformation contactInformation;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private ContactPerson contactperson;
-
 //    @OneToMany(
 //            mappedBy = "callingCode",
 //            cascade = CascadeType.ALL,

@@ -26,7 +26,6 @@ public class ContactPerson
     @ManyToOne(targetEntity = CountryCallingCode.class, fetch = FetchType.LAZY)
     private CountryCallingCode countryCallingCode;
 
-
     @Column(length = 20)
     @Size(max = 20)
     private String phoneNumberContactPerson;
