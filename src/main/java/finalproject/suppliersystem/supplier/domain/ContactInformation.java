@@ -21,7 +21,7 @@ public class ContactInformation
     private Long supplierId;
 
     @Column(length = 20)
-    @Size(max = 20)
+    @Size(max = 30, message = "Phone number must be between 0 and 30 characters")
     private String businessPhoneNumber;
 
     @Column(length = 100)
@@ -42,16 +42,6 @@ public class ContactInformation
     @MapsId
     @JoinColumn(table="contact_information", name = "supplier_id")
     private Supplier supplier;
-
-
-//    //mappedby is the field name
-//    // https://vladmihalcea.com/the-best-way-to-map-a-onetomany-association-with-jpa-and-hibernate/
-//    @OneToMany(
-//            mappedBy = "contactInformation",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//            )
-//    private List<ContactPerson> contactPersonList = new ArrayList<>();
 
 
 }

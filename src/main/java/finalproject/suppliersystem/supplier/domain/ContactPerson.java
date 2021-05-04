@@ -19,11 +19,11 @@ public class ContactPerson
     private Long contactPersonId;
 
     @Column(length = 45)
-    @Size(max = 45)
+    @Size(max = 45, message = "Name must be between 0 and 45 characters")
     private String nameContactPerson;
 
     @Column(length = 20)
-    @Size(max = 20)
+    @Size(max = 30, message = "Phone number must be between 0 and 30 characters")
     private String phoneNumberContactPerson;
 
     @Column(length = 100)
