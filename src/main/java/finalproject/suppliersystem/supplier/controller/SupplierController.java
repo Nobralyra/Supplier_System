@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Controller
 @Transactional
@@ -122,38 +125,18 @@ public class SupplierController
             return "/registration/supplier";
         }
 
-
         contactInformation.setSupplier(supplier);
         address.setContactInformation(contactInformation);
         address.setCountry(country);
         contactPerson.setContactInformation(contactInformation);
 
-        System.out.println(productCategory.getProductCategoryId());
-
-        System.out.println(supplier.getProductCategorySet());
-        System.out.println(productCategory.getProductName());
-        System.out.println(productCategory.getSupplierSet());
-//       productCategory.getSupplierSet().add(supplier);
-//        supplier.getProductCategorySet().add(productCategory);
-
         countryService.save(country);
         addressService.save(address);
         contactPersonService.save(contactPerson);
         contactInformationService.save(contactInformation);
-//        productCategoryService.save(productCategory);
-
 
         supplierService.save(supplier);
 
-
-        /*
-          hvordan kommer de valgte kategorier fra HTML til PostMapping?
-          Der bliver sendt et sæt med alle og brugeren vælger et eller flere af dem.
-          Bliver det rigtigt nu? SortedSet er med i PostMapping og knyttes her til supplier:
-        */
-        //supplier.setProductCategorySet(productCategorySet);
-
-        System.out.println(productCategorySet.getSupplierSet().size());
 
         Long supplierId = supplier.getSupplierId();
         return "redirect:/registration/supplier_confirmation/" + supplierId;
