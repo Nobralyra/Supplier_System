@@ -1,8 +1,6 @@
 package finalproject.suppliersystem.supplier.domain;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.SortNatural;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +13,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ProductCategory implements Comparable<ProductCategory>
+public class ProductCategory
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +25,7 @@ public class ProductCategory implements Comparable<ProductCategory>
     private String productCategoryName;
 
     /**
+     * In a many to many relationship it is not efficient to use a List, but instead use a Set
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
      */
     @ManyToMany(mappedBy = "productCategorySet")
@@ -67,16 +66,5 @@ public class ProductCategory implements Comparable<ProductCategory>
     public int hashCode()
     {
         return getClass().hashCode();
-    }
-
-    /**
-     * https://howtodoinjava.com/java/collections/java-comparable-interface/
-     * @param o
-     * @return
-     */
-    @Override
-    public int compareTo(ProductCategory o)
-    {
-        return this.getProductCategoryId().compareTo( o.getProductCategoryId() );
     }
 }

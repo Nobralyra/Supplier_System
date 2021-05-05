@@ -14,8 +14,12 @@ import javax.validation.constraints.Size;
 @Entity
 public class ContactPerson
 {
+    /**
+     * Contact Person Id is the same as Supplier's id because there is used @MapsId in the @OneToOne relationship
+     * between ContactInformation and Supplier, and there is used @MapsId in the @ManyToOne relationship
+     * between ContactInformation and ContactPerson
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contactPersonId;
 
     @Column(length = 45)
@@ -31,7 +35,10 @@ public class ContactPerson
     @Email(message = "Email should be valid")
     private String emailContactPerson;
 
-    //Child (owner)
+    /**
+     * Child (owner)
+     * https://vladmihalcea.com/manytoone-jpa-hibernate/
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(table = "contact_person", name = "supplier_id")
     @MapsId

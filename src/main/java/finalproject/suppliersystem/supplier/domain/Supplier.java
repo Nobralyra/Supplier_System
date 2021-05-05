@@ -1,15 +1,9 @@
 package finalproject.suppliersystem.supplier.domain;
 
-import com.sun.istack.NotNull;
 import lombok.*;
-import org.hibernate.annotations.GenerationTime;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.SortNatural;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -28,7 +22,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Supplier implements Comparable<Supplier>
+public class Supplier
 {
     @Id
     @Column(length = 5)
@@ -42,8 +36,10 @@ public class Supplier implements Comparable<Supplier>
     private String supplierName;
 
     /**
-     * Why use Set instead of List:
+     * In a many to many relationship it is not efficient to use a List, but instead use a Set
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
+     *
+     * Supplier owns the association
      */
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -89,15 +85,5 @@ public class Supplier implements Comparable<Supplier>
     public int hashCode()
     {
         return getClass().hashCode();
-    }
-    /**
-     * https://howtodoinjava.com/java/collections/java-comparable-interface/
-     * @param o
-     * @return
-     */
-    @Override
-    public int compareTo(Supplier o)
-    {
-        return this.getSupplierId().compareTo( o.getSupplierId() );
     }
 }
