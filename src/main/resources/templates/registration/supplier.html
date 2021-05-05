@@ -113,7 +113,7 @@
         </div>
         <div class="col-sm-4">
             <label class="form-label">Email</label>
-            <input type="Email" class="form-control"
+            <input type="email" class="form-control"
                    th:field="*{contactPerson.emailContactPerson}">
             <span th:if="${#fields.hasErrors('contactPerson.emailContactPerson')}"
                   th:errors="*{contactPerson.emailContactPerson}"></span>
