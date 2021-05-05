@@ -84,7 +84,6 @@ public class SupplierController
      * @param contactInformation
      * @param address
      * @param contactPerson
-     * @param productCategory
      * @param bindingResultSupplier
      * @param bindingResultContactInformation
      * @param bindingResultAddress
@@ -104,7 +103,6 @@ public class SupplierController
                                    BindingResult bindingResultContactPerson,
                                    @Valid Country country,
                                    BindingResult bindingResultCountry,
-                                   @ModelAttribute ProductCategory productCategory,
                                    Model model)
     {
 
