@@ -42,6 +42,4 @@ public class ContactInformation
     @MapsId
     @JoinColumn(table="contact_information", name = "supplier_id")
     private Supplier supplier;
-
-
 }

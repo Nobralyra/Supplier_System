@@ -8,6 +8,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"countryName"})
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,8 +22,8 @@ public class Country
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long countryId;
 
-    @Column(length = 55)
+    @Column(length = 60)
     @NotBlank(message = "Please choose a country")
-    @Size(max = 55, message =" Country name must be between 0 and 55 characters\"")
+    @Size(max = 60, message =" Country name must be between 0 and 55 characters\"")
     private String countryName;
 }

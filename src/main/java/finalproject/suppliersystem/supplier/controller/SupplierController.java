@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 @Controller
 @Transactional
@@ -125,6 +122,20 @@ public class SupplierController
 
         contactInformation.setSupplier(supplier);
         address.setContactInformation(contactInformation);
+
+        /**
+         * Checks if country name already exists in the database, and if true then take its id and set it in country
+         */
+        List<Country> countryList = countryService.findAll();
+
+        for (Country countryName: countryList)
+        {
+            if(country.getCountryName().equals(countryName.getCountryName()))
+            {
+                country.setCountryId(countryName.getCountryId());
+            }
+        }
+
         address.setCountry(country);
         contactPerson.setContactInformation(contactInformation);
 
