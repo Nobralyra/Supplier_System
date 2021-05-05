@@ -17,7 +17,7 @@
             <span th:text="${alreadyCreated}"></span>
         </div>
 
-        <div class="col-12">
+        <div class="col-6">
             <label class="form-label">Supplier Name</label>
             <input type="text" class="form-control" placeholder="Supplier Name"
                    th:field="*{supplier.supplierName}">
@@ -27,68 +27,74 @@
         <div class="col-12">
             <h3>Contact information</h3>
         </div>
-
-        <div class="col-sm-3">
+        <div class="col-2">
             <label class="form-label">Business Phone Number</label>
             <input type="tel" class="form-control" id="businessPhoneNumber" name="businessPhoneNumber"
                    th:field="*{contactInformation.businessPhoneNumber}">
             <span th:if="${#fields.hasErrors('contactInformation.businessPhoneNumber')}"
                   th:errors="*{contactInformation.businessPhoneNumber}"></span>
         </div>
-        <div class="col-sm-4">
+
+        <div class="col-4">
             <label class="form-label">Business Email</label>
             <input type="email" class="form-control" placeholder="Business Email"
                    th:field="*{contactInformation.businessEmail}">
             <span th:if="${#fields.hasErrors('contactInformation.businessEmail')}"
                   th:errors="*{contactInformation.businessEmail}"></span>
         </div>
-        <div class="col-4">
-            <label class="form-label">Webpage</label>
-            <input type="url" class="form-control" placeholder="Webpage"
-                   th:field="*{contactInformation.webpage}">
-            <span th:if="${#fields.hasErrors('contactInformation.webpage')}"
-                  th:errors="*{contactInformation.webpage}"></span>
+        <div class="row g-2">
+            <div class="col-6">
+                <label class="form-label">Webpage</label>
+                <input type="url" class="form-control" placeholder="Webpage"
+                       th:field="*{contactInformation.webpage}" oninvalid="this.setCustomValidity('A valid URL shall contain a protocol (http or https) and a hostname. Example: https://example.com')"
+                       oninput="setCustomValidity('')">
+                <span th:if="${#fields.hasErrors('contactInformation.webpage')}"
+                      th:errors="*{contactInformation.webpage}"></span>
+            </div>
         </div>
 
         <div class="col-12">
             <h3>Address</h3>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-3">
             <label class="form-label">Street Name</label>
             <input type="text" class="form-control" placeholder="Street Name"
                    th:field="*{address.streetName}">
             <span th:if="${#fields.hasErrors('address.streetName')}"
                   th:errors="*{address.streetName}"></span>
         </div>
-        <div class="col-sm-4">
+        <div class="col-3">
             <label class="form-label">Building Information</label>
             <input type="text" class="form-control" placeholder="Building Information"
                    th:field="*{address.buildingInformation}">
             <span th:if="${#fields.hasErrors('address.buildingInformation')}"
                   th:errors="*{address.buildingInformation}"></span>
         </div>
-        <div class="col-sm-4">
-            <label class="form-label">Postal Code</label>
-            <input type="text" class="form-control" placeholder="Postal Code"
-                   th:field="*{address.postalCode}">
-            <span th:if="${#fields.hasErrors('address.postalCode')}"
-                  th:errors="*{address.postalCode}"></span>
+        <div class="row g-3">
+            <div class="col-1">
+                <label class="form-label">Postal Code</label>
+                <input type="text" class="form-control" placeholder="Postal Code"
+                       th:field="*{address.postalCode}">
+                <span th:if="${#fields.hasErrors('address.postalCode')}"
+                      th:errors="*{address.postalCode}"></span>
+            </div>
+            <div class="col-3">
+                <label class="form-label">Postal District</label>
+                <input type="text" class="form-control" placeholder="Postal District"
+                       th:field="*{address.postalDistrict}">
+                <span th:if="${#fields.hasErrors('address.postalDistrict')}"
+                      th:errors="*{address.postalDistrict}"></span>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <label class="form-label">Postal District</label>
-            <input type="text" class="form-control" placeholder="Postal District"
-                   th:field="*{address.postalDistrict}">
-            <span th:if="${#fields.hasErrors('address.postalDistrict')}"
-                  th:errors="*{address.postalDistrict}"></span>
-        </div>
-
-        <div class="col-sm-4">
-            <label class="form-label">Country</label>
-            <input type="text" class="form-control" placeholder="Country"
-                   th:field="*{country.countryName}">
-            <span th:if="${#fields.hasErrors('country.countryName')}"
-                  th:errors="*{country.countryName}"></span>
+        <div class="row g-2">
+            <div class="col-auto">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-control" placeholder="Country"
+                       th:field="*{country.countryName}">
+                <span th:if="${#fields.hasErrors('country.countryName')}"
+                      th:errors="*{country.countryName}"></span>
+            </div>
         </div>
 
 
@@ -96,28 +102,32 @@
             <h3>Contact Person</h3>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-6">
             <label class="form-label">Name</label>
             <input type="text" class="form-control"
                    th:field="*{contactPerson.nameContactPerson}">
             <span th:if="${#fields.hasErrors('contactPerson.nameContactPerson')}"
                   th:errors="*{contactPerson.nameContactPerson}"></span>
         </div>
+        <div class="row g-2">
+            <!-- ToDo: input keeps getting on the same line as label, and does not respond to the different workarounds. One example is: https://github.com/jackocnr/intl-tel-input/issues/72 and https://github.com/jackocnr/intl-tel-input/issues/220-->
+            <div class="col-2">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phoneNumberContactPerson" name="phoneNumberContactPerson"
+                       th:field="*{contactPerson.phoneNumberContactPerson}">
+                <span th:if="${#fields.hasErrors('contactPerson.phoneNumberContactPerson')}"
+                      th:errors="*{contactPerson.phoneNumberContactPerson}"></span>
+            </div>
 
-        <div class="col-sm-3">
-            <label class="form-label">Phone Number</label>
-            <input type="tel" class="form-control" id="phoneNumberContactPerson" name="phoneNumberContactPerson"
-                   th:field="*{contactPerson.phoneNumberContactPerson}">
-            <span th:if="${#fields.hasErrors('contactPerson.phoneNumberContactPerson')}"
-                  th:errors="*{contactPerson.phoneNumberContactPerson}"></span>
+            <div class="col-4">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control"
+                       th:field="*{contactPerson.emailContactPerson}">
+                <span th:if="${#fields.hasErrors('contactPerson.emailContactPerson')}"
+                      th:errors="*{contactPerson.emailContactPerson}"></span>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <label class="form-label">Email</label>
-            <input type="Email" class="form-control"
-                   th:field="*{contactPerson.emailContactPerson}">
-            <span th:if="${#fields.hasErrors('contactPerson.emailContactPerson')}"
-                  th:errors="*{contactPerson.emailContactPerson}"></span>
-        </div>
+
         <div class="col-12">
             <button type="button" class="btn btn-primary">Add extra Contact Person</button>
         </div>
@@ -126,11 +136,11 @@
             <h3>Product Category</h3>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-3">
             <select class="form-select" id="productCategoryName" th:field="*{supplier.productCategorySet}" multiple>
-                <option th:each="pc : ${productCategory}"
-                        th:value="${pc.productCategoryId}"
-                        th:text="${pc.getProductCategoryName}">
+                <option th:each="productcategory : ${productCategory}"
+                        th:value="${productcategory.productCategoryId}"
+                        th:text="${productcategory.getProductCategoryName}">
                 </option>
             </select>
         </div>
@@ -148,14 +158,15 @@
 <script>
     // Waits for the HTML and JavaScript to be loaded
 
-    document.addEventListener("DOMContentLoaded", function(event) {
+    document.addEventListener("DOMContentLoaded", function (event) {
         // For dropdown list of country calling codes
         // https://github.com/jackocnr/intl-tel-input
+        // https://www.twilio.com/blog/international-phone-number-input-html-javascript
         var inputBusinessPhoneNumber = document.querySelector("#businessPhoneNumber");
 
         var inputPhoneNumberContactPerson = document.querySelector("#phoneNumberContactPerson");
 
-        var phoneInputBusinessPhoneNumber = window.intlTelInput(inputBusinessPhoneNumber,({
+        var phoneInputBusinessPhoneNumber = window.intlTelInput(inputBusinessPhoneNumber, ({
             // whether or not to allow the dropdown
             allowDropdown: true,
             initialCountry: 'fi',
@@ -163,7 +174,7 @@
 
         }));
 
-        var phoneInputPhoneNumberContactPerson = window.intlTelInput(inputPhoneNumberContactPerson,({
+        var phoneInputPhoneNumberContactPerson = window.intlTelInput(inputPhoneNumberContactPerson, ({
             // whether or not to allow the dropdown
             allowDropdown: true,
             initialCountry: 'fi',
@@ -172,14 +183,14 @@
 
         // How to get the international format number and store it in the input field
         // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
-        var handleChangeOfBusinessPhoneNumber = function() {
+        var handleChangeOfBusinessPhoneNumber = function () {
             var fullPhoneNumber = phoneInputBusinessPhoneNumber.getNumber();
             document.getElementById("businessPhoneNumber").value = fullPhoneNumber;
         };
 
         // How to get the international format number and store it in the input field
         // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
-        var handleChangeOfPhoneNumberContactPerson = function() {
+        var handleChangeOfPhoneNumberContactPerson = function () {
             var fullPhoneNumber = phoneInputPhoneNumberContactPerson.getNumber();
             document.getElementById("phoneNumberContactPerson").value = fullPhoneNumber;
         };
