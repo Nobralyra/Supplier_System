@@ -46,4 +46,5 @@ public class Address
     @MapsId
     @JoinColumn(name = "supplier_id")
     private ContactInformation contactInformation;
+
 }
