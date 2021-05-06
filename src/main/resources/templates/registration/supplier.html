@@ -46,7 +46,8 @@
             <div class="col-6">
                 <label class="form-label">Webpage</label>
                 <input type="url" class="form-control" placeholder="Webpage"
-                       th:field="*{contactInformation.webpage}" oninvalid="this.setCustomValidity('A valid URL shall contain a protocol (http or https) and a hostname. Example: https://example.com')"
+                       th:field="*{contactInformation.webpage}"
+                       oninvalid="this.setCustomValidity('A valid URL shall contain a protocol (http or https) and a hostname. Example: https://example.com')"
                        oninput="setCustomValidity('')">
                 <span th:if="${#fields.hasErrors('contactInformation.webpage')}"
                       th:errors="*{contactInformation.webpage}"></span>
