@@ -42,7 +42,7 @@ public class SupplierService implements IService<Supplier> {
      * @param bindingResultContactInformation
      * @param bindingResultAddress
      * @param bindingResultContactPerson
-     * @return
+     * @return boolean
      */
     public boolean hasErrors(BindingResult bindingResultSupplier,
                              BindingResult bindingResultContactInformation,
@@ -73,9 +73,9 @@ public class SupplierService implements IService<Supplier> {
      * also are the same.
      * @param supplier
      * @param address
+     * @param country
      * @return supplier already exists or not
      */
-
     public boolean existAlready(Supplier supplier, Address address, Country country) {
 
         /*
@@ -105,18 +105,18 @@ public class SupplierService implements IService<Supplier> {
         if (supplierNameFound) {
 
             String countryName = country.getCountryName();
-            String streetname = address.getStreetName();
+            String streetName = address.getStreetName();
             String postalDistrict = address.getPostalDistrict();
 
             Optional<Address> addressDB = iAddressRepository.findById(supplierFoundId);
             if (addressDB.isPresent()) {
 
                 String countryNameDB = addressDB.get().getCountry().getCountryName();
-                String streetnameDB = addressDB.get().getStreetName();
+                String streetNameDB = addressDB.get().getStreetName();
                 String postalDistrictDB = addressDB.get().getPostalDistrict();
 
                 return countryName.equals(countryNameDB)
-                        && streetname.equals(streetnameDB)
+                        && streetName.equals(streetNameDB)
                         && postalDistrict.equals(postalDistrictDB);
             }
         }
@@ -138,7 +138,7 @@ public class SupplierService implements IService<Supplier> {
     @Override
     public Supplier findById(Long id) {
         Optional<Supplier> supplier = iSupplierRepository.findById(id);
-        return supplier.orElseThrow(EntityNotFoundException::new);
+        return supplier.orElseThrow(() -> new EntityNotFoundException("Supplier with id " + id + " was not found"));
     }
 
     /**

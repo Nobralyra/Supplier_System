@@ -27,7 +27,7 @@ public class ContactInformationService implements IService<ContactInformation> {
     @Override
     public ContactInformation findById(Long id) {
         Optional<ContactInformation> contactInformation = iContactInformationRepository.findById(id);
-        return contactInformation.orElseThrow(EntityNotFoundException::new);
+        return contactInformation.orElseThrow(() -> new EntityNotFoundException("Contact Information with id " + id + " was not found"));
     }
 
     @Override

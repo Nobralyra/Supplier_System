@@ -27,7 +27,7 @@ public class ContactPersonService implements IService<ContactPerson> {
     @Override
     public ContactPerson findById(Long id) {
         Optional<ContactPerson> contactPerson = iContactPersonRepository.findById(id);
-        return contactPerson.orElseThrow(EntityNotFoundException::new);
+        return contactPerson.orElseThrow(() -> new EntityNotFoundException("Contact Person with id " + id + " was not found"));
     }
 
     @Override

@@ -42,7 +42,7 @@ public class ProductCategoryService implements IService<ProductCategory>
     public ProductCategory findById(Long id)
     {
         Optional<ProductCategory> productCategory = iProductCategoryRepository.findById(id);
-        return productCategory.orElseThrow(EntityNotFoundException::new);
+        return productCategory.orElseThrow(() -> new EntityNotFoundException("Product Category with id " + id + " was not found"));
     }
 
     @Override
