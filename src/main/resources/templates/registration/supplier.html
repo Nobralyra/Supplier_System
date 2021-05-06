@@ -130,7 +130,7 @@
         </div>
 
         <div class="col-12">
-            <button type="button" class="btn btn-primary">Add extra Contact Person</button>
+            <button type="button" id="addPersonButton" onclick="addRow()" class="btn btn-primary">Add extra Contact Person</button>
         </div>
 
         <div class="col-12">
@@ -206,6 +206,18 @@
         inputPhoneNumberContactPerson.addEventListener('change', handleChangeOfPhoneNumberContactPerson);
         inputPhoneNumberContactPerson.addEventListener('keyup', handleChangeOfPhoneNumberContactPerson);
     });
+
+
+
+    function addRow() {
+        document.querySelector('#addPersonButton').insertAdjacentHTML("beforebegin",
+            '<input type="text" th:field="*{contactPerson.nameContactPerson}">')
+
+    }
+
+
+
+
 </script>
 
 
