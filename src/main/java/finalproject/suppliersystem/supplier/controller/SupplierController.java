@@ -8,12 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.*;
 
 @Controller
 @Transactional
@@ -73,7 +71,7 @@ public class SupplierController
 
     /**
      * PostMapping receives data from HTML and Controller asks SupplierService to
-     * validate with Valid/BindingResult.
+     * validate with Valid/BindingResult and ask CountryService if a
      * Though, ProductCategories are not created in this connection, but the user
      * only chooses one og several of them. So they are not validated here.
      *
@@ -123,20 +121,7 @@ public class SupplierController
         contactInformation.setSupplier(supplier);
         address.setContactInformation(contactInformation);
 
-        /**
-         * Checks if country name already exists in the database, and if true then take its id and set it in country
-         */
-        List<Country> countryList = countryService.findAll();
-
-        for (Country countryName: countryList)
-        {
-            if(country.getCountryName().equals(countryName.getCountryName()))
-            {
-                country.setCountryId(countryName.getCountryId());
-            }
-        }
-
-        address.setCountry(country);
+        address.setCountry(countryService.checkUniqueCountryName(country));
         contactPerson.setContactInformation(contactInformation);
 
         countryService.save(country);
