@@ -3,8 +3,10 @@ package finalproject.suppliersystem.supplier.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @Data
@@ -29,6 +31,8 @@ public class Address
     private String buildingInformation;
 
     @Column(length = 10)
+    @PositiveOrZero(message = "Postal Code has to be a positive number")
+    @NumberFormat(style= NumberFormat.Style.NUMBER)
     private int postalCode;
 
     @Column(length = 60)

@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-sm-6">
-            <label class="form-label">Supplier Name</label>
+            <label class="form-label">Supplier Name <span style="color: red">*</span></label>
             <input type="text" class="form-control" placeholder="Supplier Name"
                    th:field="*{supplier.supplierName}">
             <span th:if="${#fields.hasErrors('supplier.supplierName')}" th:errors="*{supplier.supplierName}"></span>
@@ -92,7 +92,7 @@
         </div>
         <div class="row g-2 justify-content-center">
             <div class="col-sm-3">
-                <label class="form-label">Country</label>
+                <label class="form-label">Country <span style="color: red">*</span></label>
                 <input type="text" class="form-control" placeholder="Country"
                        th:field="*{country.countryName}">
                 <span th:if="${#fields.hasErrors('country.countryName')}"
@@ -145,6 +145,8 @@
                         th:text="${productcategory.getProductCategoryName}">
                 </option>
             </select>
+            <span th:if="${#fields.hasErrors('supplier.productCategorySet')}"
+                  th:errors="*{supplier.productCategorySet}"></span>
         </div>
 
         <div class="col-12 d-flex justify-content-center">
@@ -156,6 +158,7 @@
     <footer th:replace="fragments/footer :: footerElement"></footer>
 
 </div>
+
 </body>
 
 <script>

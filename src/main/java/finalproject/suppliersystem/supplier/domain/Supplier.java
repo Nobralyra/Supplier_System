@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
 
@@ -49,6 +51,7 @@ public class Supplier
             joinColumns = @JoinColumn(name = "supplier_id"),
             inverseJoinColumns = @JoinColumn(name = "product_category_id")
     )
+    @NotEmpty(message = "Please choose at least one category")
     private Set<ProductCategory> productCategorySet = new HashSet<>();
 
     /**
