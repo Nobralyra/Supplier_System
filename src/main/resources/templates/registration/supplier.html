@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-6">
-            <label class="form-label">Supplier Name</label>
+            <label class="form-label">Supplier Name <span style="color: red">*</span></label>
             <input type="text" class="form-control" placeholder="Supplier Name"
                    th:field="*{supplier.supplierName}">
             <span th:if="${#fields.hasErrors('supplier.supplierName')}" th:errors="*{supplier.supplierName}"></span>
@@ -90,7 +90,7 @@
         </div>
         <div class="row g-2">
             <div class="col-auto">
-                <label class="form-label">Country</label>
+                <label class="form-label">Country <span style="color: red">*</span></label>
                 <input type="text" class="form-control" placeholder="Country"
                        th:field="*{country.countryName}">
                 <span th:if="${#fields.hasErrors('country.countryName')}"
@@ -134,7 +134,7 @@
         </div>
 
         <div class="col-12">
-            <h3>Product Category</h3>
+            <h3>Product Category <span style="color: red">*</span></h3>
         </div>
 
         <div class="col-3">
@@ -144,6 +144,8 @@
                         th:text="${productcategory.getProductCategoryName}">
                 </option>
             </select>
+            <span th:if="${#fields.hasErrors('supplier.productCategorySet')}"
+                  th:errors="*{supplier.productCategorySet}"></span>
         </div>
 
         <div class="col-12">

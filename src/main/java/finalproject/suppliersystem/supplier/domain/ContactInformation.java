@@ -25,13 +25,13 @@ public class ContactInformation
     private String businessPhoneNumber;
 
     @Column(length = 100)
-    @Size(max = 100, message = "Email must be between 0 and 100 characters")
     @Email(message = "Email should be valid")
+    @Size(max = 100, message = "Email must be between 0 and 100 characters")
     private String businessEmail;
 
     @Column(length = 100)
-    @Size(max = 100, message = "URL must be between 0 and 100 characters")
     @URL(message = "A valid URL shall contain a protocol (http or https) and a hostname. Example: https://example.com")
+    @Size(max = 100, message = "URL must be between 0 and 100 characters")
     private String webpage;
 
     /**
