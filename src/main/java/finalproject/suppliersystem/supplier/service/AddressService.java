@@ -26,7 +26,7 @@ public class AddressService implements IService<Address> {
     @Override
     public Address findById(Long id) {
         Optional<Address> address = iAddressRepository.findById(id);
-        return address.orElseThrow(EntityNotFoundException::new);
+        return address.orElseThrow(() -> new EntityNotFoundException("Address with id " + id + " was not found"));
     }
 
     @Override
