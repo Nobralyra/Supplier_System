@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
@@ -40,7 +38,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     /**
      * ToDo: Make custom error site:
      * https://zetcode.com/springboot/controlleradvice/
-     * https://www.baeldung.com/exception-handling-for-rest-with-spring
      * https://medium.com/@jovannypcg/understanding-springs-controlleradvice-cd96a364033f
      */
 
@@ -57,9 +54,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * MethodArgumentNotValidException: This exception is thrown when argument annotated with @Valid failed validation
      *
      * @param exception MethodArgumentNotValidException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
@@ -83,13 +80,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     /**
      * HttpStatus.BAD_REQUEST = 400
-     *
+     * <p>
      * HttpMessageNotReadableException: This exception is thrown when request body is invalid
      *
      * @param exception HttpMessageNotReadableException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
@@ -106,9 +103,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * HttpRequestMethodNotSupportedException: This exception is thrown when you send a requested with an unsupported HTTP method
      *
      * @param exception HttpRequestMethodNotSupportedException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
@@ -131,9 +128,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception HttpMediaTypeNotSupportedException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
@@ -148,15 +145,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(exception, apiError, headers, apiError.getStatus(), request);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException exception, HttpHeaders headers,
-                                                                   HttpStatus status, WebRequest request) {
-        // custom logic here
-        String exceptionCause = getExceptionCause(exception.getCause());
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, exception.getLocalizedMessage(), exceptionCause);
-        return handleExceptionInternal(exception, apiError, headers, apiError.getStatus(), request);
-    }
-
     /**
      * <p>
      * https://www.baeldung.com/spring-response-status-exception
@@ -164,7 +152,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception Exception
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({ResponseStatusException.class})
@@ -184,7 +172,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception DataIntegrityViolationException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({DataIntegrityViolationException.class})
@@ -207,7 +195,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception InvalidDataAccessResourceUsageException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({InvalidDataAccessResourceUsageException.class})
@@ -230,7 +218,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLGrammarException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({SQLGrammarException.class})
@@ -254,7 +242,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLGrammarException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({ConnectException.class})
@@ -277,7 +265,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLNonTransientConnectionException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({SQLNonTransientConnectionException.class})
@@ -300,7 +288,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({SQLException.class})
@@ -323,7 +311,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({PersistenceException.class})
@@ -345,7 +333,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception EntityNotFoundException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({EntityNotFoundException.class})
@@ -364,8 +352,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     /**
      * Custom 404 Page Not Found with Custom exception class
      * https://nixmash.com/java/custom-404-exception-handling-in-spring-mvc/
+     *
      * @param exception UnknownResourceException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({UnknownResourceException.class})
@@ -389,7 +378,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception Exception
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({Exception.class})
