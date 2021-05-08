@@ -39,4 +39,21 @@ public class ContactPersonService implements IService<ContactPerson> {
     public void deleteByID(Long id) {
             iContactPersonRepository.deleteById(id);
     }
+
+    /**
+     * It is possible to register 2 contact persons to the same supplier.
+     * This methos is used to find the first registred contactperson, when the
+     * user wants to register two.
+     * @param supplierId
+     * @return
+     */
+    public ContactPerson findBySupplierId(Long supplierId){
+
+        List<ContactPerson> alContactPersons = findAll();
+
+        for(ContactPerson c : alContactPersons){
+            if(c.getContactInformation().getSupplierId().equals(supplierId)) return c;
+        }
+        return null;
+    }
 }

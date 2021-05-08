@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -15,11 +16,11 @@ import javax.validation.constraints.Size;
 public class ContactPerson
 {
     /**
-     * Contact Person Id is the same as Supplier's id because there is used @MapsId in the @OneToOne relationship
-     * between ContactInformation and Supplier, and there is used @MapsId in the @ManyToOne relationship
-     * between ContactInformation and ContactPerson
+     * ContactPerson has to have it's one id, because the supplier_id is unique,
+     * but we need to be able to store two contact persons. So the supplier_id can't be PK in this table.
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contactPersonId;
 
     @Column(length = 45)
@@ -39,8 +40,18 @@ public class ContactPerson
      * Child (owner)
      * https://vladmihalcea.com/manytoone-jpa-hibernate/
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(table = "contact_person", name = "supplier_id")
-    @MapsId
+
+    @ManyToOne (fetch = FetchType.LAZY)
     private ContactInformation contactInformation;
+
+
+
+
+/* var før:
+    @ManyToOne (fetch = FetchType.LAZY)
+    @MapsId
+    private ContactInformation contactInformation;*/
+
+
+
 }

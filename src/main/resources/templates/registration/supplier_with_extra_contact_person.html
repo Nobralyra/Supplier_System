@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: headerElement">
+    <meta charset="UTF-8">
+    <title>Supplier Registration With Extra Contact Person</title>
+</head>
+<style>
+    h6{padding-top: 10px}
+    span{padding-top: 5px; padding-bottom: 5px;}
+</style>
+<body>
+
+<div class="container-fluid page">
+    <div class="col-12 d-flex justify-content-center">
+            <h1>Supplier Registration</h1>
+    </div>
+
+    <h6>Supplier Name: </h6>
+    <span th:text="${supplier.supplierName}"></span>
+
+    <h6>Product Category: </h6>
+    <div th:each="p: ${supplier.productCategorySet}">
+        <span th:text="${p.productCategoryName}"></span>
+    </div>
+
+    <h6>Business Phone Number: </h6>
+    <span th:text="${contactInformation.businessPhoneNumber}"></span>
+
+    <h6>Business Email: </h6>
+    <span th:text="${contactInformation.businessEmail}"></span>
+
+    <h6>Webpage: </h6>
+    <span th:text="${contactInformation.webpage}"></span>
+
+    <h6>Street Name: </h6>
+    <span th:text="${address.streetName}"></span>
+
+    <h6>Building Information: </h6>
+    <span th:text="${address.buildingInformation}"></span>
+
+    <h6>Postal Code: </h6>
+    <span th:text="${address.postalCode}"></span>
+
+    <h6>Postal District: </h6>
+    <span th:text="${address.postalDistrict}"></span>
+
+    <h6>Country: </h6>
+    <span th:text="${country.countryName}"></span>
+
+    <h6>Contact Person Name: </h6>
+    <span th:text="${contactPersonAlready.nameContactPerson}"></span>
+
+    <h6>Contact Person Email: </h6>
+    <span th:text="${contactPersonAlready.emailContactPerson}"></span>
+
+    <h6>Contact Person Phone Number: </h6>
+    <span th:text="${contactPersonAlready.phoneNumberContactPerson}"></span>
+
+    <form action="#"  th:action="@{'/registration/register_extra_person/' + ${supplier.supplierId}}"  class="row g-2 justify-content-center"  method="post">
+
+        <div class="col-12 d-flex justify-content-center">
+            <h3>Extra Contact Person</h3>
+        </div>
+
+        <div class="col-sm-6">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" placeholder="Contact Person's Name"
+                   th:field="*{contactPerson.nameContactPerson}">
+            <span th:if="${#fields.hasErrors('contactPerson.nameContactPerson')}"
+                  th:errors="*{contactPerson.nameContactPerson}"></span>
+        </div>
+        <div class="row g-2 justify-content-center">
+            <div class="col-xs-12 col-sm-12 col-lg-2">
+                <label class="form-label" style="width: 100%;">Phone Number</label>
+                <input type="tel" class="form-control" id="phoneNumberContactPerson" name="phoneNumberContactPerson"
+                       th:field="*{contactPerson.phoneNumberContactPerson}">
+                <span th:if="${#fields.hasErrors('contactPerson.phoneNumberContactPerson')}"
+                      th:errors="*{contactPerson.phoneNumberContactPerson}"></span>
+            </div>
+
+            <div class="col-sm-4">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" placeholder="Contact Person's Email"
+                       th:field="*{contactPerson.emailContactPerson}">
+                <span th:if="${#fields.hasErrors('contactPerson.emailContactPerson')}"
+                      th:errors="*{contactPerson.emailContactPerson}"></span>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary">Register supplier</button>
+        </div>
+
+    </form>
+
+    <footer th:replace="fragments/footer :: footerElement"></footer>
+
+</div>
+
+</body>
+
+<script>
+    // Waits for the HTML and JavaScript to be loaded
+    document.addEventListener("DOMContentLoaded", function (event) {
+        // For dropdown list of country calling codes
+        // https://github.com/jackocnr/intl-tel-input
+        // https://www.twilio.com/blog/international-phone-number-input-html-javascript
+        var inputBusinessPhoneNumber = document.querySelector("#businessPhoneNumber");
+
+        var inputPhoneNumberContactPerson = document.querySelector("#phoneNumberContactPerson");
+
+        var phoneInputBusinessPhoneNumber = window.intlTelInput(inputBusinessPhoneNumber, ({
+            // whether or not to allow the dropdown
+            allowDropdown: true,
+            // What country is shown first to the user
+            initialCountry: 'fi',
+            // Enables different features including the method getNumber
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/utils.js",
+
+        }));
+
+        var phoneInputPhoneNumberContactPerson = window.intlTelInput(inputPhoneNumberContactPerson, ({
+            // whether or not to allow the dropdown
+            allowDropdown: true,
+            // What country is shown first to the user
+            initialCountry: 'fi',
+            // Enables different features including the method getNumber
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/utils.js"
+        }));
+
+        // How to get the international format number and store it in the input field
+        // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
+        var handleChangeOfBusinessPhoneNumber = function () {
+            document.getElementById("businessPhoneNumber").value = phoneInputBusinessPhoneNumber.getNumber();
+        };
+
+        // How to get the international format number and store it in the input field
+        // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
+        var handleChangeOfPhoneNumberContactPerson = function () {
+            document.getElementById("phoneNumberContactPerson").value = phoneInputPhoneNumberContactPerson.getNumber();
+        };
+
+        // listen to "keyup", but also "change" to update when the user selects a country
+        inputBusinessPhoneNumber.addEventListener('change', handleChangeOfBusinessPhoneNumber);
+        inputBusinessPhoneNumber.addEventListener('keyup', handleChangeOfBusinessPhoneNumber);
+
+        // listen to "keyup", but also "change" to update when the user selects a country
+        inputPhoneNumberContactPerson.addEventListener('change', handleChangeOfPhoneNumberContactPerson);
+        inputPhoneNumberContactPerson.addEventListener('keyup', handleChangeOfPhoneNumberContactPerson);
+    });
+
+
+</script>
+
+
+</html>

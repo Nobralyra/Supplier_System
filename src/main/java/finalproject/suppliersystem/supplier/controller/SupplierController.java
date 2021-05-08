@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Controller
 @Transactional
@@ -131,7 +134,6 @@ public class SupplierController
 
         supplierService.save(supplier);
 
-
         Long supplierId = supplier.getSupplierId();
         return "redirect:/registration/supplier_confirmation/" + supplierId;
     }
@@ -145,6 +147,129 @@ public class SupplierController
         return "/registration/supplier_confirmation";
     }
 
+
+    /**
+     * This is used, when the user wants to register two contact persons
+     * It stores the supplier and leads to the other html-page, where
+     * the user can register an extra contact person
+     *
+     * @param supplier
+     * @param bindingResultSupplier
+     * @param contactInformation
+     * @param bindingResultContactInformation
+     * @param address
+     * @param bindingResultAddress
+     * @param contactPerson
+     * @param bindingResultContactPerson
+     * @param country
+     * @param bindingResultCountry
+     * @param model
+     * @return
+     */
+
+    @PostMapping("/registration/supplier_with_extra_contact_person")
+    public String registerSupplierWithExtraContactperson(@Valid Supplier supplier,
+                                                         BindingResult bindingResultSupplier,
+                                                         @Valid ContactInformation contactInformation,
+                                                         BindingResult bindingResultContactInformation,
+                                                         @Valid Address address,
+                                                         BindingResult bindingResultAddress,
+                                                         @Valid ContactPerson contactPerson,
+                                                         BindingResult bindingResultContactPerson,
+                                                         @Valid Country country,
+                                                         BindingResult bindingResultCountry,
+                                                         Model model)
+    {
+
+        if(supplierService.hasErrors(bindingResultSupplier,
+                bindingResultContactInformation,
+                bindingResultAddress,
+                bindingResultContactPerson,
+                bindingResultCountry, model)){
+            model.addAttribute("productCategory", productCategoryService.findAll());
+            return "/registration/supplier";
+        }
+
+        if (supplierService.existAlready(supplier, address, country))
+        {
+            String alreadyCreated = "Supplier is already registred";
+            model.addAttribute("productCategory", productCategoryService.findAll());
+            model.addAttribute("alreadyCreated", alreadyCreated);
+            return "/registration/supplier";
+        }
+
+        contactInformation.setSupplier(supplier);
+        address.setContactInformation(contactInformation);
+
+        address.setCountry(countryService.checkUniqueCountryName(country));
+        contactPerson.setContactInformation(contactInformation);
+
+        countryService.save(country);
+        addressService.save(address);
+        contactPersonService.save(contactPerson);
+        contactInformationService.save(contactInformation);
+
+        supplierService.save(supplier);
+
+        Long supplierId = supplier.getSupplierId();
+        return "redirect:/registration/supplier_with_extra_contact_person/" + supplierId;
+    }
+
+
+    /**
+     * This mapping sends the user to the page, where the user can register
+     * an extra contact person
+     * @param supplierId
+     * @param contactPerson
+     * @param model
+     * @return
+     */
+    @GetMapping("/registration/supplier_with_extra_contact_person/{supplierId}")
+    public String showNewRegistrationPage(@PathVariable("supplierId") Long supplierId,
+                                          ContactPerson contactPerson, Model model){
+
+        Supplier supplier = supplierService.findById(supplierId);
+        ContactInformation contactInformation= contactInformationService.findById(supplierId);
+        Address address = addressService.findById(supplierId);
+        ContactPerson contactPersonAlready = contactPersonService.findBySupplierId(supplierId);
+        Long countryId = address.getCountry().getCountryId();
+        Country country = countryService.findById(countryId);
+
+        model.addAttribute("supplier", supplier);
+        model.addAttribute("contactInformation", contactInformation);
+        model.addAttribute("address", address);
+        model.addAttribute("country", country);
+        model.addAttribute("contactPersonAlready", contactPersonAlready);
+        model.addAttribute("contactPerson", contactPerson);
+
+        return "/registration/supplier_with_extra_contact_person";
+    }
+
+    /**
+     * This mapping registres the extra contact person
+     * @param supplierId
+     * @param contactPerson
+     * @param bindingResultContactPerson
+     * @param model
+     * @return
+     */
+    @PostMapping("/registration/register_extra_person/{supplierId}")
+    public String showConfirmation(@PathVariable("supplierId") Long supplierId,
+                                   @Valid ContactPerson contactPerson,
+                                   BindingResult bindingResultContactPerson,
+                                   Model model){
+
+        if(bindingResultContactPerson.hasErrors()){
+            return "/registration/supplier_with_extra_contact_person";
+        }
+
+        ContactInformation contactInformation = contactInformationService.findById(supplierId);
+        contactPerson.setContactInformation(contactInformation);
+        contactPersonService.save(contactPerson);
+
+        model.addAttribute("confirmation", "SupplierNumber " + supplierId + " is registred.");
+        return "/registration/supplier_confirmation";
+    }
 }
 
 
