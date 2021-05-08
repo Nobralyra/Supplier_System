@@ -1,11 +1,14 @@
 package finalproject.suppliersystem.supplier.domain;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -42,4 +45,5 @@ public class ContactInformation
     @MapsId
     @JoinColumn(table="contact_information", name = "supplier_id")
     private Supplier supplier;
+
 }
