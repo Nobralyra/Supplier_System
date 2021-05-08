@@ -1,12 +1,14 @@
 package finalproject.suppliersystem.core;
 
 import org.hibernate.exception.SQLGrammarException;
+import org.springframework.core.NestedExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.lang.NonNull;
 import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -17,8 +19,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
@@ -26,6 +26,7 @@ import javax.persistence.PersistenceException;
 import java.net.ConnectException;
 import java.sql.SQLException;
 import java.sql.SQLNonTransientConnectionException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,17 +34,12 @@ import java.util.List;
  * Global error handling component
  * <p>
  * https://www.baeldung.com/exception-handling-for-rest-with-spring
+ * https://zetcode.com/springboot/controlleradvice/
+ * https://medium.com/@jovannypcg/understanding-springs-controlleradvice-cd96a364033f
  */
 @ControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler
+public class CustomExceptionHandler extends ResponseEntityExceptionHandler
 {
-    /**
-     * ToDo: Make custom error site:
-     * https://zetcode.com/springboot/controlleradvice/
-     * https://www.baeldung.com/exception-handling-for-rest-with-spring
-     * https://medium.com/@jovannypcg/understanding-springs-controlleradvice-cd96a364033f
-     */
-
     /*
      * Probably some exceptions that can be added to the exceptionhandler
      * https://stackoverflow.com/questions/55610797/what-exceptions-can-be-thrown-by-exchange-on-webclient
@@ -57,9 +53,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * MethodArgumentNotValidException: This exception is thrown when argument annotated with @Valid failed validation
      *
      * @param exception MethodArgumentNotValidException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
@@ -83,19 +79,19 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     /**
      * HttpStatus.BAD_REQUEST = 400
-     *
+     * <p>
      * HttpMessageNotReadableException: This exception is thrown when request body is invalid
      *
      * @param exception HttpMessageNotReadableException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException exception, HttpHeaders headers, HttpStatus status, WebRequest request)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, exception.getLocalizedMessage(), exceptionCause);
         return handleExceptionInternal(exception, apiError, headers, apiError.getStatus(), request);
     }
@@ -106,9 +102,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * HttpRequestMethodNotSupportedException: This exception is thrown when you send a requested with an unsupported HTTP method
      *
      * @param exception HttpRequestMethodNotSupportedException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
@@ -131,9 +127,9 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception HttpMediaTypeNotSupportedException
-     * @param headers
-     * @param status
-     * @param request
+     * @param headers HttpHeaders
+     * @param status HttpStatus
+     * @param request WebRequest
      * @return ResponseEntity<Object>
      */
     @Override
@@ -148,15 +144,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(exception, apiError, headers, apiError.getStatus(), request);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException exception, HttpHeaders headers,
-                                                                   HttpStatus status, WebRequest request) {
-        // custom logic here
-        String exceptionCause = getExceptionCause(exception.getCause());
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, exception.getLocalizedMessage(), exceptionCause);
-        return handleExceptionInternal(exception, apiError, headers, apiError.getStatus(), request);
-    }
-
     /**
      * <p>
      * https://www.baeldung.com/spring-response-status-exception
@@ -164,7 +151,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception Exception
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({ResponseStatusException.class})
@@ -184,13 +171,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception DataIntegrityViolationException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({DataIntegrityViolationException.class})
     public String handleDataIntegrityViolationException(DataIntegrityViolationException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
 
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, exception.getLocalizedMessage(), exceptionCause);
 
@@ -207,13 +194,36 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception InvalidDataAccessResourceUsageException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({InvalidDataAccessResourceUsageException.class})
     public String handleInvalidDataAccessResourceUsageException(InvalidDataAccessResourceUsageException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
+
+        ApiError apiError = new ApiError(HttpStatus.CONFLICT, exception.getLocalizedMessage(), exceptionCause);
+
+        model.addAttribute("httpStatus", apiError.getStatus().toString());
+        model.addAttribute("errorMessage", apiError.getMessage());
+        model.addAttribute("exceptionCause", apiError.getErrors());
+
+        return "error";
+    }
+
+    /**
+     * HttpStatus.CONFLICT = 409
+     * <p>
+     * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
+     *
+     * @param exception InvalidDataAccessResourceUsageException
+     * @param model     Model
+     * @return String
+     */
+    @ExceptionHandler({SQLSyntaxErrorException.class})
+    public String handleSQLSyntaxErrorException(InvalidDataAccessResourceUsageException exception, Model model)
+    {
+        String exceptionCause = getRootCause(exception).toString();
 
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, exception.getLocalizedMessage(), exceptionCause);
 
@@ -230,14 +240,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLGrammarException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({SQLGrammarException.class})
 
     public String handleSQLGrammarException(SQLGrammarException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, exception.getLocalizedMessage(), exceptionCause);
 
@@ -254,13 +264,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLGrammarException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({ConnectException.class})
     public String handleConnectException(ConnectException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
 
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, exception.getLocalizedMessage(), exceptionCause);
 
@@ -277,13 +287,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLNonTransientConnectionException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({SQLNonTransientConnectionException.class})
     public String handleSQLNonTransientConnectionException(SQLNonTransientConnectionException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
 
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, exception.getLocalizedMessage(), exceptionCause);
 
@@ -300,13 +310,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({SQLException.class})
     public String handleSQLException(SQLException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
 
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, exception.getLocalizedMessage(), exceptionCause);
 
@@ -323,13 +333,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception SQLException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({PersistenceException.class})
     public String handlePersistenceException(PersistenceException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, exception.getLocalizedMessage(), exceptionCause);
 
         model.addAttribute("httpStatus", apiError.getStatus().toString());
@@ -345,13 +355,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception EntityNotFoundException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({EntityNotFoundException.class})
     public String handleEntityNotFoundException(EntityNotFoundException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, exception.getLocalizedMessage(), exceptionCause);
 
         model.addAttribute("httpStatus", apiError.getStatus().toString());
@@ -364,14 +374,15 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     /**
      * Custom 404 Page Not Found with Custom exception class
      * https://nixmash.com/java/custom-404-exception-handling-in-spring-mvc/
+     *
      * @param exception UnknownResourceException
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({UnknownResourceException.class})
     public String handleUnknownResourceException(UnknownResourceException exception, Model model)
     {
-        String exceptionCause = getExceptionCause(exception.getCause());
+        String exceptionCause = getRootCause(exception).toString();
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, exception.getLocalizedMessage(), exceptionCause);
 
         model.addAttribute("httpStatus", apiError.getStatus().toString());
@@ -389,7 +400,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
      * Very IMPORTANT that the exception declared with @ExceptionHandler matches the exceptions uses as a argument of the method
      *
      * @param exception Exception
-     * @param model Model
+     * @param model     Model
      * @return String
      */
     @ExceptionHandler({Exception.class})
@@ -404,14 +415,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return "error";
     }
 
-    private String getExceptionCause(Throwable cause)
-    {
-        String exceptionCause = "Cause is null";
-
-        if (cause != null)
-        {
-            exceptionCause = cause.toString();
-        }
-        return exceptionCause;
+    /**
+     * Uses NestedExceptionUtils to get too the Root Causes of a thrown Exception
+     * https://stackoverflow.com/questions/1791610/java-find-the-first-cause-of-an-exception/65442410#65442410
+     * https://stackoverflow.com/questions/17747175/how-can-i-loop-through-exception-getcause-to-find-root-cause-with-detail-messa
+     * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/NestedExceptionUtils.html
+     * @param t Throwable
+     * @return Throwable
+     */
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        // Laves om til et rigtig if statement
+        return rootCause != null ? rootCause : t;
     }
 }

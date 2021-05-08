@@ -48,7 +48,7 @@
             <h3>Contact information</h3>
         </div>
         <div class="col-xs-12 col-sm-12 col-lg-2">
-            <label class="form-label">Business Phone Number</label>
+            <label class="form-label" style="width: 100%;">Business Phone Number</label>
             <input type="tel" class="form-control" id="businessPhoneNumber" name="businessPhoneNumber"
                    th:field="*{contactInformation.businessPhoneNumber}">
             <span th:if="${#fields.hasErrors('contactInformation.businessPhoneNumber')}"
@@ -86,8 +86,7 @@
             <span th:if="${#fields.hasErrors('address.streetName')}"
                   th:errors="*{address.streetName}"></span>
         </div>
-
-        <div class="col-md-3">
+        <div class="col-sm-3">
             <label class="form-label">Building Information</label>
             <input type="text" class="form-control" placeholder="Building Information"
                    th:field="*{address.buildingInformation}">
@@ -136,7 +135,7 @@
         <div class="row g-2 justify-content-center">
             <!-- ToDo: input keeps getting on the same line as label, and does not respond to the different workarounds. One example is: https://github.com/jackocnr/intl-tel-input/issues/72 and https://github.com/jackocnr/intl-tel-input/issues/220-->
             <div class="col-xs-12 col-sm-12 col-lg-2">
-                <label class="form-label">Phone Number</label>
+                <label class="form-label" style="width: 100%;">Phone Number</label>
                 <input type="tel" class="form-control" id="phoneNumberContactPerson" name="phoneNumberContactPerson"
                        th:field="*{contactPerson.phoneNumberContactPerson}">
                 <span th:if="${#fields.hasErrors('contactPerson.phoneNumberContactPerson')}"
@@ -175,21 +174,20 @@
         // For dropdown list of country calling codes
         // https://github.com/jackocnr/intl-tel-input
         // https://www.twilio.com/blog/international-phone-number-input-html-javascript
-        var inputBusinessPhoneNumber = document.querySelector("#businessPhoneNumber");
+        const inputBusinessPhoneNumber = document.querySelector("#businessPhoneNumber");
 
-        var inputPhoneNumberContactPerson = document.querySelector("#phoneNumberContactPerson");
+        const inputPhoneNumberContactPerson = document.querySelector("#phoneNumberContactPerson");
 
-        var phoneInputBusinessPhoneNumber = window.intlTelInput(inputBusinessPhoneNumber, ({
+        const phoneInputBusinessPhoneNumber = window.intlTelInput(inputBusinessPhoneNumber, ({
             // whether or not to allow the dropdown
             allowDropdown: true,
             // What country is shown first to the user
             initialCountry: 'fi',
             // Enables different features including the method getNumber
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/utils.js",
-
         }));
 
-        var phoneInputPhoneNumberContactPerson = window.intlTelInput(inputPhoneNumberContactPerson, ({
+        const phoneInputPhoneNumberContactPerson = window.intlTelInput(inputPhoneNumberContactPerson, ({
             // whether or not to allow the dropdown
             allowDropdown: true,
             // What country is shown first to the user
@@ -200,13 +198,13 @@
 
         // How to get the international format number and store it in the input field
         // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
-        var handleChangeOfBusinessPhoneNumber = function () {
+        const handleChangeOfBusinessPhoneNumber = function () {
             document.getElementById("businessPhoneNumber").value = phoneInputBusinessPhoneNumber.getNumber();
         };
 
         // How to get the international format number and store it in the input field
         // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
-        var handleChangeOfPhoneNumberContactPerson = function () {
+        const handleChangeOfPhoneNumberContactPerson = function () {
             document.getElementById("phoneNumberContactPerson").value = phoneInputPhoneNumberContactPerson.getNumber();
         };
 
@@ -218,6 +216,16 @@
         inputPhoneNumberContactPerson.addEventListener('change', handleChangeOfPhoneNumberContactPerson);
         inputPhoneNumberContactPerson.addEventListener('keyup', handleChangeOfPhoneNumberContactPerson);
     });
+
+
+
+    function addRow() {
+        document.querySelector('#addPersonButton').insertAdjacentHTML("beforebegin",
+            '<input type="text" th:field="*{contactPerson.nameContactPerson}">')
+
+    }
+
+
 
 
 </script>
