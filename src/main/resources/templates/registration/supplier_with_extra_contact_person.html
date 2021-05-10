@@ -5,60 +5,21 @@
     <title>Supplier Registration With Extra Contact Person</title>
 </head>
 <style>
-    h6{padding-top: 10px}
-    span{padding-top: 5px; padding-bottom: 5px;}
+    h6{padding-top: 10px; padding-left: 25%}
+    span{padding-bottom: 5px; padding-left: 25%}
+    button{margin-top: 15px; margin-bottom: 15px}
+    h3{padding-left: 25%; margin-top: 10px; margin-bottom: 10px}
 </style>
+
 <body>
 
 <div class="container-fluid page">
-    <div class="col-12 d-flex justify-content-center">
-            <h1>Supplier Registration</h1>
-    </div>
+    <header th:replace="fragments/navbar :: navbarElement"></header>
 
-    <h6>Supplier Name: </h6>
-    <span th:text="${supplier.supplierName}"></span>
-
-    <h6>Product Category: </h6>
-    <div th:each="p: ${supplier.productCategorySet}">
-        <span th:text="${p.productCategoryName}"></span>
-    </div>
-
-    <h6>Business Phone Number: </h6>
-    <span th:text="${contactInformation.businessPhoneNumber}"></span>
-
-    <h6>Business Email: </h6>
-    <span th:text="${contactInformation.businessEmail}"></span>
-
-    <h6>Webpage: </h6>
-    <span th:text="${contactInformation.webpage}"></span>
-
-    <h6>Street Name: </h6>
-    <span th:text="${address.streetName}"></span>
-
-    <h6>Building Information: </h6>
-    <span th:text="${address.buildingInformation}"></span>
-
-    <h6>Postal Code: </h6>
-    <span th:text="${address.postalCode}"></span>
-
-    <h6>Postal District: </h6>
-    <span th:text="${address.postalDistrict}"></span>
-
-    <h6>Country: </h6>
-    <span th:text="${country.countryName}"></span>
-
-    <h6>Contact Person Name: </h6>
-    <span th:text="${contactPersonAlready.nameContactPerson}"></span>
-
-    <h6>Contact Person Email: </h6>
-    <span th:text="${contactPersonAlready.emailContactPerson}"></span>
-
-    <h6>Contact Person Phone Number: </h6>
-    <span th:text="${contactPersonAlready.phoneNumberContactPerson}"></span>
 
     <form action="#"  th:action="@{'/registration/register_extra_person/' + ${supplier.supplierId}}"  class="row g-2 justify-content-center"  method="post">
 
-        <div class="col-12 d-flex justify-content-center">
+        <div class="col-12">
             <h3>Extra Contact Person</h3>
         </div>
 
@@ -70,24 +31,23 @@
                   th:errors="*{contactPerson.nameContactPerson}"></span>
         </div>
         <div class="row g-2 justify-content-center">
-            <div class="col-xs-12 col-sm-12 col-lg-2">
+            <div class="col-sm-6">
                 <label class="form-label" style="width: 100%;">Phone Number</label>
                 <input type="tel" class="form-control" id="phoneNumberContactPerson" name="phoneNumberContactPerson"
                        th:field="*{contactPerson.phoneNumberContactPerson}">
                 <span th:if="${#fields.hasErrors('contactPerson.phoneNumberContactPerson')}"
                       th:errors="*{contactPerson.phoneNumberContactPerson}"></span>
             </div>
-
-            <div class="col-sm-4">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" placeholder="Contact Person's Email"
-                       th:field="*{contactPerson.emailContactPerson}">
-                <span th:if="${#fields.hasErrors('contactPerson.emailContactPerson')}"
-                      th:errors="*{contactPerson.emailContactPerson}"></span>
-            </div>
+        </div>
+        <div class="col-sm-6">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="Contact Person's Email"
+                   th:field="*{contactPerson.emailContactPerson}">
+            <span th:if="${#fields.hasErrors('contactPerson.emailContactPerson')}"
+                  th:errors="*{contactPerson.emailContactPerson}"></span>
         </div>
 
-        <div class="col-12 d-flex justify-content-center">
+        <div class="col-12 d-flex justify-content-end" style="padding-right: 25%">
             <button type="submit" class="btn btn-primary">Register supplier</button>
         </div>
 

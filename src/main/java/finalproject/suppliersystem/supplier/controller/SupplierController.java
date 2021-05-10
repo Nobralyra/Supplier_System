@@ -152,6 +152,7 @@ public class SupplierController
      * This is used, when the user wants to register two contact persons
      * It stores the supplier and leads to the other html-page, where
      * the user can register an extra contact person
+     * TODO: one PostMapping that handles to URL due to repeating code
      *
      * @param supplier
      * @param bindingResultSupplier
