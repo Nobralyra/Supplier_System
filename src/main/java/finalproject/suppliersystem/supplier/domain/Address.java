@@ -13,8 +13,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Address
-{
+public class Address {
     /**
      * Address Id is the same as Supplier's id because there is used @MapsId in the @OneToOne relationship
      * between ContactInformation and Supplier, and Address has an @OneToOne with ContactInformation

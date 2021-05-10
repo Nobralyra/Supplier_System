@@ -105,19 +105,8 @@
         // For dropdown list of country calling codes
         // https://github.com/jackocnr/intl-tel-input
         // https://www.twilio.com/blog/international-phone-number-input-html-javascript
-        var inputBusinessPhoneNumber = document.querySelector("#businessPhoneNumber");
 
         var inputPhoneNumberContactPerson = document.querySelector("#phoneNumberContactPerson");
-
-        var phoneInputBusinessPhoneNumber = window.intlTelInput(inputBusinessPhoneNumber, ({
-            // whether or not to allow the dropdown
-            allowDropdown: true,
-            // What country is shown first to the user
-            initialCountry: 'fi',
-            // Enables different features including the method getNumber
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/utils.js",
-
-        }));
 
         var phoneInputPhoneNumberContactPerson = window.intlTelInput(inputPhoneNumberContactPerson, ({
             // whether or not to allow the dropdown
@@ -130,23 +119,14 @@
 
         // How to get the international format number and store it in the input field
         // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
-        var handleChangeOfBusinessPhoneNumber = function () {
-            document.getElementById("businessPhoneNumber").value = phoneInputBusinessPhoneNumber.getNumber();
-        };
-
-        // How to get the international format number and store it in the input field
-        // https://intl-tel-input.com/node_modules/intl-tel-input/examples/gen/national-mode.html
         var handleChangeOfPhoneNumberContactPerson = function () {
             document.getElementById("phoneNumberContactPerson").value = phoneInputPhoneNumberContactPerson.getNumber();
         };
 
         // listen to "keyup", but also "change" to update when the user selects a country
-        inputBusinessPhoneNumber.addEventListener('change', handleChangeOfBusinessPhoneNumber);
-        inputBusinessPhoneNumber.addEventListener('keyup', handleChangeOfBusinessPhoneNumber);
-
-        // listen to "keyup", but also "change" to update when the user selects a country
         inputPhoneNumberContactPerson.addEventListener('change', handleChangeOfPhoneNumberContactPerson);
         inputPhoneNumberContactPerson.addEventListener('keyup', handleChangeOfPhoneNumberContactPerson);
+
     });
 
 

@@ -1,21 +1,17 @@
 package finalproject.suppliersystem.supplier.domain;
 
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
-import java.util.Collection;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ContactInformation
-{
+public class ContactInformation {
     /**
      * Contact Information Id is the same as Supplier's id because there is used @MapsId in the @OneToOne relationship
      * between ContactInformation and Supplier
