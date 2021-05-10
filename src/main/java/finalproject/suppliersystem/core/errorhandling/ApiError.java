@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.core;
+package finalproject.suppliersystem.core.errorhandling;
 
 import lombok.Getter;
 import lombok.Setter;

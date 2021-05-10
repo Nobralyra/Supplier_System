@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.core;
+package finalproject.suppliersystem.core.errorhandling;
 
 import org.hibernate.exception.SQLGrammarException;
 import org.springframework.core.NestedExceptionUtils;

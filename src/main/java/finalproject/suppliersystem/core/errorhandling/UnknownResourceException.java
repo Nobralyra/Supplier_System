@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.core;
+package finalproject.suppliersystem.core.errorhandling;
 
 /**
  * Custom Exception to throw
@@ -6,7 +6,11 @@ package finalproject.suppliersystem.core;
  */
 public class UnknownResourceException extends Exception
 {
-    private static final long serialVersionUID = 3613978896775863909L;
+    /**
+     * The serialVersionUID is used to verify that the de-serialized
+     * https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/io/Serializable.html
+     */
+    private static final long serialVersionUID = 100L;
 
     private String message;
 

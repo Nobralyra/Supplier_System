@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.core;
+package finalproject.suppliersystem.core.errorhandling;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
