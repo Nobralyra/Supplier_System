@@ -115,7 +115,7 @@ public class SupplierController
 
         if (supplierService.existAlready(supplier, address, country))
         {
-            String alreadyCreated = "Supplier is already registred";
+            String alreadyCreated = "Supplier is already registered";
             model.addAttribute("productCategory", productCategoryService.findAll());
             model.addAttribute("alreadyCreated", alreadyCreated);
             return "/registration/supplier";
@@ -192,7 +192,7 @@ public class SupplierController
 
         if (supplierService.existAlready(supplier, address, country))
         {
-            String alreadyCreated = "Supplier is already registred";
+            String alreadyCreated = "Supplier is already registered";
             model.addAttribute("productCategory", productCategoryService.findAll());
             model.addAttribute("alreadyCreated", alreadyCreated);
             return "/registration/supplier";
