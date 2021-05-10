@@ -1,2 +1,47 @@
-package finalproject.suppliersystem.core.auditing;public class Audition {
+package finalproject.suppliersystem.core.auditing;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
+import java.util.Date;
+
+/**
+ * Guides how to setup auditing with JPA in the project:
+ * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#auditing
+ * http://progressivecoder.com/spring-boot-jpa-auditing-example-with-auditoraware-interface/
+ * https://rashidi.github.io/spring-boot-data-audit/
+ * https://devkonline.com/tutorials/content/jpa-auditing-springboot
+ *
+ * Is taken from our last project: PADC_project_Commander_Con
+ * https://github.com/Nobralyra/PADC_project_Commander_Con
+ */
+@Getter
+@Setter
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+public class Audition
+{
+    @CreatedBy
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private String createdBy;
+
+    @CreatedDate
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private Date createdDate;
+
+    @LastModifiedBy
+    @Column(name = "last_modified_by")
+    private String  lastModifiedBy;
+
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    private Date lastModifiedDate;
 }
