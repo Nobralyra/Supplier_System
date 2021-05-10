@@ -16,50 +16,6 @@
 <div class="container-fluid page">
     <header th:replace="fragments/navbar :: navbarElement"></header>
 
-    <div class="col-12 d-flex justify-content-center" >
-            <h1>Supplier Registration With Extra Contact Person</h1>
-    </div>
-
-    <h6 class="col-6 d-flex justify-content-start">Supplier Name: </h6>
-    <span class="col-6 d-flex justify-content-start" th:text="${supplier.supplierName}"></span>
-
-    <h6 class="col-6 d-flex justify-content-start">Product Category: </h6>
-    <div th:each="p: ${supplier.productCategorySet}">
-        <span class="col-6 d-flex justify-content-start" th:text="${p.productCategoryName}"></span>
-    </div>
-
-    <h6 class="col-6 d-flex justify-content-start">Business Phone Number: </h6>
-    <span class="col-6 d-flex justify-content-start" th:text="${contactInformation.businessPhoneNumber}"></span>
-
-    <h6>Business Email: </h6>
-    <span th:text="${contactInformation.businessEmail}"></span>
-
-    <h6>Webpage: </h6>
-    <span th:text="${contactInformation.webpage}"></span>
-
-    <h6>Street Name: </h6>
-    <span th:text="${address.streetName}"></span>
-
-    <h6>Building Information: </h6>
-    <span th:text="${address.buildingInformation}"></span>
-
-    <h6>Postal Code: </h6>
-    <span th:text="${address.postalCode}"></span>
-
-    <h6>Postal District: </h6>
-    <span th:text="${address.postalDistrict}"></span>
-
-    <h6>Country: </h6>
-    <span th:text="${country.countryName}"></span>
-
-    <h6>Contact Person Name: </h6>
-    <span th:text="${contactPersonAlready.nameContactPerson}"></span>
-
-    <h6>Contact Person Email: </h6>
-    <span th:text="${contactPersonAlready.emailContactPerson}"></span>
-
-    <h6>Contact Person Phone Number: </h6>
-    <span th:text="${contactPersonAlready.phoneNumberContactPerson}"></span>
 
     <form action="#"  th:action="@{'/registration/register_extra_person/' + ${supplier.supplierId}}"  class="row g-2 justify-content-center"  method="post">
 
