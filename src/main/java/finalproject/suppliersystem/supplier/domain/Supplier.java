@@ -1,5 +1,6 @@
 package finalproject.suppliersystem.supplier.domain;
 
+import finalproject.suppliersystem.core.auditing.Audition;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,7 +24,8 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Supplier {
+public class Supplier extends Audition
+{
     @Id
     @Column(length = 5)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "my_generator")

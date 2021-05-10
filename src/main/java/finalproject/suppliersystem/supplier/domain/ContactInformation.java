@@ -1,5 +1,6 @@
 package finalproject.suppliersystem.supplier.domain;
 
+import finalproject.suppliersystem.core.auditing.Audition;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
@@ -11,7 +12,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ContactInformation {
+public class ContactInformation extends Audition
+{
     /**
      * Contact Information Id is the same as Supplier's id because there is used @MapsId in the @OneToOne relationship
      * between ContactInformation and Supplier

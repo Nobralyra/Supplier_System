@@ -1,5 +1,6 @@
 package finalproject.suppliersystem.supplier.domain;
 
+import finalproject.suppliersystem.core.auditing.Audition;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ContactPerson {
+public class ContactPerson extends Audition
+{
     /**
      * ContactPerson has to have it's one id, because the supplier_id is unique,
      * but we need to be able to store two contact persons. So the supplier_id can't be PK in this table.

@@ -1,5 +1,6 @@
 package finalproject.suppliersystem.supplier.domain;
 
+import finalproject.suppliersystem.core.auditing.Audition;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,8 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Country {
+public class Country extends Audition
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long countryId;
