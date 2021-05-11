@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -78,6 +81,10 @@ public class SupplierController
      * Though, ProductCategories are not created in this connection, but the user
      * only chooses one og several of them. So they are not validated here.
      *
+     * This PostMapping handles two url with HttpServletRequest, so it returns different
+     * HTML-pages depending the path.
+     *
+     * @param request
      * @param supplier
      * @param contactInformation
      * @param address
@@ -90,8 +97,8 @@ public class SupplierController
      * @return
      */
 
-    @PostMapping("/registration/supplier")
-    public String registerSupplier(@Valid Supplier supplier,
+    @PostMapping(value={"/registration/supplier", "/registration/supplier_with_extra_contact_person"})
+    public String registerSupplier(HttpServletRequest request, @Valid Supplier supplier,
                                    BindingResult bindingResultSupplier,
                                    @Valid ContactInformation contactInformation,
                                    BindingResult bindingResultContactInformation,
@@ -135,7 +142,23 @@ public class SupplierController
         supplierService.save(supplier);
 
         Long supplierId = supplier.getSupplierId();
-        return "redirect:/registration/supplier_confirmation/" + supplierId;
+
+        String path = "";
+        try {
+            URL url = new URL(request.getRequestURL().toString());
+            path = url.getPath();
+        }catch (MalformedURLException ma){
+            System.out.println(ma);
+        }
+
+        if (path.equals("/registration/supplier")) {
+            return "redirect:/registration/supplier_confirmation/" + supplierId;
+
+        } else if (path.equals("/registration/supplier_with_extra_contact_person")) {
+            return "redirect:/registration/supplier_with_extra_contact_person/" + supplierId;
+        }
+        else return "login";
+
     }
 
     @GetMapping("/registration/supplier_confirmation/{supplierId}")
@@ -145,75 +168,6 @@ public class SupplierController
         Long supplierNumber = supplierService.findById(supplierId).getSupplierId();
         model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registred.");
         return "/registration/supplier_confirmation";
-    }
-
-
-    /**
-     * This is used, when the user wants to register two contact persons
-     * It stores the supplier and leads to the other html-page, where
-     * the user can register an extra contact person
-     * TODO: one PostMapping that handles to URL due to repeating code
-     *
-     * @param supplier
-     * @param bindingResultSupplier
-     * @param contactInformation
-     * @param bindingResultContactInformation
-     * @param address
-     * @param bindingResultAddress
-     * @param contactPerson
-     * @param bindingResultContactPerson
-     * @param country
-     * @param bindingResultCountry
-     * @param model
-     * @return
-     */
-
-    @PostMapping("/registration/supplier_with_extra_contact_person")
-    public String registerSupplierWithExtraContactperson(@Valid Supplier supplier,
-                                                         BindingResult bindingResultSupplier,
-                                                         @Valid ContactInformation contactInformation,
-                                                         BindingResult bindingResultContactInformation,
-                                                         @Valid Address address,
-                                                         BindingResult bindingResultAddress,
-                                                         @Valid ContactPerson contactPerson,
-                                                         BindingResult bindingResultContactPerson,
-                                                         @Valid Country country,
-                                                         BindingResult bindingResultCountry,
-                                                         Model model)
-    {
-
-        if(supplierService.hasErrors(bindingResultSupplier,
-                bindingResultContactInformation,
-                bindingResultAddress,
-                bindingResultContactPerson,
-                bindingResultCountry, model)){
-            model.addAttribute("productCategory", productCategoryService.findAll());
-            return "/registration/supplier";
-        }
-
-        if (supplierService.existAlready(supplier, address, country))
-        {
-            String alreadyCreated = "Supplier is already registered";
-            model.addAttribute("productCategory", productCategoryService.findAll());
-            model.addAttribute("alreadyCreated", alreadyCreated);
-            return "/registration/supplier";
-        }
-
-        contactInformation.setSupplier(supplier);
-        address.setContactInformation(contactInformation);
-
-        address.setCountry(countryService.checkUniqueCountryName(country));
-        contactPerson.setContactInformation(contactInformation);
-
-        countryService.save(country);
-        addressService.save(address);
-        contactPersonService.save(contactPerson);
-        contactInformationService.save(contactInformation);
-
-        supplierService.save(supplier);
-
-        Long supplierId = supplier.getSupplierId();
-        return "redirect:/registration/supplier_with_extra_contact_person/" + supplierId;
     }
 
 
