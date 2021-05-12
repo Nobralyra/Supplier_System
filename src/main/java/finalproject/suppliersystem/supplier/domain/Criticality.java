@@ -9,6 +9,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 
 /**
@@ -39,7 +40,7 @@ public class Criticality extends Audition {
     private int issuesConcerningCooperation;
 
     @Column(length = 6)
-    @NotBlank(message = "Choose a responsibility level")
+    @NotNull(message = "Choose a responsibility level")
     private CorporateSocialResponsibility corporateSocialResponsibility;
 
     @Column(length = 3)

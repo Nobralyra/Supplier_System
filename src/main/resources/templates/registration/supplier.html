@@ -45,6 +45,44 @@
         </div>
 
 
+
+        <div class="col-12">
+            <h3>Volume <span style="color: red">*</span></h3>
+        </div>
+
+        <div class="col-sm-6">
+            <input type="number" class="form-control" placeholder="Volume"
+                   th:field="*{criticality.volume}">
+            <span th:if="${#fields.hasErrors('criticality.volume')}" th:errors="*{criticality.volume}"></span>
+        </div>
+
+        <div class="col-sm-6">
+            <input type="number" class="form-control" placeholder="issuesConcerningCooperation"
+                   th:field="*{criticality.issuesConcerningCooperation}">
+            <span th:if="${#fields.hasErrors('criticality.issuesConcerningCooperation')}" th:errors="*{criticality.issuesConcerningCooperation}"></span>
+        </div>
+
+
+
+
+        <div class="col-sm-6">
+            <select class="form-select" id="corporateSocialResponsibility" th:field="*{criticality.corporateSocialResponsibility}">
+                <option th:each="responsibility: ${T(finalproject.suppliersystem.core.enums.CorporateSocialResponsibility).values()}"
+                        th:value="${responsibility}"
+                        th:text="${responsibility}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('criticality.corporateSocialResponsibility')}"
+                  th:errors="*{criticality.corporateSocialResponsibility}"></span>
+        </div>
+
+        <div class="col-sm-6">
+            <input type="number" class="form-control" placeholder="Availibility Issues"
+                   th:field="*{criticality.availibilityIssues}">
+            <span th:if="${#fields.hasErrors('criticality.availibilityIssues')}" th:errors="*{criticality.availibilityIssues}"></span>
+        </div>
+
+
+
         <div class="col-12">
             <h3>Contact information</h3>
         </div>

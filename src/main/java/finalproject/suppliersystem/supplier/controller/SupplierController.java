@@ -1,5 +1,6 @@
 package finalproject.suppliersystem.supplier.controller;
 
+import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
 import finalproject.suppliersystem.supplier.domain.*;
 import finalproject.suppliersystem.supplier.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Controller
 @Transactional
@@ -25,6 +23,7 @@ public class SupplierController
 {
 
     private final SupplierService supplierService;
+    private final CriticalityService criticalityService;
     private final AddressService addressService;
     private final ContactInformationService contactInformationService;
     private final ContactPersonService contactPersonService;
@@ -33,12 +32,13 @@ public class SupplierController
 
     @Autowired
     public SupplierController(SupplierService supplierService,
-                              AddressService addressService,
+                              CriticalityService criticalityService, AddressService addressService,
                               ContactInformationService contactInformationService,
                               ContactPersonService contactPersonService,
                               CountryService countryService, ProductCategoryService productCategoryService)
     {
         this.supplierService = supplierService;
+        this.criticalityService = criticalityService;
         this.addressService = addressService;
         this.contactInformationService = contactInformationService;
         this.contactPersonService = contactPersonService;
@@ -51,6 +51,7 @@ public class SupplierController
      * registration/supplier-site within the model
      *
      * @param supplier
+     * @param criticality
      * @param contactInformation
      * @param address
      * @param contactPerson
@@ -59,13 +60,17 @@ public class SupplierController
      */
     @GetMapping("/registration/supplier")
     public String showRegisterSupplier(Supplier supplier,
+                                       Criticality criticality,
                                        ContactInformation contactInformation,
                                        Address address,
                                        ContactPerson contactPerson,
                                        Country country,
                                        Model model)
     {
+
+
         model.addAttribute("supplier", supplier);
+        model.addAttribute("criticality", criticality);
         model.addAttribute("contactInformation", contactInformation);
         model.addAttribute("address", address);
         model.addAttribute("contactPerson", contactPerson);
@@ -86,6 +91,7 @@ public class SupplierController
      *
      * @param request
      * @param supplier
+     * @param criticality
      * @param contactInformation
      * @param address
      * @param contactPerson
@@ -100,6 +106,8 @@ public class SupplierController
     @PostMapping(value={"/registration/supplier", "/registration/supplier_with_extra_contact_person"})
     public String registerSupplier(HttpServletRequest request, @Valid Supplier supplier,
                                    BindingResult bindingResultSupplier,
+                                   @Valid Criticality criticality,
+                                   BindingResult bindingResultCriticality,
                                    @Valid ContactInformation contactInformation,
                                    BindingResult bindingResultContactInformation,
                                    @Valid Address address,
@@ -112,6 +120,7 @@ public class SupplierController
     {
 
         if(supplierService.hasErrors(bindingResultSupplier,
+                bindingResultCriticality,
                 bindingResultContactInformation,
                 bindingResultAddress,
                 bindingResultContactPerson,
@@ -134,10 +143,15 @@ public class SupplierController
         address.setCountry(countryService.checkUniqueCountryName(country));
         contactPerson.setContactInformation(contactInformation);
 
+        System.out.println("kommer jeg her ");
+        criticality.setSupplier(supplier);
+
         countryService.save(country);
         addressService.save(address);
         contactPersonService.save(contactPerson);
         contactInformationService.save(contactInformation);
+
+        criticalityService.save(criticality);
 
         supplierService.save(supplier);
 
@@ -186,6 +200,7 @@ public class SupplierController
                                           ContactPerson contactPerson, Model model){
 
         Supplier supplier = supplierService.findById(supplierId);
+        Criticality criticality = criticalityService.findById(supplierId);
         ContactInformation contactInformation= contactInformationService.findById(supplierId);
         Address address = addressService.findById(supplierId);
         ContactPerson contactPersonAlready = contactPersonService.findBySupplierId(supplierId);
@@ -193,6 +208,7 @@ public class SupplierController
         Country country = countryService.findById(countryId);
 
         model.addAttribute("supplier", supplier);
+        model.addAttribute("criticality", criticality);
         model.addAttribute("contactInformation", contactInformation);
         model.addAttribute("address", address);
         model.addAttribute("country", country);

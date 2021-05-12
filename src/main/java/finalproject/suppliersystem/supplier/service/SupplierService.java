@@ -45,18 +45,21 @@ public class SupplierService implements IService<Supplier> {
      * @return boolean
      */
     public boolean hasErrors(BindingResult bindingResultSupplier,
+                             BindingResult bindingResultCriticality,
                              BindingResult bindingResultContactInformation,
                              BindingResult bindingResultAddress,
                              BindingResult bindingResultContactPerson,
                              BindingResult bindingResultCountry, Model model){
 
         if(bindingResultSupplier.hasErrors()
+                || bindingResultCriticality.hasErrors()
                 || bindingResultContactInformation.hasErrors()
                 || bindingResultAddress.hasErrors()
                 || bindingResultContactPerson.hasErrors()
                 || bindingResultCountry.hasErrors()){
 
             model.addAttribute("bindingResultSupplier", bindingResultSupplier);
+            model.addAttribute("bindingResultCriticality", bindingResultCriticality);
             model.addAttribute("bindingResultContactInformation", bindingResultContactInformation);
             model.addAttribute("bindingResultAddress", bindingResultAddress);
             model.addAttribute("bindingResultContactPerson", bindingResultContactPerson);
