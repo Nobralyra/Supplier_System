@@ -426,7 +426,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler
     @NonNull
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
-        // Laves om til et rigtig if statement
-        return rootCause != null ? rootCause : t;
+        // Old way: return rootCause != null ? rootCause : t
+
+        if (rootCause == null)
+        {
+            return t;
+        }
+        return rootCause;
     }
 }
