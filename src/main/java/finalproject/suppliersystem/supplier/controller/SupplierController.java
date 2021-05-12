@@ -143,7 +143,6 @@ public class SupplierController
         address.setCountry(countryService.checkUniqueCountryName(country));
         contactPerson.setContactInformation(contactInformation);
 
-        System.out.println("kommer jeg her ");
         criticality.setSupplier(supplier);
 
         countryService.save(country);
