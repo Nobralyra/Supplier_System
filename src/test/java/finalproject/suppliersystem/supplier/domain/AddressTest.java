@@ -1,11 +1,8 @@
 package finalproject.suppliersystem.supplier.domain;
 
-import finalproject.suppliersystem.supplier.repository.IAddressRepository;
-import finalproject.suppliersystem.supplier.service.AddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
