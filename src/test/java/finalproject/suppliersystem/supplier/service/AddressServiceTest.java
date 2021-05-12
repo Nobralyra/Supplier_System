@@ -19,22 +19,21 @@ import static org.mockito.Mockito.*;
 /**
  * Assert-methods:
  * https://www.guru99.com/junit-assert.html#1
- *
+ * <p>
  * Spring-guide til getting started with tests:
  * https://spring.io/guides/gs/testing-web/
- *
+ * <p>
  * About Mockito-library, that includes for instance @Mock-annotation:
  * https://www.baeldung.com/mockito-annotations
- *
+ * <p>
  * ExtendWith-annotation has replaced RunWith-annotation.
  * It enables annotations from Mockito-library:
  * https://www.baeldung.com/junit-5-runwith
- *
  */
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class AddressServiceTest {
+public class AddressServiceTest
+{
 
     private AddressService addressService;
 
@@ -49,12 +48,13 @@ public class AddressServiceTest {
     @Mock
     IAddressRepository iAddressRepository;
 
-    /*
-      We need to create an instance of AddressService for testing,
-      so we can interact with this mock object.
+    /**
+     * We need to create an instance of AddressService for testing,
+     * so we can interact with this mock object.
      */
     @BeforeEach
-    void setUp(){
+    void setUp()
+    {
         addressService = new AddressService(iAddressRepository);
     }
 
@@ -62,13 +62,14 @@ public class AddressServiceTest {
      * This tests, that context is creating an addressService.
      */
     @Test
-    public void contextLoads() {
+    public void contextLoads()
+    {
         assertNotNull(addressService);
     }
 
     @Test
-    void findAll() {
-
+    void findAll()
+    {
         //We create a list with two addresses to testing.
         Address address1 = new Address();
         Address address2 = new Address();
@@ -93,7 +94,8 @@ public class AddressServiceTest {
 
 
     @Test
-    void save() {
+    void save()
+    {
         // an address to testing
         Address address = new Address();
         address.setSupplierId(5L);
@@ -117,8 +119,8 @@ public class AddressServiceTest {
     }
 
     @Test
-    void findById() {
-
+    void findById()
+    {
         // an address1 to testing
         Address address1 = new Address();
         address1.setSupplierId(5L);
@@ -133,20 +135,19 @@ public class AddressServiceTest {
              - is supplierId the same?
          */
         Address address2 = addressService.findById(5L);
-        assertEquals(address2, address2, "It is the same object" );
+        assertEquals(address2, address2, "It is the same object");
         assertEquals(address1.getSupplierId(), address2.getSupplierId(), "The same id");
 
         // verifies, that findById() in Repository is called and only once
         verify(iAddressRepository, times(1)).findById(5L);
-
     }
 
     /**
      * https://stackoverflow.com/questions/53734415/junit-for-void-delete-method
      */
     @Test
-    void deleteById() {
-
+    void deleteById()
+    {
         // an address1 to testing
         Address address = new Address();
         address.setSupplierId(5L);
@@ -155,7 +156,6 @@ public class AddressServiceTest {
 
         //verifies, that deleteById() in Repository is called and only once
         verify(iAddressRepository, times(1)).deleteById(any());
-
     }
 }
 
