@@ -17,19 +17,23 @@ public class AlgorithmSupplierRiskLevelService
      * Rarely (0-5 annually)
      * Sometimes (6-10 annually)
      * Often (10+ annually)
+     *
      * @param convertCategory int
      * @return int
      */
     private int convertIssuesConcerningCooperationAndAvailabilityIssues(int convertCategory)
     {
-        if(convertCategory < 6)
+        // Rarely
+        if (convertCategory < 6)
         {
             return 1;
         }
-        else if(convertCategory < 11)
+        // Sometimes
+        else if (convertCategory < 11)
         {
             return 2;
         }
+        // Often
         else
         {
             return 3;
@@ -41,32 +45,102 @@ public class AlgorithmSupplierRiskLevelService
      * Low
      * Medium
      * High
+     *
      * @param convertCategory String
      * @return int
      */
     private int convertCorporateSocialResponsibility(String convertCategory)
     {
-        if(convertCategory.equals("CORPORATE_SOCIAL_RESPONSIBILITY_LOW"))
+        // Low
+        if (convertCategory.equals("CORPORATE_SOCIAL_RESPONSIBILITY_LOW"))
         {
             return 2;
         }
-        else if(convertCategory.equals("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM"))
+        // Medium
+        else if (convertCategory.equals("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM"))
         {
             return 4;
         }
+        // High
         else
         {
             return 6;
         }
     }
 
+    /**
+     * TODO: Check if sum of the Risk Level is better to use (is 18 calculations), then to check each number of each value
+     * TODO: Check if a combination of those two a better
+     */
+    /**
+     * CorporateSocialResponsibility:
+     * 2 = Low
+     * 4 = Medium
+     * 6 = High
+     *
+     * Issues Concerning Cooperation and Availability Issues:
+     * 1 = Low
+     * 2 = Medium
+     * 3 = High
+     *
+     * Link to where matrix is shown: https://docs.google.com/spreadsheets/d/1WUrAZfCbLKgNF_cWvrtBIctzHUmx0n9QSf9eGE1Mg0s/edit?usp=sharing
+     *
+     * @param corporateSocialResponsibility CorporateSocialResponsibility
+     * @param issuesConcerningCooperation int
+     * @param availabilityIssues int
+     * @return String
+     */
     public String calculateSupplierRiskLevel(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
         int convertedCorporateSocialResponsibility = convertCorporateSocialResponsibility(corporateSocialResponsibility.name());
         int convertedIssuesConcerningCooperation = convertIssuesConcerningCooperationAndAvailabilityIssues(issuesConcerningCooperation);
         int convertedAvailabilityIssues = convertIssuesConcerningCooperationAndAvailabilityIssues(availabilityIssues);
 
-        if (convertedAvailabilityIssues = 6)
+        // Risk Level can never be lower level than what level Corporate Social Responsibility is
+        // Is removing 7 out of the 27 possibilities
+        if (convertedCorporateSocialResponsibility == 6)
+        {
+            return "High";
+        }
 
+        // First call summationSupplierRiskLevel after convertedCorporateSocialResponsibility has been check of being 6,
+        // so we do not use unnecessary resources and time
+        int sum = summationSupplierRiskLevel(convertedCorporateSocialResponsibility, convertedIssuesConcerningCooperation, convertedAvailabilityIssues);
+
+        // There is one High that we de not catch before, but can be check with sum
+        if (sum == 10)
+        {
+            return "High";
+        }
+        // If sum is bigger than 6 and smaller than 10 (does not need to check that, because they would had been returned already
+        if (sum > 6)
+        {
+            return "Medium";
+        }
+        // Has one possibility where sum is 6, but the correct return is Low, but it can be checked if convertedIssuesConcerningCooperation and convertedAvailabilityIssues is 2
+        if (convertedIssuesConcerningCooperation == 2 && convertedAvailabilityIssues == 2)
+        {
+            return "Low";
+        }
+        // The rest of where sum is 6 should return Medidum
+        if (sum == 6)
+        {
+            return "Medium";
+        }
+
+        // The rest possibilities that did not match any of the if statements is always a Low
+        return "Low";
+    }
+
+    /**
+     * Calulates the sum of convertedCorporateSocialResponsibility, convertedIssuesConcerningCooperation and convertedAvailabilityIssues
+     * @param convertedCorporateSocialResponsibility int
+     * @param convertedIssuesConcerningCooperation int
+     * @param convertedAvailabilityIssues int
+     * @return int
+     */
+    private int summationSupplierRiskLevel(int convertedCorporateSocialResponsibility, int convertedIssuesConcerningCooperation, int convertedAvailabilityIssues)
+    {
+        return convertedCorporateSocialResponsibility + convertedIssuesConcerningCooperation + convertedAvailabilityIssues;
     }
 }
