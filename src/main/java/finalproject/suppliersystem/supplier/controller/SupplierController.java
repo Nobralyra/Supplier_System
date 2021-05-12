@@ -143,6 +143,8 @@ public class SupplierController
 
         Long supplierId = supplier.getSupplierId();
 
+        //https://stackoverflow.com/questions/52243656/spring-requestmapping-multiple-paths-identify-which-one-is-being-called/52243753
+
         String path = "";
         try {
             URL url = new URL(request.getRequestURL().toString());
