@@ -29,7 +29,7 @@ public class Criticality extends Audition {
     @Id
     private Long supplierId;
 
-    @Column(length = 10)
+    @Column(length = 11)
     @NumberFormat(style= NumberFormat.Style.NUMBER)
     private Long volume;
 
