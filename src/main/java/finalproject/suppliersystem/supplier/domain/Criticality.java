@@ -34,7 +34,7 @@ public class Criticality extends Audition {
     private Long volume;
 
     @Column(length = 10)
-    @PositiveOrZero(message = "Issues to be a positive number")
+    @PositiveOrZero(message = "Issues has to be zero or a positive number")
     @NumberFormat(style= NumberFormat.Style.NUMBER)
     private int issuesConcerningCooperation;
 
@@ -43,7 +43,7 @@ public class Criticality extends Audition {
     private CorporateSocialResponsibility corporateSocialResponsibility;
 
     @Column(length = 10)
-    @PositiveOrZero(message = "Issues has to be a positive number")
+    @PositiveOrZero(message = "Issues has to be zero or a positive number")
     @NumberFormat(style= NumberFormat.Style.NUMBER)
     private int availibilityIssues;
 
