@@ -18,8 +18,8 @@ public class AlgorithmSupplierRiskLevelService
      * Sometimes (6-10 annually)
      * Often (10+ annually)
      *
-     * @param convertCategory int
-     * @return int
+     * @param convertCategory what needs to be converted
+     * @return result of the conversion
      */
     private int convertIssuesConcerningCooperationAndAvailabilityIssues(int convertCategory)
     {
@@ -46,8 +46,8 @@ public class AlgorithmSupplierRiskLevelService
      * Medium
      * High
      *
-     * @param convertCategory String
-     * @return int
+     * @param convertCategory what needs to be converted
+     * @return result of the conversion
      */
     private int convertCorporateSocialResponsibility(String convertCategory)
     {
@@ -85,10 +85,10 @@ public class AlgorithmSupplierRiskLevelService
      *
      * Link to where matrix is shown: https://docs.google.com/spreadsheets/d/1WUrAZfCbLKgNF_cWvrtBIctzHUmx0n9QSf9eGE1Mg0s/edit?usp=sharing
      *
-     * @param corporateSocialResponsibility CorporateSocialResponsibility
-     * @param issuesConcerningCooperation int
-     * @param availabilityIssues int
-     * @return String
+     * @param corporateSocialResponsibility enum
+     * @param issuesConcerningCooperation number of occurred Issues Concerning Cooperation with the supplier
+     * @param availabilityIssues number of occurred Availability Issues with the supplier
+     * @return result of Supplier Risk Level
      */
     public String calculateSupplierRiskLevel(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
@@ -133,11 +133,11 @@ public class AlgorithmSupplierRiskLevelService
     }
 
     /**
-     * Calulates the sum of convertedCorporateSocialResponsibility, convertedIssuesConcerningCooperation and convertedAvailabilityIssues
-     * @param convertedCorporateSocialResponsibility int
-     * @param convertedIssuesConcerningCooperation int
-     * @param convertedAvailabilityIssues int
-     * @return int
+     * Calculates the sum of convertedCorporateSocialResponsibility, convertedIssuesConcerningCooperation and convertedAvailabilityIssues
+     * @param convertedCorporateSocialResponsibility converted number
+     * @param convertedIssuesConcerningCooperation converted number
+     * @param convertedAvailabilityIssues converted number
+     * @return sum of the total
      */
     private int summationSupplierRiskLevel(int convertedCorporateSocialResponsibility, int convertedIssuesConcerningCooperation, int convertedAvailabilityIssues)
     {

@@ -1,0 +1,2 @@
+package finalproject.suppliersystem.supplier.restapi.restcontroller;public class CalculaterOfSupplierRiskLevelRestApiController {
+}
