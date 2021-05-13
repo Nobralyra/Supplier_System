@@ -182,13 +182,16 @@
             </div>
         </div>
 
-        <div class="row g-2 justify-content-center">
-            <div class="col-sm-6">
-                <label class="form-label">Country <span style="color: red">*</span></label>
-                <input type="text" class="form-control" placeholder="Country"
-                       th:field="*{country.countryName}">
-                <span th:if="${#fields.hasErrors('country.countryName')}"
-                      th:errors="*{country.countryName}"></span>
+        <div class="row g-2 justify-content-start" style="padding-left: 25%">
+            <div class="col-sm-4">
+                <select class="form-select" id="countries" th:field="*{address.country}">
+                    <option th:each="country : ${countries}"
+                            th:value="${country.countryId}"
+                            th:text="${country.countryName}">
+                    </option>
+                </select>
+                <span th:if="${#fields.hasErrors('address.country')}"
+                      th:errors="*{address.country}"></span>
             </div>
         </div>
 
@@ -224,15 +227,11 @@
         <!-- buttons leads to different mappings in Controller depending which button the user clicks -->
 
         <div class="col-12 d-flex justify-content-start" style="padding-left: 25%">
-            <button type="submit" onclick=form.action='/registration/supplier_with_extra_contact_person'
-                    th:name="supplierButton" th:value="ekstraPerson" class="btn btn-primary">Add extra contact person
-            </button>
+            <button type="submit" onclick=form.action='/registration/supplier_with_extra_contact_person' th:name="supplierButton" th:value="ekstraPerson"  class="btn btn-primary">Add extra contact person</button>
         </div>
 
         <div class="col-12 d-flex justify-content-end" style="padding-right: 25%">
-            <button type="submit" onclick=form.action='/registration/supplier' th:name="supplierButton"
-                    th:value="register" class="btn btn-primary">Register supplier
-            </button>
+            <button type="submit" onclick=form.action='/registration/supplier' th:name="supplierButton" th:value="register" class="btn btn-primary">Register supplier</button>
         </div>
 
     </form>

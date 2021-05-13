@@ -68,7 +68,6 @@ public class SupplierController
                                        Model model)
     {
 
-
         model.addAttribute("supplier", supplier);
         model.addAttribute("criticality", criticality);
         model.addAttribute("contactInformation", contactInformation);
@@ -77,6 +76,7 @@ public class SupplierController
         model.addAttribute("country", country);
         //the user chooses one or several ProductCategories
         model.addAttribute("productCategory", productCategoryService.findAll());
+        model.addAttribute("countries", countryService.findAll());
         return "/registration/supplier";
     }
 
@@ -114,8 +114,6 @@ public class SupplierController
                                    BindingResult bindingResultAddress,
                                    @Valid ContactPerson contactPerson,
                                    BindingResult bindingResultContactPerson,
-                                   @Valid Country country,
-                                   BindingResult bindingResultCountry,
                                    Model model)
     {
 
@@ -124,15 +122,17 @@ public class SupplierController
                 bindingResultContactInformation,
                 bindingResultAddress,
                 bindingResultContactPerson,
-                bindingResultCountry, model)){
+                model)){
             model.addAttribute("productCategory", productCategoryService.findAll());
+            model.addAttribute("countries", countryService.findAll());
             return "/registration/supplier";
         }
 
-        if (supplierService.existAlready(supplier, address, country))
+        if (supplierService.existAlready(supplier, address))
         {
             String alreadyCreated = "Supplier is already registered";
             model.addAttribute("productCategory", productCategoryService.findAll());
+            model.addAttribute("countries", countryService.findAll());
             model.addAttribute("alreadyCreated", alreadyCreated);
             return "/registration/supplier";
         }
@@ -140,12 +140,10 @@ public class SupplierController
         contactInformation.setSupplier(supplier);
         address.setContactInformation(contactInformation);
 
-        address.setCountry(countryService.checkUniqueCountryName(country));
         contactPerson.setContactInformation(contactInformation);
 
         criticality.setSupplier(supplier);
 
-        countryService.save(country);
         addressService.save(address);
         contactPersonService.save(contactPerson);
         contactInformationService.save(contactInformation);
