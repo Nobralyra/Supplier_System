@@ -162,8 +162,8 @@ public class SupplierController
         try {
             URL url = new URL(request.getRequestURL().toString());
             path = url.getPath();
-        }catch (MalformedURLException ma){
-            System.out.println(ma);
+        }catch (MalformedURLException malformedURLException){
+            System.out.println(malformedURLException);
         }
 
         if (path.equals("/registration/supplier")) {
@@ -181,7 +181,7 @@ public class SupplierController
     {
 
         Long supplierNumber = supplierService.findById(supplierId).getSupplierId();
-        model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registred.");
+        model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registered.");
         return "/registration/supplier_confirmation";
     }
 
@@ -239,7 +239,7 @@ public class SupplierController
         contactPerson.setContactInformation(contactInformation);
         contactPersonService.save(contactPerson);
 
-        model.addAttribute("confirmation", "SupplierNumber " + supplierId + " is registred.");
+        model.addAttribute("confirmation", "SupplierNumber " + supplierId + " is registered.");
         return "/registration/supplier_confirmation";
     }
 }
