@@ -2,7 +2,6 @@ package finalproject.suppliersystem.supplier.service;
 
 import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.supplier.domain.Address;
-import finalproject.suppliersystem.supplier.domain.Country;
 import finalproject.suppliersystem.supplier.domain.Supplier;
 import finalproject.suppliersystem.supplier.repository.IAddressRepository;
 import finalproject.suppliersystem.supplier.repository.ISupplierRepository;
@@ -49,21 +48,19 @@ public class SupplierService implements IService<Supplier> {
                              BindingResult bindingResultContactInformation,
                              BindingResult bindingResultAddress,
                              BindingResult bindingResultContactPerson,
-                             BindingResult bindingResultCountry, Model model){
+                             Model model){
 
         if(bindingResultSupplier.hasErrors()
                 || bindingResultCriticality.hasErrors()
                 || bindingResultContactInformation.hasErrors()
                 || bindingResultAddress.hasErrors()
-                || bindingResultContactPerson.hasErrors()
-                || bindingResultCountry.hasErrors()){
+                || bindingResultContactPerson.hasErrors()){
 
             model.addAttribute("bindingResultSupplier", bindingResultSupplier);
             model.addAttribute("bindingResultCriticality", bindingResultCriticality);
             model.addAttribute("bindingResultContactInformation", bindingResultContactInformation);
             model.addAttribute("bindingResultAddress", bindingResultAddress);
             model.addAttribute("bindingResultContactPerson", bindingResultContactPerson);
-            model.addAttribute("bindingResultCountry", bindingResultCountry);
             return true; }
 
         return false;
@@ -76,10 +73,9 @@ public class SupplierService implements IService<Supplier> {
      * also are the same.
      * @param supplier
      * @param address
-     * @param country
      * @return supplier already exists or not
      */
-    public boolean existAlready(Supplier supplier, Address address, Country country) {
+    public boolean existAlready(Supplier supplier, Address address) {
 
         /*
           We need to compare following information:
@@ -107,7 +103,7 @@ public class SupplierService implements IService<Supplier> {
 
         if (supplierNameFound) {
 
-            String countryName = country.getCountryName();
+            String countryName = address.getCountry().getCountryName();
             String streetName = address.getStreetName();
             String postalDistrict = address.getPostalDistrict();
 

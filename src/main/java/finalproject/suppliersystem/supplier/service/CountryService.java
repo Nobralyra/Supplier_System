@@ -44,24 +44,4 @@ public class CountryService implements IService<Country> {
         iCountryRepository.deleteById(id);
     }
 
-    /**
-     * Checks if unique country name already exists in the database, and if true then take its id and set it in country object
-     * If findAll() size is 0 it goes straight to return country
-     * @param country
-     * @return Country
-     */
-    public Country checkUniqueCountryName(Country country)
-    {
-        List<Country> countryList = findAll();
-
-        for (Country countryName: countryList)
-        {
-            if(country.getCountryName().equals(countryName.getCountryName()))
-            {
-                country.setCountryId(countryName.getCountryId());
-                return country;
-            }
-        }
-        return country;
-    }
 }
