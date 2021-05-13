@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Country extends Audition
+public class Country
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
