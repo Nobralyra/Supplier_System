@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * https://stackoverflow.com/questions/15543sometimesSix/unit-test-naming-best-practices
  * https://osherove.com/blog/2rarelyZerorarelyZero5/4/3/naming-standards-for-unit-tests.html
  */
-class AlgorithmSupplierRiskLevelServiceTest
+class CalculatorSupplierRiskLevelRestServiceTest
 {
     private static final int rarelyZero = 0;
     private static final int rarelyFive = 5;
@@ -37,12 +37,12 @@ class AlgorithmSupplierRiskLevelServiceTest
     private static final int sometimesTen = 10;
     private static final int oftenEleven = 11;
     private static final int oftenFifty = 50;
-    private AlgorithmSupplierRiskLevelService algorithmSupplierRiskLevelService;
+    private CalculatorSupplierRiskLevelRestService calculatorSupplierRiskLevelRestService;
 
     @BeforeEach
     void setUp()
     {
-        algorithmSupplierRiskLevelService = new AlgorithmSupplierRiskLevelService();
+        calculatorSupplierRiskLevelRestService = new CalculatorSupplierRiskLevelRestService();
     }
 
     /**
@@ -51,14 +51,14 @@ class AlgorithmSupplierRiskLevelServiceTest
     @Test
     public void contextLoads()
     {
-        assertNotNull(algorithmSupplierRiskLevelService);
+        assertNotNull(calculatorSupplierRiskLevelRestService);
     }
 
     @ParameterizedTest
     @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereCorporateSocialResponsibilityIsHigh")
     void calculateSupplierRiskLevel_ReturnsHighIfCorporateSocialResponsibilityIsHigh(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("High", algorithmSupplierRiskLevelService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("High", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
     }
 
     /**
@@ -69,26 +69,26 @@ class AlgorithmSupplierRiskLevelServiceTest
     private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereCorporateSocialResponsibilityIsHigh()
     {
         return Stream.of(
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", oftenEleven, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", oftenEleven, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", oftenEleven, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", sometimesSix, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", sometimesSix, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", sometimesSix, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", rarelyZero, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", rarelyZero, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", rarelyZero, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", oftenEleven, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", oftenFifty, oftenFifty),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", oftenFifty, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", oftenFifty, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", sometimesTen, oftenFifty),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", sometimesTen, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", sometimesTen, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", rarelyFive, oftenFifty),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", rarelyFive, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_HIGH", rarelyFive, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", oftenFifty, oftenFifty)
+                Arguments.arguments("HIGH", oftenEleven, oftenEleven),
+                Arguments.arguments("HIGH", oftenEleven, sometimesSix),
+                Arguments.arguments("HIGH", oftenEleven, rarelyZero),
+                Arguments.arguments("HIGH", sometimesSix, oftenEleven),
+                Arguments.arguments("HIGH", sometimesSix, sometimesSix),
+                Arguments.arguments("HIGH", sometimesSix, rarelyZero),
+                Arguments.arguments("HIGH", rarelyZero, oftenEleven),
+                Arguments.arguments("HIGH", rarelyZero, sometimesSix),
+                Arguments.arguments("HIGH", rarelyZero, rarelyZero),
+                Arguments.arguments("MEDIUM", oftenEleven, oftenEleven),
+                Arguments.arguments("HIGH", oftenFifty, oftenFifty),
+                Arguments.arguments("HIGH", oftenFifty, sometimesTen),
+                Arguments.arguments("HIGH", oftenFifty, rarelyFive),
+                Arguments.arguments("HIGH", sometimesTen, oftenFifty),
+                Arguments.arguments("HIGH", sometimesTen, sometimesTen),
+                Arguments.arguments("HIGH", sometimesTen, rarelyFive),
+                Arguments.arguments("HIGH", rarelyFive, oftenFifty),
+                Arguments.arguments("HIGH", rarelyFive, sometimesTen),
+                Arguments.arguments("HIGH", rarelyFive, rarelyFive),
+                Arguments.arguments("MEDIUM", oftenFifty, oftenFifty)
         );
     }
 
@@ -96,51 +96,51 @@ class AlgorithmSupplierRiskLevelServiceTest
     @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsBetween7And9")
     void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween7And9(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Medium", algorithmSupplierRiskLevelService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
     }
 
     private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsBetween7And9()
     {
         return Stream.of(
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", oftenEleven, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", oftenEleven, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", sometimesSix, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", sometimesSix, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", sometimesSix, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", rarelyZero, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", rarelyZero, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", oftenEleven, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", oftenEleven, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", sometimesSix, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", oftenFifty, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", oftenFifty, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", sometimesTen, oftenFifty),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", sometimesTen, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", sometimesTen, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", rarelyFive, oftenFifty),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", rarelyFive, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", oftenFifty, oftenFifty),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", oftenFifty, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", sometimesTen, oftenFifty)
+                Arguments.arguments("MEDIUM", oftenEleven, sometimesSix),
+                Arguments.arguments("MEDIUM", oftenEleven, rarelyZero),
+                Arguments.arguments("MEDIUM", sometimesSix, oftenEleven),
+                Arguments.arguments("MEDIUM", sometimesSix, sometimesSix),
+                Arguments.arguments("MEDIUM", sometimesSix, rarelyZero),
+                Arguments.arguments("MEDIUM", rarelyZero, oftenEleven),
+                Arguments.arguments("MEDIUM", rarelyZero, sometimesSix),
+                Arguments.arguments("LOW", oftenEleven, oftenEleven),
+                Arguments.arguments("LOW", oftenEleven, sometimesSix),
+                Arguments.arguments("LOW", sometimesSix, oftenEleven),
+                Arguments.arguments("MEDIUM", oftenFifty, sometimesTen),
+                Arguments.arguments("MEDIUM", oftenFifty, rarelyFive),
+                Arguments.arguments("MEDIUM", sometimesTen, oftenFifty),
+                Arguments.arguments("MEDIUM", sometimesTen, sometimesTen),
+                Arguments.arguments("MEDIUM", sometimesTen, rarelyFive),
+                Arguments.arguments("MEDIUM", rarelyFive, oftenFifty),
+                Arguments.arguments("MEDIUM", rarelyFive, sometimesTen),
+                Arguments.arguments("LOW", oftenFifty, oftenFifty),
+                Arguments.arguments("LOW", oftenFifty, sometimesTen),
+                Arguments.arguments("LOW", sometimesTen, oftenFifty)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnLow")
-    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIssometimesSixExceptWhereSumsometimesSixShouldReturnLow(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow")
+    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Medium", algorithmSupplierRiskLevelService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
     }
 
-    private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnLow()
+    private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow()
     {
         return Stream.of(
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", rarelyZero, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", oftenEleven, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", rarelyZero, oftenEleven),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM", rarelyFive, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", oftenFifty, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", rarelyFive, oftenFifty)
+                Arguments.arguments("MEDIUM", rarelyZero, rarelyZero),
+                Arguments.arguments("LOW", oftenEleven, rarelyZero),
+                Arguments.arguments("LOW", rarelyZero, oftenEleven),
+                Arguments.arguments("MEDIUM", rarelyFive, rarelyFive),
+                Arguments.arguments("LOW", oftenFifty, rarelyFive),
+                Arguments.arguments("LOW", rarelyFive, oftenFifty)
         );
     }
 
@@ -148,20 +148,20 @@ class AlgorithmSupplierRiskLevelServiceTest
     @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnMedium")
     void calculateSupplierRiskLevel_ReturnsLowIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween4AndsometimesSixExceptWhereSumsometimesSixShouldReturnMedium(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Low", algorithmSupplierRiskLevelService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("Low", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
     }
 
     private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnMedium()
     {
         return Stream.of(
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", sometimesSix, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", sometimesSix, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", rarelyZero, sometimesSix),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", rarelyZero, rarelyZero),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", sometimesTen, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", sometimesTen, rarelyFive),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", rarelyFive, sometimesTen),
-                Arguments.arguments("CORPORATE_SOCIAL_RESPONSIBILITY_LOW", rarelyFive, rarelyFive)
+                Arguments.arguments("LOW", sometimesSix, sometimesSix),
+                Arguments.arguments("LOW", sometimesSix, rarelyZero),
+                Arguments.arguments("LOW", rarelyZero, sometimesSix),
+                Arguments.arguments("LOW", rarelyZero, rarelyZero),
+                Arguments.arguments("LOW", sometimesTen, sometimesTen),
+                Arguments.arguments("LOW", sometimesTen, rarelyFive),
+                Arguments.arguments("LOW", rarelyFive, sometimesTen),
+                Arguments.arguments("LOW", rarelyFive, rarelyFive)
         );
     }
 }
