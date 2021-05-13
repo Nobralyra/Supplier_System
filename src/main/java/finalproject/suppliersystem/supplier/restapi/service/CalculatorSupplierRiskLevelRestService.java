@@ -3,12 +3,13 @@ package finalproject.suppliersystem.supplier.restapi.service;
 import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
-public class AlgorithmSupplierRiskLevelService
+public class CalculatorSupplierRiskLevelRestService implements ICalculatorSupplierRiskLevelRestService
 {
     @Autowired
-    public AlgorithmSupplierRiskLevelService()
+    public CalculatorSupplierRiskLevelRestService()
     {
     }
 
@@ -18,8 +19,8 @@ public class AlgorithmSupplierRiskLevelService
      * Sometimes (6-10 annually)
      * Often (10+ annually)
      *
-     * @param convertCategory what needs to be converted
-     * @return result of the conversion
+     * @param convertCategory int
+     * @return int
      */
     private int convertIssuesConcerningCooperationAndAvailabilityIssues(int convertCategory)
     {
@@ -46,18 +47,18 @@ public class AlgorithmSupplierRiskLevelService
      * Medium
      * High
      *
-     * @param convertCategory what needs to be converted
-     * @return result of the conversion
+     * @param convertCategory String
+     * @return int
      */
     private int convertCorporateSocialResponsibility(String convertCategory)
     {
         // Low
-        if (convertCategory.equals("CORPORATE_SOCIAL_RESPONSIBILITY_LOW"))
+        if (convertCategory.equals("LOW"))
         {
             return 2;
         }
         // Medium
-        else if (convertCategory.equals("CORPORATE_SOCIAL_RESPONSIBILITY_MEDIUM"))
+        else if (convertCategory.equals("MEDIUM"))
         {
             return 4;
         }
@@ -90,7 +91,8 @@ public class AlgorithmSupplierRiskLevelService
      * @param availabilityIssues number of occurred Availability Issues with the supplier
      * @return result of Supplier Risk Level
      */
-    public String calculateSupplierRiskLevel(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    @Override
+    public Mono<String> calculateSupplierRiskLevel(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
         int convertedCorporateSocialResponsibility = convertCorporateSocialResponsibility(corporateSocialResponsibility.name());
         int convertedIssuesConcerningCooperation = convertIssuesConcerningCooperationAndAvailabilityIssues(issuesConcerningCooperation);
@@ -100,7 +102,7 @@ public class AlgorithmSupplierRiskLevelService
         // Is removing 7 out of the 27 possibilities
         if (convertedCorporateSocialResponsibility == 6)
         {
-            return "High";
+            return Mono.just("High");
         }
 
         // First call summationSupplierRiskLevel after convertedCorporateSocialResponsibility has been check of being 6,
@@ -110,37 +112,39 @@ public class AlgorithmSupplierRiskLevelService
         // There is one High that we de not catch before, but can be check with sum
         if (sum == 10)
         {
-            return "High";
+            return Mono.just("High");
         }
         // If sum is bigger than 6 and smaller than 10 (does not need to check that, because they would had been returned already
         if (sum > 6)
         {
-            return "Medium";
+            return Mono.just("Medium");
         }
         // Has one possibility where sum is 6, but the correct return is Low, but it can be checked if convertedIssuesConcerningCooperation and convertedAvailabilityIssues is 2
         if (convertedIssuesConcerningCooperation == 2 && convertedAvailabilityIssues == 2)
         {
-            return "Low";
+            return Mono.just("Low");
         }
-        // The rest of where sum is 6 should return Medidum
+        // The rest of where sum is 6 should return Medium
         if (sum == 6)
         {
-            return "Medium";
+            return Mono.just("Medium");
         }
 
         // The rest possibilities that did not match any of the if statements is always a Low
-        return "Low";
+        return Mono.just("Low");
     }
 
     /**
      * Calculates the sum of convertedCorporateSocialResponsibility, convertedIssuesConcerningCooperation and convertedAvailabilityIssues
+     *
      * @param convertedCorporateSocialResponsibility converted number
-     * @param convertedIssuesConcerningCooperation converted number
-     * @param convertedAvailabilityIssues converted number
+     * @param convertedIssuesConcerningCooperation   converted number
+     * @param convertedAvailabilityIssues            converted number
      * @return sum of the total
      */
     private int summationSupplierRiskLevel(int convertedCorporateSocialResponsibility, int convertedIssuesConcerningCooperation, int convertedAvailabilityIssues)
     {
         return convertedCorporateSocialResponsibility + convertedIssuesConcerningCooperation + convertedAvailabilityIssues;
     }
+
 }
