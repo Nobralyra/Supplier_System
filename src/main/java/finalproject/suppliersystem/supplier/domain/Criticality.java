@@ -34,11 +34,6 @@ public class Criticality extends Audition {
     @NumberFormat(style= NumberFormat.Style.NUMBER)
     private Long volume;
 
-    @Column(length = 3)
-    @PositiveOrZero(message = "Issues has to be zero or a positive number")
-    @NumberFormat(style= NumberFormat.Style.NUMBER)
-    private int issuesConcerningCooperation;
-
     @Column(length = 6)
     @NotNull(message = "Choose a responsibility level")
     private CorporateSocialResponsibility corporateSocialResponsibility;
@@ -46,7 +41,12 @@ public class Criticality extends Audition {
     @Column(length = 3)
     @PositiveOrZero(message = "Issues has to be zero or a positive number")
     @NumberFormat(style= NumberFormat.Style.NUMBER)
-    private int availibilityIssues;
+    private int issuesConcerningCooperation;
+
+    @Column(length = 3)
+    @PositiveOrZero(message = "Issues has to be zero or a positive number")
+    @NumberFormat(style= NumberFormat.Style.NUMBER)
+    private int availabilityIssues;
 
     /**
      * child (owner) of Supplier
