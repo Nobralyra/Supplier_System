@@ -1,9 +1,10 @@
 package finalproject.suppliersystem.supplier.restapi.restcontroller;
 
 
-import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
+import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.restapi.service.ICalculatorSupplierRiskLevelRestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,13 +41,12 @@ public class CalculatorSupplierRiskLevelRestController
     }
 
     /**
-     * Mono<ResponseEntity<T>> provides response status, headers, and body asynchronously
-     * https://docs.spring.io/spring-framework/docs/current/reference/html/web-reactive.html#webflux-ann-responseentity
+     *
      */
     @GetMapping(value = "/supplier_risk_level_api", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<String> getSupplierRiskLevel(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    public ResponseEntity<String> getSupplierRiskLevel(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-
-        return iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        Enum<CategoryLevel> result = iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        return new ResponseEntity<>(result.name(), HttpStatus.OK);
     }
 }
