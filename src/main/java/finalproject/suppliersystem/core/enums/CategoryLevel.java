@@ -5,8 +5,8 @@ package finalproject.suppliersystem.core.enums;
  */
 public enum CategoryLevel {
 
-    HIGH(), //id 0
+    LOW(), //id 0
     MEDIUM(), // id 1
-    LOW() // id 2;
+    HIGH() // id 2;
 
 }
