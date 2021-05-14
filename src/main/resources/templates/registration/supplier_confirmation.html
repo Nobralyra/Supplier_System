@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: headerElement">
-  <meta charset="UTF-8">
-  <title>Supplier Registration Confirmation</title>
+    <meta charset="UTF-8">
+    <title>Supplier Registration Confirmation</title>
 </head>
 <body>
 <div class="container-fluid page">
-  <header th:replace="fragments/navbar :: navbarElement"></header>
+    <header th:replace="fragments/navbar :: navbarElement"></header>
+    <div class="row g-2 justify-content-center">
+        <h1 class="text-center">Supplier registration confirmation</h1>
 
-  <h1>Supplier registration confirmation</h1>
-
-  <span th:text="${confirmation}" ></span>
-
-  <footer th:replace="fragments/footer :: footerElement"></footer>
+        <span class="text-center" th:text="${confirmation}"></span>
+    </div>
+    <footer th:replace="fragments/footer :: footerElement"></footer>
 
 </div>
 </body>
