@@ -59,7 +59,7 @@
         <div class="row g-2 justify-content-center">
             <div class="col-sm-6">
                 <label class="form-label">Volume <span style="color: red">*</span></label>
-                <select class="form-select" id="Volume" th:name="Volume">
+                <select class="form-select" id="volume" th:name="Volume">
                     <option th:field="*{criticality.volume}" th:value=0>Low volume supplier: 0 € - 10.000 € annually
                     </option>
                     <option th:field="*{criticality.volume}" th:value=10001>Medium volume supplier: 10.001 – 30.000 €
@@ -75,7 +75,7 @@
         <div class="row g-2 justify-content-center">
             <div class="col-sm-6">
                 <label class="form-label">Corporate Social Responsibility <span style="color: red">*</span></label>
-                <select class="form-select" id="categoryLevel"
+                <select class="form-select" id="corporateSocialResponsibility"
                         th:field="*{criticality.corporateSocialResponsibility}">
                     <option th:each="responsibility: ${T(finalproject.suppliersystem.core.enums.CategoryLevel).values()}"
                             th:value="${responsibility}"
@@ -89,7 +89,7 @@
         <div class="row g-2 justify-content-center">
             <div class="col-sm-6">
                 <label class="form-label">Issues Concerning Cooperation <span style="color: red">*</span></label>
-                <select class="form-select" id="IssuesConcerningCooperation" th:name="IssuesConcerningCooperation">
+                <select class="form-select" id="issuesConcerningCooperation" th:name="IssuesConcerningCooperation">
                     <option th:field="*{criticality.issuesConcerningCooperation}" th:value=0>Rarely (0-5 annually)
                     </option>
                     <option th:field="*{criticality.issuesConcerningCooperation}" th:value=6>Sometimes (6-10 annually)
@@ -105,7 +105,7 @@
         <div class="row g-2 justify-content-center">
             <div class="col-sm-6">
                 <label class="form-label">Availability Issues <span style="color: red">*</span></label>
-                <select class="form-select" id="AvailabilityIssues" th:name="AvailabilityIssues">
+                <select class="form-select" id="availabilityIssues" th:name="AvailabilityIssues">
                     <option th:field="*{criticality.availabilityIssues}" th:value=0>Rarely (0-5 annually)</option>
                     <option th:field="*{criticality.availabilityIssues}" th:value=6>Sometimes (6-10 annually)</option>
                     <option th:field="*{criticality.availabilityIssues}" th:value=11>Often (10+ annually)</option>
@@ -113,6 +113,10 @@
                 <span th:if="${#fields.hasErrors('criticality.availabilityIssues')}"
                       th:errors="*{criticality.availabilityIssues}"></span>
             </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-center">
+            <div id="supplierRiskLevel" style="background: green">LOW</div>
         </div>
 
         <div class="col-12">
@@ -292,6 +296,55 @@
     });
 
 
+    // https://api.jquery.com/jquery.ajax/
+
+    function sendToServer(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues, onSuccess, onError){
+
+        $.ajax({
+            type: 'GET',
+            url: "/supplier_risk_level_api",
+            data: {
+                corporateSocialResponsibility: corporateSocialResponsibility,
+                issuesConcerningCooperation: issuesConcerningCooperation,
+                availabilityIssues: availabilityIssues
+            },
+            dataType: "json"
+        }).done(function (response) {
+            console.dir(response)
+            if(response === "HIGH")
+            {
+                $("#supplierRiskLevel").html(response).css('background', '#ff5733');
+            }
+            else if(response === "MEDIUM")
+            {
+                $("#supplierRiskLevel").html(response).css('background', 'yellow');
+            }
+            else
+            {
+                $("#supplierRiskLevel").html(response).css('background', 'green');
+            }
+        }).fail(function (jqXHR, textStatus) {
+            console.dir(jqXHR)
+            alert( "Request failed: " + textStatus );
+        });
+
+    }
+
+    $("#volume, #corporateSocialResponsibility, #issuesConcerningCooperation, #availabilityIssues").on('change', function() {
+        let volume = $("#volume").val();
+        let corporateSocialResponsibility = $("#corporateSocialResponsibility").val();
+        let issuesConcerningCooperation = $("#issuesConcerningCooperation").val();
+        let availabilityIssues = $("#availabilityIssues").val();
+
+        sendToServer(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues,
+            function(data){
+                console.log(data);
+            },
+            function(data){
+                console.log('error', data);
+            }
+        );
+    });
 </script>
 
 
