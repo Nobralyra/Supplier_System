@@ -19,11 +19,6 @@ public class AddressTest {
 
     private Address address;
 
-    /*
-    @Mock
-    IAddressRepository iAddressRepository;*/
-
-
     //An instance of Address for testing
 
     @BeforeEach
