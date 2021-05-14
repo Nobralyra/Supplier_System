@@ -1,9 +1,8 @@
 package finalproject.suppliersystem.supplier.restapi.service;
 
-import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
+import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 @Service
 public class CalculatorSupplierRiskLevelRestService implements ICalculatorSupplierRiskLevelRestService
@@ -14,137 +13,106 @@ public class CalculatorSupplierRiskLevelRestService implements ICalculatorSuppli
     }
 
     /**
-     * IssuesConcerningCooperation and AvailabilityIssues categories:
+     * IssuesConcerningCooperation categories:
      * Rarely (0-5 annually)
      * Sometimes (6-10 annually)
      * Often (10+ annually)
      *
-     * @param convertCategory int
-     * @return int
+     * @param convertCategory given value
+     * @return the enum value
      */
-    private int convertIssuesConcerningCooperationAndAvailabilityIssues(int convertCategory)
+    private CategoryLevel convertIssuesConcerningCooperation(int convertCategory)
     {
         // Rarely
         if (convertCategory < 6)
         {
-            return 1;
+            return CategoryLevel.LOW;
         }
         // Sometimes
-        else if (convertCategory < 11)
+        if (convertCategory < 11)
         {
-            return 2;
+            return CategoryLevel.MEDIUM;
         }
         // Often
-        else
-        {
-            return 3;
-        }
+        return CategoryLevel.HIGH;
     }
 
     /**
-     * Corporate Social Responsibility category:
-     * Low
-     * Medium
-     * High
+     * AvailabilityIssues categories:
+     * Rarely (0-5 annually)
+     * Sometimes (6-10 annually)
+     * Often (10+ annually)
      *
-     * @param convertCategory String
-     * @return int
+     * @param convertCategory given value
+     * @return the enum value
      */
-    private int convertCorporateSocialResponsibility(String convertCategory)
+    private CategoryLevel convertAvailabilityIssues(int convertCategory)
     {
-        // Low
-        if (convertCategory.equals("LOW"))
+        // Rarely
+        if (convertCategory < 6)
         {
-            return 2;
+            return CategoryLevel.LOW;
         }
-        // Medium
-        else if (convertCategory.equals("MEDIUM"))
+        // Sometimes
+        if (convertCategory < 11)
         {
-            return 4;
+            return CategoryLevel.MEDIUM;
         }
-        // High
-        else
-        {
-            return 6;
-        }
+        // Often
+        return CategoryLevel.HIGH;
     }
 
     /**
-     * TODO: Check if sum of the Risk Level is better to use (is 18 calculations), then to check each number of each value
-     * TODO: Check if a combination of those two a better
+     * TODO: Service kan aflevere en enum eller en int, for ikke at skulle parse det, men i stedet lade Controlleren (Fx. at den har en anden klasse der konvertere) eller HTML håndtere at lave det om
+     * TODO: men Service skal kun forretnignslogik. Gør også at return type her ikke vil være Mono<String>
      */
     /**
-     * CorporateSocialResponsibility:
-     * 2 = Low
-     * 4 = Medium
-     * 6 = High
-     *
-     * Issues Concerning Cooperation and Availability Issues:
-     * 1 = Low
-     * 2 = Medium
-     * 3 = High
+     * Risk Level can never be lower level than what level corporateSocialResponsibility is:
+     * corporateSocialResponsibility HIGH => HIGH always
+     * corporateSocialResponsibility MEDIUM + convertedIssuesConcerningCooperation HIGH + convertedAvailabilityIssues HIGH => HIGH
+     * corporateSocialResponsibility MEDIUM all other cases => MEDIUM
+     * corporateSocialResponsibility LOW + convertedIssuesConcerningCooperation HIGH => MEDIUM
+     * corporateSocialResponsibility LOW + convertedAvailabilityIssues HIGH => MEDIUM
+     * All others cases => LOW
      *
      * Link to where matrix is shown: https://docs.google.com/spreadsheets/d/1WUrAZfCbLKgNF_cWvrtBIctzHUmx0n9QSf9eGE1Mg0s/edit?usp=sharing
      *
-     * @param corporateSocialResponsibility enum
-     * @param issuesConcerningCooperation number of occurred Issues Concerning Cooperation with the supplier
-     * @param availabilityIssues number of occurred Availability Issues with the supplier
-     * @return result of Supplier Risk Level
+     * @param corporateSocialResponsibility value of CategoryLevel
+     * @param issuesConcerningCooperation   number of occurred Issues Concerning Cooperation with the supplier
+     * @param availabilityIssues            number of occurred Availability Issues with the supplier
+     * @return ENUM result of Supplier Risk Level
      */
     @Override
-    public Mono<String> calculateSupplierRiskLevel(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    public Enum<CategoryLevel> calculateSupplierRiskLevel(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        int convertedCorporateSocialResponsibility = convertCorporateSocialResponsibility(corporateSocialResponsibility.name());
-        int convertedIssuesConcerningCooperation = convertIssuesConcerningCooperationAndAvailabilityIssues(issuesConcerningCooperation);
-        int convertedAvailabilityIssues = convertIssuesConcerningCooperationAndAvailabilityIssues(availabilityIssues);
+        CategoryLevel convertedIssuesConcerningCooperation = convertIssuesConcerningCooperation(issuesConcerningCooperation);
+        CategoryLevel convertedAvailabilityIssues = convertAvailabilityIssues(availabilityIssues);
 
-        // Risk Level can never be lower level than what level Corporate Social Responsibility is
-        // Is removing 7 out of the 27 possibilities
-        if (convertedCorporateSocialResponsibility == 6)
+        if (corporateSocialResponsibility == CategoryLevel.HIGH)
         {
-            return Mono.just("High");
+            return CategoryLevel.HIGH;
         }
 
-        // First call summationSupplierRiskLevel after convertedCorporateSocialResponsibility has been check of being 6,
-        // so we do not use unnecessary resources and time
-        int sum = summationSupplierRiskLevel(convertedCorporateSocialResponsibility, convertedIssuesConcerningCooperation, convertedAvailabilityIssues);
-
-        // There is one High that we de not catch before, but can be check with sum
-        if (sum == 10)
+        if (corporateSocialResponsibility == CategoryLevel.MEDIUM)
         {
-            return Mono.just("High");
-        }
-        // If sum is bigger than 6 and smaller than 10 (does not need to check that, because they would had been returned already
-        if (sum > 6)
-        {
-            return Mono.just("Medium");
-        }
-        // Has one possibility where sum is 6, but the correct return is Low, but it can be checked if convertedIssuesConcerningCooperation and convertedAvailabilityIssues is 2
-        if (convertedIssuesConcerningCooperation == 2 && convertedAvailabilityIssues == 2)
-        {
-            return Mono.just("Low");
-        }
-        // The rest of where sum is 6 should return Medium
-        if (sum == 6)
-        {
-            return Mono.just("Medium");
+            if (convertedIssuesConcerningCooperation == CategoryLevel.HIGH && convertedAvailabilityIssues == CategoryLevel.HIGH)
+            {
+                return CategoryLevel.HIGH;
+            }
+            return CategoryLevel.MEDIUM;
         }
 
-        // The rest possibilities that did not match any of the if statements is always a Low
-        return Mono.just("Low");
+        if (convertedIssuesConcerningCooperation == CategoryLevel.HIGH)
+        {
+            return CategoryLevel.MEDIUM;
+        }
+
+        if (convertedAvailabilityIssues == CategoryLevel.HIGH)
+        {
+            return CategoryLevel.MEDIUM;
+        }
+
+        // The rest possibilities that did not match any of the if statements is always LOW
+        return CategoryLevel.LOW;
     }
-
-    /**
-     * Calculates the sum of convertedCorporateSocialResponsibility, convertedIssuesConcerningCooperation and convertedAvailabilityIssues
-     *
-     * @param convertedCorporateSocialResponsibility converted number
-     * @param convertedIssuesConcerningCooperation   converted number
-     * @param convertedAvailabilityIssues            converted number
-     * @return sum of the total
-     */
-    private int summationSupplierRiskLevel(int convertedCorporateSocialResponsibility, int convertedIssuesConcerningCooperation, int convertedAvailabilityIssues)
-    {
-        return convertedCorporateSocialResponsibility + convertedIssuesConcerningCooperation + convertedAvailabilityIssues;
-    }
-
 }
