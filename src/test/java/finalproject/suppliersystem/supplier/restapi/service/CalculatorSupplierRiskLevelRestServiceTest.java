@@ -1,11 +1,10 @@
 package finalproject.suppliersystem.supplier.restapi.service;
 
-import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
 
 import java.util.stream.Stream;
 
@@ -26,142 +25,202 @@ import static org.junit.jupiter.api.Assertions.*;
  * https://www.arhohuttunen.com/junit-5-parameterized-tests/
  *
  * Naming best practices
- * https://stackoverflow.com/questions/15543sometimesSix/unit-test-naming-best-practices
- * https://osherove.com/blog/2rarelyZerorarelyZero5/4/3/naming-standards-for-unit-tests.html
+ * https://stackoverflow.com/questions/155436/unit-test-naming-best-practices
+ * https://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html
  */
 class CalculatorSupplierRiskLevelRestServiceTest
 {
-    private static final int rarelyZero = 0;
-    private static final int rarelyFive = 5;
-    private static final int sometimesSix = 6;
-    private static final int sometimesTen = 10;
-    private static final int oftenEleven = 11;
-    private static final int oftenFifty = 50;
-    private CalculatorSupplierRiskLevelRestService calculatorSupplierRiskLevelRestService;
+    @Mock
+    private ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService;
 
-    @BeforeEach
-    void setUp()
+    /**
+     * TODO: Ændre Stream<Arguments> til at have bedre navngivning
+     *
+     * @param corporateSocialResponsibility
+     * @param issuesConcerningCooperation
+     * @param availabilityIssues
+     */
+    @ParameterizedTest
+    @MethodSource("testCasesForHigh")
+    void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsHigh_ReturnsHigh(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        calculatorSupplierRiskLevelRestService = new CalculatorSupplierRiskLevelRestService();
+        //Arrange
+        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
+        // Act
+        Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        // Assert
+        assertEquals("HIGH", result.name());
     }
 
     /**
-     * This tests, that context is creating an algorithmSupplierRiskLevelService.
+     * Rarely (0-5 annually)
+     * Sometimes (6-10 annually)
+     * Often (10+ annually)
      */
-    @Test
-    public void contextLoads()
+    private static Stream<Arguments> testCasesForHigh()
     {
-        assertNotNull(calculatorSupplierRiskLevelRestService);
-    }
-
-    @ParameterizedTest
-    @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereCorporateSocialResponsibilityIsHigh")
-    void calculateSupplierRiskLevel_ReturnsHighIfCorporateSocialResponsibilityIsHigh(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
-    {
-        assertEquals("High", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        return Stream.of(
+                Arguments.arguments("HIGH", 11, 11),
+                Arguments.arguments("HIGH", 11, 6),
+                Arguments.arguments("HIGH", 11, 0),
+                Arguments.arguments("HIGH", 6, 11),
+                Arguments.arguments("HIGH", 6, 6),
+                Arguments.arguments("HIGH", 6, 0),
+                Arguments.arguments("HIGH", 0, 11),
+                Arguments.arguments("HIGH", 0, 6),
+                Arguments.arguments("HIGH", 0, 0),
+                Arguments.arguments("HIGH", 50, 50),
+                Arguments.arguments("HIGH", 50, 10),
+                Arguments.arguments("HIGH", 50, 5),
+                Arguments.arguments("HIGH", 10, 50),
+                Arguments.arguments("HIGH", 10, 10),
+                Arguments.arguments("HIGH", 10, 5),
+                Arguments.arguments("HIGH", 5, 50),
+                Arguments.arguments("HIGH", 5, 10),
+                Arguments.arguments("HIGH", 5, 5)
+        );
     }
 
     /**
-     * Rarely (rarelyZero-5 annually)
-     * Sometimes (sometimesSix-1rarelyZero annually)
-     * Often (1rarelyZero+ annually)
+     * TODO: Ændre Stream<Arguments> til at have bedre navngivning
+     * CSR = Corporate Social Responsibility
+     * ICC = Issues Concerning Cooperation
+     * AVAIS = Availability Issues
+     *
+     * @param corporateSocialResponsibility
+     * @param issuesConcerningCooperation
+     * @param availabilityIssues
      */
-    private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereCorporateSocialResponsibilityIsHigh()
+    @ParameterizedTest
+    @MethodSource("testCasesForHighWhereCSRIsMediumAndICCAndAVAISIsHigh")
+    void calculateSupplierRiskLevel_CSRIsMediumAndICCIsHighAndAVAISIsHigh_ReturnsHigh(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    {
+        //Arrange
+        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
+        // Act
+        Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        // Assert
+        assertEquals("HIGH", result.name());
+    }
+
+    /**
+     * Rarely (0-5 annually)
+     * Sometimes (6-10 annually)
+     * Often (10+ annually)
+     */
+    private static Stream<Arguments> testCasesForHighWhereCSRIsMediumAndICCAndAVAISIsHigh()
     {
         return Stream.of(
-                Arguments.arguments("HIGH", oftenEleven, oftenEleven),
-                Arguments.arguments("HIGH", oftenEleven, sometimesSix),
-                Arguments.arguments("HIGH", oftenEleven, rarelyZero),
-                Arguments.arguments("HIGH", sometimesSix, oftenEleven),
-                Arguments.arguments("HIGH", sometimesSix, sometimesSix),
-                Arguments.arguments("HIGH", sometimesSix, rarelyZero),
-                Arguments.arguments("HIGH", rarelyZero, oftenEleven),
-                Arguments.arguments("HIGH", rarelyZero, sometimesSix),
-                Arguments.arguments("HIGH", rarelyZero, rarelyZero),
-                Arguments.arguments("MEDIUM", oftenEleven, oftenEleven),
-                Arguments.arguments("HIGH", oftenFifty, oftenFifty),
-                Arguments.arguments("HIGH", oftenFifty, sometimesTen),
-                Arguments.arguments("HIGH", oftenFifty, rarelyFive),
-                Arguments.arguments("HIGH", sometimesTen, oftenFifty),
-                Arguments.arguments("HIGH", sometimesTen, sometimesTen),
-                Arguments.arguments("HIGH", sometimesTen, rarelyFive),
-                Arguments.arguments("HIGH", rarelyFive, oftenFifty),
-                Arguments.arguments("HIGH", rarelyFive, sometimesTen),
-                Arguments.arguments("HIGH", rarelyFive, rarelyFive),
-                Arguments.arguments("MEDIUM", oftenFifty, oftenFifty)
+                Arguments.arguments("MEDIUM", 11, 11),
+                Arguments.arguments("MEDIUM", 50, 50)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsBetween7And9")
-    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween7And9(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    @MethodSource("testCasesForMedium")
+    void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsMedium_ReturnsMedium(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        //Arrange
+        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
+        // Act
+        Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        // Assert
+        assertEquals("MEDIUM", result.name());
     }
 
-    private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsBetween7And9()
+    private static Stream<Arguments> testCasesForMedium()
     {
         return Stream.of(
-                Arguments.arguments("MEDIUM", oftenEleven, sometimesSix),
-                Arguments.arguments("MEDIUM", oftenEleven, rarelyZero),
-                Arguments.arguments("MEDIUM", sometimesSix, oftenEleven),
-                Arguments.arguments("MEDIUM", sometimesSix, sometimesSix),
-                Arguments.arguments("MEDIUM", sometimesSix, rarelyZero),
-                Arguments.arguments("MEDIUM", rarelyZero, oftenEleven),
-                Arguments.arguments("MEDIUM", rarelyZero, sometimesSix),
-                Arguments.arguments("LOW", oftenEleven, oftenEleven),
-                Arguments.arguments("LOW", oftenEleven, sometimesSix),
-                Arguments.arguments("LOW", sometimesSix, oftenEleven),
-                Arguments.arguments("MEDIUM", oftenFifty, sometimesTen),
-                Arguments.arguments("MEDIUM", oftenFifty, rarelyFive),
-                Arguments.arguments("MEDIUM", sometimesTen, oftenFifty),
-                Arguments.arguments("MEDIUM", sometimesTen, sometimesTen),
-                Arguments.arguments("MEDIUM", sometimesTen, rarelyFive),
-                Arguments.arguments("MEDIUM", rarelyFive, oftenFifty),
-                Arguments.arguments("MEDIUM", rarelyFive, sometimesTen),
-                Arguments.arguments("LOW", oftenFifty, oftenFifty),
-                Arguments.arguments("LOW", oftenFifty, sometimesTen),
-                Arguments.arguments("LOW", sometimesTen, oftenFifty)
+                Arguments.arguments("MEDIUM", 11, 6),
+                Arguments.arguments("MEDIUM", 11, 0),
+                Arguments.arguments("MEDIUM", 6, 11),
+                Arguments.arguments("MEDIUM", 6, 6),
+                Arguments.arguments("MEDIUM", 6, 0),
+                Arguments.arguments("MEDIUM", 0, 11),
+                Arguments.arguments("MEDIUM", 0, 6),
+                Arguments.arguments("MEDIUM", 0, 0),
+                Arguments.arguments("MEDIUM", 50, 10),
+                Arguments.arguments("MEDIUM", 50, 5),
+                Arguments.arguments("MEDIUM", 10, 50),
+                Arguments.arguments("MEDIUM", 10, 10),
+                Arguments.arguments("MEDIUM", 10, 5),
+                Arguments.arguments("MEDIUM", 5, 50),
+                Arguments.arguments("MEDIUM", 5, 10),
+                Arguments.arguments("MEDIUM", 5, 5)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow")
-    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    @MethodSource("testCasesForMediumWhereCorporateSocialResponsibilityIsLowAndIssuesConcerningCooperationIsHigh")
+    void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsLowAndIssuesConcerningCooperationIsHigh_ReturnsMedium(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        //Arrange
+        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
+        // Act
+        Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        // Assert
+        assertEquals("MEDIUM", result.name());
     }
 
-    private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow()
+    private static Stream<Arguments> testCasesForMediumWhereCorporateSocialResponsibilityIsLowAndIssuesConcerningCooperationIsHigh()
     {
         return Stream.of(
-                Arguments.arguments("MEDIUM", rarelyZero, rarelyZero),
-                Arguments.arguments("LOW", oftenEleven, rarelyZero),
-                Arguments.arguments("LOW", rarelyZero, oftenEleven),
-                Arguments.arguments("MEDIUM", rarelyFive, rarelyFive),
-                Arguments.arguments("LOW", oftenFifty, rarelyFive),
-                Arguments.arguments("LOW", rarelyFive, oftenFifty)
+                Arguments.arguments("LOW", 11, 11),
+                Arguments.arguments("LOW", 11, 6),
+                Arguments.arguments("LOW", 11, 0),
+                Arguments.arguments("LOW", 50, 50),
+                Arguments.arguments("LOW", 50, 10),
+                Arguments.arguments("LOW", 50, 5)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnMedium")
-    void calculateSupplierRiskLevel_ReturnsLowIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween4AndsometimesSixExceptWhereSumsometimesSixShouldReturnMedium(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    @MethodSource("testCasesForMediumWhereCorporateSocialResponsibilityIsLowAndAvailabilityIssuesIsHigh")
+    void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsLowAndAvailabilityIssuesIsHigh_ReturnsMedium(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Low", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        //Arrange
+        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
+        // Act
+        Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        // Assert
+        assertEquals("MEDIUM", result.name());
     }
 
-    private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnMedium()
+    private static Stream<Arguments> testCasesForMediumWhereCorporateSocialResponsibilityIsLowAndAvailabilityIssuesIsHigh()
     {
         return Stream.of(
-                Arguments.arguments("LOW", sometimesSix, sometimesSix),
-                Arguments.arguments("LOW", sometimesSix, rarelyZero),
-                Arguments.arguments("LOW", rarelyZero, sometimesSix),
-                Arguments.arguments("LOW", rarelyZero, rarelyZero),
-                Arguments.arguments("LOW", sometimesTen, sometimesTen),
-                Arguments.arguments("LOW", sometimesTen, rarelyFive),
-                Arguments.arguments("LOW", rarelyFive, sometimesTen),
-                Arguments.arguments("LOW", rarelyFive, rarelyFive)
+                Arguments.arguments("LOW", 11, 11),
+                Arguments.arguments("LOW", 6, 11),
+                Arguments.arguments("LOW", 0, 11),
+                Arguments.arguments("LOW", 50, 50),
+                Arguments.arguments("LOW", 10, 50),
+                Arguments.arguments("LOW", 5, 50)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("testCasesForLow")
+    void calculateSupplierRiskLevel_AllOthersCombinations_ReturnsLow(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    {
+        //Arrange
+        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
+        // Act
+        Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
+        // Assert
+        assertEquals("LOW", result.name());
+    }
+
+    private static Stream<Arguments> testCasesForLow()
+    {
+        return Stream.of(
+                Arguments.arguments("LOW", 6, 6),
+                Arguments.arguments("LOW", 6, 0),
+                Arguments.arguments("LOW", 0, 6),
+                Arguments.arguments("LOW", 0, 0),
+                Arguments.arguments("LOW", 10, 10),
+                Arguments.arguments("LOW", 10, 5),
+                Arguments.arguments("LOW", 5, 10),
+                Arguments.arguments("LOW", 5, 5)
         );
     }
 }
