@@ -77,7 +77,7 @@
                 <label class="form-label">Corporate Social Responsibility <span style="color: red">*</span></label>
                 <select class="form-select" id="corporateSocialResponsibility"
                         th:field="*{criticality.corporateSocialResponsibility}">
-                    <option th:each="responsibility: ${T(finalproject.suppliersystem.core.enums.CorporateSocialResponsibility).values()}"
+                    <option th:each="responsibility: ${T(finalproject.suppliersystem.core.enums.CategoryLevel).values()}"
                             th:value="${responsibility}"
                             th:text="${responsibility}"></option>
                 </select>
