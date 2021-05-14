@@ -44,9 +44,9 @@ public class CalculatorSupplierRiskLevelRestController
      *
      */
     @GetMapping(value = "/supplier_risk_level_api", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getSupplierRiskLevel(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    public ResponseEntity<Enum<CategoryLevel>> getSupplierRiskLevel(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
         Enum<CategoryLevel> result = iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
-        return new ResponseEntity<>(result.name(), HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
