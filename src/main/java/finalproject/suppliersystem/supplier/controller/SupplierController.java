@@ -1,6 +1,5 @@
 package finalproject.suppliersystem.supplier.controller;
 
-import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
 import finalproject.suppliersystem.supplier.domain.*;
 import finalproject.suppliersystem.supplier.service.*;
 import org.springframework.beans.factory.annotation.Autowired;

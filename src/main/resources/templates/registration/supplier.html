@@ -75,14 +75,14 @@
         <div class="row g-2 justify-content-center">
             <div class="col-sm-6">
                 <label class="form-label">Corporate Social Responsibility <span style="color: red">*</span></label>
-                <select class="form-select" id="corporateSocialResponsibility"
-                        th:field="*{criticality.corporateSocialResponsibility}">
-                    <option th:each="responsibility: ${T(finalproject.suppliersystem.core.enums.CorporateSocialResponsibility).values()}"
+                <select class="form-select" id="categoryLevel"
+                        th:field="*{criticality.getCorporateSocialResponsibility}">
+                    <option th:each="responsibility: ${T(finalproject.suppliersystem.core.enums.CategoryLevel).values()}"
                             th:value="${responsibility}"
                             th:text="${responsibility}"></option>
                 </select>
-                <span th:if="${#fields.hasErrors('criticality.corporateSocialResponsibility')}"
-                      th:errors="*{criticality.corporateSocialResponsibility}"></span>
+                <span th:if="${#fields.hasErrors('criticality.categoryLevel')}"
+                      th:errors="*{criticality.getCorporateSocialResponsibility}"></span>
             </div>
         </div>
 

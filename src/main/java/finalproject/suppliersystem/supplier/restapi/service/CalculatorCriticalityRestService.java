@@ -1,5 +1,6 @@
 package finalproject.suppliersystem.supplier.restapi.service;
 
+import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -14,29 +15,29 @@ public class CalculatorCriticalityRestService {
      * @param volume
      * @return
      */
-    public Mono<String> calculateCriticality(Mono<String> supplierRiskLevel, Long volume){
+    public CategoryLevel calculateCriticality(CategoryLevel supplierRiskLevel, Long volume) {
 
-        //There are 9 combinations of possibilities in matrix: 4 HIGH, 4 MEDIUM, 1 LOW
+        CategoryLevel answer = CategoryLevel.HIGH;
 
-        Mono<String> answer = Mono.just("HIGH");
+        //There are 9 combinations of possibilities in matrix
 
-        boolean supplierRiskLevelLow = supplierRiskLevel.toString().equals("LOW");
-        boolean supplierRiskLevelMedium = supplierRiskLevel.toString().equals("MEDIUM");
-        boolean supplierRiskLevelHigh = supplierRiskLevel.toString().equals("HIGH");
-        boolean volumeLow = volume <= 10000;
-        boolean volumeMedium = volume <= 30000;
-        boolean volumeHigh = volume > 30000;
+        boolean supplierRiskLevelLow = supplierRiskLevel.equals(CategoryLevel.LOW);
+        boolean supplierRiskLevelMedium = supplierRiskLevel.equals(CategoryLevel.MEDIUM);
+        boolean supplierRiskLevelHigh = supplierRiskLevel.equals(CategoryLevel.HIGH);
+        boolean volumeLow = volume >= 0 && volume <= 10000L;
+        boolean volumeMedium = volume > 10000L && volume <= 30000L;
+        boolean volumeHigh = volume > 30000L;
 
-        if(volumeLow & supplierRiskLevelLow) answer = Mono.just("LOW");
+        if (volumeLow) {
+            if (supplierRiskLevelLow) answer = CategoryLevel.LOW;
+            if (supplierRiskLevelMedium) answer = CategoryLevel.MEDIUM;}
 
-        // 4 combinations (1 + 1 + 2)
-        if(volumeLow && supplierRiskLevelMedium
-                ||volumeHigh && supplierRiskLevelLow
-                ||volumeMedium && !supplierRiskLevelHigh){
-            answer = Mono.just("MEDIUM");
-        }
+        if (volumeMedium) {
+            if (!supplierRiskLevelHigh) answer = CategoryLevel.MEDIUM; }
 
-        //the rest 4 is HIGH
+        if (volumeHigh) {
+            if (supplierRiskLevelLow) answer = CategoryLevel.MEDIUM;}
+
         return answer;
     }
 }

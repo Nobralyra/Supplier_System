@@ -1,7 +1,7 @@
 package finalproject.suppliersystem.supplier.domain;
 
 import finalproject.suppliersystem.core.auditing.Audition;
-import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
+import finalproject.suppliersystem.core.enums.CategoryLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,7 +35,7 @@ public class Criticality extends Audition {
 
     @Column(length = 6)
     @NotNull(message = "Choose a responsibility level")
-    private CorporateSocialResponsibility corporateSocialResponsibility;
+    private CategoryLevel corporateSocialResponsibility;
 
     @Column(length = 3)
     @PositiveOrZero(message = "Issues has to be zero or a positive number")

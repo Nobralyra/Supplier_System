@@ -1,6 +1,6 @@
 package finalproject.suppliersystem.supplier.restapi.service;
 
-import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
+import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -56,9 +56,9 @@ class CalculatorSupplierRiskLevelRestServiceTest
 
     @ParameterizedTest
     @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereCorporateSocialResponsibilityIsHigh")
-    void calculateSupplierRiskLevel_ReturnsHighIfCorporateSocialResponsibilityIsHigh(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    void calculateSupplierRiskLevel_ReturnsHighIfCorporateSocialResponsibilityIsHigh(CategoryLevel categoryLevel, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("High", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("High", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(categoryLevel, issuesConcerningCooperation, availabilityIssues));
     }
 
     /**
@@ -94,9 +94,9 @@ class CalculatorSupplierRiskLevelRestServiceTest
 
     @ParameterizedTest
     @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsBetween7And9")
-    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween7And9(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween7And9(CategoryLevel categoryLevel, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(categoryLevel, issuesConcerningCooperation, availabilityIssues));
     }
 
     private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsBetween7And9()
@@ -127,9 +127,9 @@ class CalculatorSupplierRiskLevelRestServiceTest
 
     @ParameterizedTest
     @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow")
-    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    void calculateSupplierRiskLevel_ReturnsMediumIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow(CategoryLevel categoryLevel, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("Medium", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(categoryLevel, issuesConcerningCooperation, availabilityIssues));
     }
 
     private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityWhereSumIsSometimesSixExceptWhereSumSometimesSixShouldReturnLow()
@@ -146,9 +146,9 @@ class CalculatorSupplierRiskLevelRestServiceTest
 
     @ParameterizedTest
     @MethodSource("differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnMedium")
-    void calculateSupplierRiskLevel_ReturnsLowIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween4AndsometimesSixExceptWhereSumsometimesSixShouldReturnMedium(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    void calculateSupplierRiskLevel_ReturnsLowIfSumOfIssuesConcerningCooperationAndAvailabilityIssuesAndCorporateSocialResponsibilityIsBetween4AndsometimesSixExceptWhereSumsometimesSixShouldReturnMedium(CategoryLevel categoryLevel, int issuesConcerningCooperation, int availabilityIssues)
     {
-        assertEquals("Low", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues));
+        assertEquals("Low", calculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(categoryLevel, issuesConcerningCooperation, availabilityIssues));
     }
 
     private static Stream<Arguments> differentCombinationsOfIssuesConcerningCooperationAndAvailabilityIssuesWhereSumIssometimesSixExceptWhereSumsometimesSixShouldReturnMedium()

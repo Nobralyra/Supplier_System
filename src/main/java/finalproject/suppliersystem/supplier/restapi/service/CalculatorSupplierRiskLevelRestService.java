@@ -1,6 +1,6 @@
 package finalproject.suppliersystem.supplier.restapi.service;
 
-import finalproject.suppliersystem.core.enums.CorporateSocialResponsibility;
+import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -74,7 +74,7 @@ public class CalculatorSupplierRiskLevelRestService implements ICalculatorSuppli
      * TODO: Check if a combination of those two a better
      */
     /**
-     * CorporateSocialResponsibility:
+     * CategoryLevel:
      * 2 = Low
      * 4 = Medium
      * 6 = High
@@ -86,15 +86,15 @@ public class CalculatorSupplierRiskLevelRestService implements ICalculatorSuppli
      *
      * Link to where matrix is shown: https://docs.google.com/spreadsheets/d/1WUrAZfCbLKgNF_cWvrtBIctzHUmx0n9QSf9eGE1Mg0s/edit?usp=sharing
      *
-     * @param corporateSocialResponsibility enum
+     * @param categoryLevel enum
      * @param issuesConcerningCooperation number of occurred Issues Concerning Cooperation with the supplier
      * @param availabilityIssues number of occurred Availability Issues with the supplier
      * @return result of Supplier Risk Level
      */
     @Override
-    public Mono<String> calculateSupplierRiskLevel(CorporateSocialResponsibility corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    public Mono<String> calculateSupplierRiskLevel(CategoryLevel categoryLevel, int issuesConcerningCooperation, int availabilityIssues)
     {
-        int convertedCorporateSocialResponsibility = convertCorporateSocialResponsibility(corporateSocialResponsibility.name());
+        int convertedCorporateSocialResponsibility = convertCorporateSocialResponsibility(categoryLevel.name());
         int convertedIssuesConcerningCooperation = convertIssuesConcerningCooperationAndAvailabilityIssues(issuesConcerningCooperation);
         int convertedAvailabilityIssues = convertIssuesConcerningCooperationAndAvailabilityIssues(availabilityIssues);
 
