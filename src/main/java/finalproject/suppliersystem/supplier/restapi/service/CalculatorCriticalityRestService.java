@@ -23,16 +23,16 @@ public class CalculatorCriticalityRestService {
         boolean supplierRiskLevelLow = supplierRiskLevel.equals(CategoryLevel.LOW);
         boolean supplierRiskLevelMedium = supplierRiskLevel.equals(CategoryLevel.MEDIUM);
         boolean supplierRiskLevelHigh = supplierRiskLevel.equals(CategoryLevel.HIGH);
-        Enum<CategoryLevel> volumelLevel = calculateVolumeLevel(volume);
+        Enum<CategoryLevel> volumeLevel = calculateVolumeLevel(volume);
 
-        if (volumelLevel.equals(CategoryLevel.LOW)) {
+        if (volumeLevel.equals(CategoryLevel.LOW)) {
             if (supplierRiskLevelLow) answer = CategoryLevel.LOW;
             if (supplierRiskLevelMedium) answer = CategoryLevel.MEDIUM;}
 
-        if (volumelLevel.equals(CategoryLevel.MEDIUM))  {
+        if (volumeLevel.equals(CategoryLevel.MEDIUM))  {
             if (!supplierRiskLevelHigh) answer = CategoryLevel.MEDIUM; }
 
-        if (volumelLevel.equals(CategoryLevel.HIGH))  {
+        if (volumeLevel.equals(CategoryLevel.HIGH))  {
             if (supplierRiskLevelLow) answer = CategoryLevel.MEDIUM;}
 
         return answer;
