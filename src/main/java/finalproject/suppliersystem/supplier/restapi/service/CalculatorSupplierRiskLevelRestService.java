@@ -63,10 +63,6 @@ public class CalculatorSupplierRiskLevelRestService implements ICalculatorSuppli
     }
 
     /**
-     * TODO: Service kan aflevere en enum eller en int, for ikke at skulle parse det, men i stedet lade Controlleren (Fx. at den har en anden klasse der konvertere) eller HTML håndtere at lave det om
-     * TODO: men Service skal kun forretnignslogik. Gør også at return type her ikke vil være Mono<String>
-     */
-    /**
      * Risk Level can never be lower level than what level corporateSocialResponsibility is:
      * corporateSocialResponsibility HIGH => HIGH always
      * corporateSocialResponsibility MEDIUM + convertedIssuesConcerningCooperation HIGH + convertedAvailabilityIssues HIGH => HIGH
