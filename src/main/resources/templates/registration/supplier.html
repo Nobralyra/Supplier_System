@@ -305,7 +305,7 @@
 
     // https://api.jquery.com/jquery.ajax/
     //asyncron call: this sends data to RestController in order to calculate Criticality and RestController returns the result as JSON (can be HIGH, MEDIUM or LOW)
-    function sendToServer(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues) {
+    function calculateSupplierRiskLevelAndCriticality(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues) {
 
         $.ajax({
             type: 'GET',
@@ -316,14 +316,19 @@
                 availabilityIssues: availabilityIssues
             },
             dataType: "json"
-        }).done(function (response) {
+        }).done(function (response, textStatus, jqXHR) {
             console.dir(response)
 
-            if (response === "HIGH") {
+            if (response === "HIGH")
+            {
                 $("#supplierRiskLevel").html(response).css('background', '#ff5733');
-            } else if (response === "MEDIUM") {
+            }
+            else if (response === "MEDIUM")
+            {
                 $("#supplierRiskLevel").html(response).css('background', 'yellow');
-            } else {
+            }
+            else
+            {
                 $("#supplierRiskLevel").html(response).css('background', '#AFFF33');
             }
 
@@ -335,21 +340,31 @@
                     supplierRiskLevel: response
                 },
                 dataType: "json"
-            }).done(function (responseCriticality) {
+            }).done(function (responseCriticality, textStatus, jqXHR) {
                 console.dir(responseCriticality)
-                if (responseCriticality === "HIGH") {
+
+                if (responseCriticality === "HIGH")
+                {
                     $("#criticality").html(responseCriticality).css('background', '#ff5733');
-                } else if (responseCriticality === "MEDIUM") {
+                }
+                else if (responseCriticality === "MEDIUM")
+                {
                     $("#criticality").html(responseCriticality).css('background', 'yellow');
-                } else {
+                }
+                else
+                {
                     $("#criticality").html(responseCriticality).css('background', '#AFFF33');
                 }
-            }).fail(function (jqXHR, textStatus) {
-                console.dir(jqXHR)
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error(jqXHR)
+                console.error(errorThrown)
                 alert("Request failed: " + textStatus);
             });
-        }).fail(function (jqXHR, textStatus) {
-            console.dir(jqXHR)
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.error(jqXHR)
+            console.error(errorThrown)
             alert("Request failed: " + textStatus);
         });
     }
@@ -360,12 +375,12 @@
         let issuesConcerningCooperation = $("#issuesConcerningCooperation").val();
         let availabilityIssues = $("#availabilityIssues").val();
 
-        sendToServer(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues,
+        calculateSupplierRiskLevelAndCriticality(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues,
             function (data) {
                 console.log(data);
             },
             function (data) {
-                console.log('error', data);
+                console.error('error', data);
             }
         );
     });
