@@ -115,8 +115,11 @@
             </div>
         </div>
 
-        <div class="col-12 d-flex justify-content-center">
-            <div id="supplierRiskLevel" style="background: green">LOW</div>
+        <div class="col-12 d-flex justify-content-center" style="margin-top: 25px">
+            <div>Supplier Risk Level:&nbsp  </div>
+            <div id="supplierRiskLevel" style="background-color: #AFFF33">LOW</div>
+            <div>&nbsp Criticality:&nbsp  </div>
+            <div id="criticality" style="background-color: #AFFF33">LOW</div>
         </div>
 
         <div class="col-12">
@@ -321,7 +324,7 @@
             }
             else
             {
-                $("#supplierRiskLevel").html(response).css('background', 'green');
+                $("#supplierRiskLevel").html(response).css('background', '#AFFF33');
             }
         }).fail(function (jqXHR, textStatus) {
             console.dir(jqXHR)
@@ -329,6 +332,43 @@
         });
 
     }
+
+    <!--asyncron call: this sends data to RestController in order to calculate Criticality
+    and RestController returns the result as JSON (can be HIGH, MEDIUM or LOW)-->
+    function sendToServerCriticality(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues, onSuccess, onError){
+
+        $.ajax({
+            type: 'GET',
+            url: "/criticality_api",
+            data: {
+                volume: volume,
+                corporateSocialResponsibility: corporateSocialResponsibility,
+                issuesConcerningCooperation: issuesConcerningCooperation,
+                availabilityIssues: availabilityIssues
+            },
+            dataType: "json"
+        }).done(function (response) {
+            console.dir(response)
+            if(response === "HIGH")
+            {
+                $("#criticality").html(response).css('background', '#ff5733');
+            }
+            else if(response === "MEDIUM")
+            {
+                $("#criticality").html(response).css('background', 'yellow');
+            }
+            else
+            {
+                $("#criticality").html(response).css('background', '#AFFF33');
+            }
+        }).fail(function (jqXHR, textStatus) {
+            console.dir(jqXHR)
+            alert( "Request failed: " + textStatus );
+        });
+
+    }
+
+
 
     $("#volume, #corporateSocialResponsibility, #issuesConcerningCooperation, #availabilityIssues").on('change', function() {
         let volume = $("#volume").val();
@@ -344,7 +384,18 @@
                 console.log('error', data);
             }
         );
+
+        sendToServerCriticality(volume, corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues,
+            function(data){
+                console.log(data);
+            },
+            function(data){
+                console.log('error', data);
+            }
+        );
+
     });
+
 </script>
 
 

@@ -14,7 +14,7 @@ public class CalculatorCriticalityRestService {
      * @param volume
      * @return
      */
-    public CategoryLevel calculateCriticality(CategoryLevel supplierRiskLevel, Long volume) {
+    public Enum<CategoryLevel> calculateCriticality(Enum<CategoryLevel> supplierRiskLevel, Long volume) {
 
         CategoryLevel answer = CategoryLevel.HIGH;
 
