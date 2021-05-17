@@ -1,6 +1,7 @@
 package finalproject.suppliersystem.supplier.restapi.service;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,12 +31,16 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class CalculatorSupplierRiskLevelRestServiceTest
 {
-    @Mock
-    private ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService;
+    private CalculatorSupplierRiskLevelRestService testService;
+
+    //Arrange
+    @BeforeEach
+    void setUp()
+    {
+        testService = new CalculatorSupplierRiskLevelRestService();
+    }
 
     /**
-     * TODO: Ændre Stream<Arguments> til at have bedre navngivning
-     *
      * @param corporateSocialResponsibility
      * @param issuesConcerningCooperation
      * @param availabilityIssues
@@ -44,8 +49,6 @@ class CalculatorSupplierRiskLevelRestServiceTest
     @MethodSource("testCasesForHigh")
     void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsHigh_ReturnsHigh(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        //Arrange
-        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
         // Act
         Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
         // Assert
@@ -95,8 +98,6 @@ class CalculatorSupplierRiskLevelRestServiceTest
     @MethodSource("testCasesForHighWhereCSRIsMediumAndICCAndAVAISIsHigh")
     void calculateSupplierRiskLevel_CSRIsMediumAndICCIsHighAndAVAISIsHigh_ReturnsHigh(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        //Arrange
-        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
         // Act
         Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
         // Assert
@@ -120,8 +121,6 @@ class CalculatorSupplierRiskLevelRestServiceTest
     @MethodSource("testCasesForMedium")
     void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsMedium_ReturnsMedium(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        //Arrange
-        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
         // Act
         Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
         // Assert
@@ -154,8 +153,6 @@ class CalculatorSupplierRiskLevelRestServiceTest
     @MethodSource("testCasesForMediumWhereCorporateSocialResponsibilityIsLowAndIssuesConcerningCooperationIsHigh")
     void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsLowAndIssuesConcerningCooperationIsHigh_ReturnsMedium(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        //Arrange
-        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
         // Act
         Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
         // Assert
@@ -178,8 +175,6 @@ class CalculatorSupplierRiskLevelRestServiceTest
     @MethodSource("testCasesForMediumWhereCorporateSocialResponsibilityIsLowAndAvailabilityIssuesIsHigh")
     void calculateSupplierRiskLevel_CorporateSocialResponsibilityIsLowAndAvailabilityIssuesIsHigh_ReturnsMedium(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        //Arrange
-        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
         // Act
         Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
         // Assert
@@ -202,8 +197,6 @@ class CalculatorSupplierRiskLevelRestServiceTest
     @MethodSource("testCasesForLow")
     void calculateSupplierRiskLevel_AllOthersCombinations_ReturnsLow(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
-        //Arrange
-        CalculatorSupplierRiskLevelRestService testService = new CalculatorSupplierRiskLevelRestService();
         // Act
         Enum<CategoryLevel> result = testService.calculateSupplierRiskLevel(corporateSocialResponsibility, issuesConcerningCooperation, availabilityIssues);
         // Assert
