@@ -23,20 +23,30 @@ public class CalculatorCriticalityRestService {
         boolean supplierRiskLevelLow = supplierRiskLevel.equals(CategoryLevel.LOW);
         boolean supplierRiskLevelMedium = supplierRiskLevel.equals(CategoryLevel.MEDIUM);
         boolean supplierRiskLevelHigh = supplierRiskLevel.equals(CategoryLevel.HIGH);
-        boolean volumeLow = volume >= 0 && volume <= 10000L;
-        boolean volumeMedium = volume > 10000L && volume <= 30000L;
-        boolean volumeHigh = volume > 30000L;
+        Enum<CategoryLevel> volumeLevel = calculateVolumeLevel(volume);
 
-        if (volumeLow) {
+        if (volumeLevel.equals(CategoryLevel.LOW)) {
             if (supplierRiskLevelLow) answer = CategoryLevel.LOW;
             if (supplierRiskLevelMedium) answer = CategoryLevel.MEDIUM;}
 
-        if (volumeMedium) {
+        if (volumeLevel.equals(CategoryLevel.MEDIUM))  {
             if (!supplierRiskLevelHigh) answer = CategoryLevel.MEDIUM; }
 
-        if (volumeHigh) {
+        if (volumeLevel.equals(CategoryLevel.HIGH))  {
             if (supplierRiskLevelLow) answer = CategoryLevel.MEDIUM;}
 
         return answer;
+    }
+
+    /**
+     * returns the volume level as a CategoryLevel
+     * @param volume
+     * @return
+     */
+    public Enum<CategoryLevel> calculateVolumeLevel(Long volume){
+
+        if(volume >= 0 && volume <= 10000L) return CategoryLevel.LOW;
+        if(volume > 10000L && volume <= 30000L) return CategoryLevel.MEDIUM;
+        else return CategoryLevel.HIGH;
     }
 }

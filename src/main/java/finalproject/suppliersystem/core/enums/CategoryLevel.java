@@ -1,7 +1,7 @@
 package finalproject.suppliersystem.core.enums;
 
 /**
- * These values are used in Criticality
+ * These values are used in Criticality and Risk Level
  */
 public enum CategoryLevel
 {
