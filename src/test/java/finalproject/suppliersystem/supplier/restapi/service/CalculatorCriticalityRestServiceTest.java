@@ -27,20 +27,20 @@ public class CalculatorCriticalityRestServiceTest {
 
     @ParameterizedTest
     @MethodSource("argumentProviderHigh")
-    void calculateCriticalityHighTest(CategoryLevel supplierRiskLevel, Long volume){
-        assertEquals(CategoryLevel.HIGH, calculatorCriticalityRestService.calculateCriticality(supplierRiskLevel, volume));
+    void calculateCriticalityHighTest(Long volume, CategoryLevel supplierRiskLevel){
+        assertEquals(CategoryLevel.HIGH, calculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
     }
 
     @ParameterizedTest
     @MethodSource("argumentProviderMedium")
-    void calculateCriticalityMediumTest(CategoryLevel supplierRiskLevel, Long volume){
-        assertEquals(CategoryLevel.MEDIUM, calculatorCriticalityRestService.calculateCriticality(supplierRiskLevel, volume));
+    void calculateCriticalityMediumTest(Long volume, CategoryLevel supplierRiskLevel){
+        assertEquals(CategoryLevel.MEDIUM, calculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
     }
 
     @ParameterizedTest
     @MethodSource("argumentProviderLow")
-    void calculateCriticalityLowTest(CategoryLevel supplierRiskLevel, Long volume){
-        assertEquals(CategoryLevel.LOW, calculatorCriticalityRestService.calculateCriticality(supplierRiskLevel, volume));
+    void calculateCriticalityLowTest(Long volume, CategoryLevel supplierRiskLevel){
+        assertEquals(CategoryLevel.LOW, calculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
     }
 
     /*
@@ -50,7 +50,6 @@ public class CalculatorCriticalityRestServiceTest {
           volume > 10000 && volume <= 30000;
           volumeHigh > 30000;
      */
-
     private static Stream<Arguments> argumentProviderHigh()
     {
         return Stream.of(
