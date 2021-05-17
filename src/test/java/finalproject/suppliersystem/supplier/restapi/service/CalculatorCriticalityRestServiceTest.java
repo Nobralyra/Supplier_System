@@ -2,6 +2,7 @@ package finalproject.suppliersystem.supplier.restapi.service;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -76,6 +77,26 @@ public class CalculatorCriticalityRestServiceTest {
         return Stream.of(
                 Arguments.arguments(CategoryLevel.LOW, 10000L)
         );
+    }
+
+    private static Stream<Arguments> argumentProviderVolumeLevel()
+    {
+        return Stream.of(
+                Arguments.arguments(0L),
+                Arguments.arguments(10000L),
+                Arguments.arguments(20000L),
+                Arguments.arguments(30001L)
+
+        );
+    }
+
+
+    @Test
+    void calculateVolumeLevelTest(){
+        assertEquals(CategoryLevel.LOW, calculatorCriticalityRestService.calculateVolumeLevel(0L));
+        assertEquals(CategoryLevel.MEDIUM, calculatorCriticalityRestService.calculateVolumeLevel(20000L));
+        assertEquals(CategoryLevel.HIGH, calculatorCriticalityRestService.calculateVolumeLevel(30001L));
+
     }
 
 }
