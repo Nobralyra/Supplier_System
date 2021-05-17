@@ -319,6 +319,14 @@
         }).done(function (response) {
             console.dir(response)
 
+            if (response === "HIGH") {
+                $("#supplierRiskLevel").html(response).css('background', '#ff5733');
+            } else if (response === "MEDIUM") {
+                $("#supplierRiskLevel").html(response).css('background', 'yellow');
+            } else {
+                $("#supplierRiskLevel").html(response).css('background', '#AFFF33');
+            }
+
             $.ajax({
                 type: 'GET',
                 url: "/criticality_api",
@@ -340,14 +348,6 @@
                 console.dir(jqXHR)
                 alert("Request failed: " + textStatus);
             });
-
-            if (response === "HIGH") {
-                $("#supplierRiskLevel").html(response).css('background', '#ff5733');
-            } else if (response === "MEDIUM") {
-                $("#supplierRiskLevel").html(response).css('background', 'yellow');
-            } else {
-                $("#supplierRiskLevel").html(response).css('background', '#AFFF33');
-            }
         }).fail(function (jqXHR, textStatus) {
             console.dir(jqXHR)
             alert("Request failed: " + textStatus);
