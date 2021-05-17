@@ -10,11 +10,11 @@ public class CalculatorCriticalityRestService {
      * Criticality is a combination of Supplier Risk Level and Volume
      * Risk Level weights twice as much as Volume
      * See matrix in User Story 10
-     * @param supplierRiskLevel
      * @param volume
-     * @return
+     * @param supplierRiskLevel ENUM of Supplier Risk Level
+     * @return ENUM result of Supplier Risk Level
      */
-    public Enum<CategoryLevel> calculateCriticality(Enum<CategoryLevel> supplierRiskLevel, Long volume) {
+    public Enum<CategoryLevel> calculateCriticality(Long volume, Enum<CategoryLevel> supplierRiskLevel) {
 
         CategoryLevel answer = CategoryLevel.HIGH;
 
