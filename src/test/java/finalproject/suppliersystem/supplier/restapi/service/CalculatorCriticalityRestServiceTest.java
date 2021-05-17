@@ -54,27 +54,27 @@ public class CalculatorCriticalityRestServiceTest {
     private static Stream<Arguments> argumentProviderHigh()
     {
         return Stream.of(
-                Arguments.arguments(CategoryLevel.HIGH, 30001L),
-                Arguments.arguments(CategoryLevel.HIGH, 20000L),
-                Arguments.arguments(CategoryLevel.HIGH, 10000L),
-                Arguments.arguments(CategoryLevel.MEDIUM, 30001L)
+                Arguments.arguments(30001L, CategoryLevel.HIGH),
+                Arguments.arguments(20000L, CategoryLevel.HIGH),
+                Arguments.arguments(10000L, CategoryLevel.HIGH),
+                Arguments.arguments(30001L, CategoryLevel.MEDIUM)
         );
     }
 
     private static Stream<Arguments> argumentProviderMedium()
     {
         return Stream.of(
-                Arguments.arguments(CategoryLevel.MEDIUM, 20000L),
-                Arguments.arguments(CategoryLevel.MEDIUM, 10000L),
-                Arguments.arguments(CategoryLevel.LOW, 30001L),
-                Arguments.arguments(CategoryLevel.LOW, 20000L)
+                Arguments.arguments(20000L, CategoryLevel.MEDIUM),
+                Arguments.arguments(10000L, CategoryLevel.MEDIUM),
+                Arguments.arguments(30001L, CategoryLevel.LOW),
+                Arguments.arguments(20000L, CategoryLevel.LOW)
         );
     }
 
     private static Stream<Arguments> argumentProviderLow()
     {
         return Stream.of(
-                Arguments.arguments(CategoryLevel.LOW, 10000L)
+                Arguments.arguments(10000L, CategoryLevel.LOW)
         );
     }
 
