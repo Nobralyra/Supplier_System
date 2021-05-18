@@ -41,7 +41,7 @@ public class PersistenceConfig
     */
     @Bean
     public DateTimeProvider utcDateTimeProvider() {
-        ZoneOffset zoneOffSet= ZoneOffset.of("+02:00");
+        ZoneOffset zoneOffSet= ZoneOffset.of("+04:00");
         OffsetDateTime date = OffsetDateTime.now(zoneOffSet);
         return () -> Optional.of(LocalDateTime.now(ZoneId.from(date)));
     }
