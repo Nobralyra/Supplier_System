@@ -33,7 +33,7 @@ public class Supplier extends Audition
     private Long supplierId;
 
     @Column(length = 100)
-    @Size(max = 100, message = "Street Name must be between 0 and 45 characters")
+    @Size(max = 100, message = "Supplier Name must be between 0 and 45 characters")
     @NotBlank(message = "Please add the supplier name")
     private String supplierName;
 
