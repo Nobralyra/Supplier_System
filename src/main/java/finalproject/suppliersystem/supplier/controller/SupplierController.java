@@ -176,7 +176,6 @@ public class SupplierController
     @GetMapping("/registration/supplier_confirmation/{supplierId}")
     public String confirmRegistration(@PathVariable("supplierId") Long supplierId, Model model)
     {
-
         Long supplierNumber = supplierService.findById(supplierId).getSupplierId();
         model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registered.");
         return "/registration/supplier_confirmation";
@@ -196,18 +195,8 @@ public class SupplierController
                                           ContactPerson contactPerson, Model model){
 
         Supplier supplier = supplierService.findById(supplierId);
-        Criticality criticality = criticalityService.findById(supplierId);
-        ContactInformation contactInformation= contactInformationService.findById(supplierId);
-        Address address = addressService.findById(supplierId);
         ContactPerson contactPersonAlready = contactPersonService.findBySupplierId(supplierId);
-        Long countryId = address.getCountry().getCountryId();
-        Country country = countryService.findById(countryId);
-
         model.addAttribute("supplier", supplier);
-        model.addAttribute("criticality", criticality);
-        model.addAttribute("contactInformation", contactInformation);
-        model.addAttribute("address", address);
-        model.addAttribute("country", country);
         model.addAttribute("contactPersonAlready", contactPersonAlready);
         model.addAttribute("contactPerson", contactPerson);
 
@@ -229,6 +218,9 @@ public class SupplierController
                                    Model model){
 
         if(bindingResultContactPerson.hasErrors()){
+            model.addAttribute("contactPerson", contactPerson);
+            Supplier supplier = supplierService.findById(supplierId);
+            model.addAttribute("supplier", supplier);
             return "/registration/supplier_with_extra_contact_person";
         }
 
