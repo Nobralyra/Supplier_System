@@ -1,6 +1,7 @@
 package finalproject.suppliersystem.supplier.service;
 
 import finalproject.suppliersystem.core.IService;
+import finalproject.suppliersystem.supplier.domain.Country;
 import finalproject.suppliersystem.supplier.domain.Criticality;
 import finalproject.suppliersystem.supplier.repository.ICriticalityRepository;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class CriticalityService implements IService<Criticality> {
 
     @Override
     public List<Criticality> findAll() {
-        return new ArrayList<>();
+        return new ArrayList<>(iCriticalityRepository.findAll());
     }
 
     @Override
