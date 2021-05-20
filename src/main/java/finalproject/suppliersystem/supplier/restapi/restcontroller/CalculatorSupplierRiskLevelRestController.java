@@ -2,14 +2,13 @@ package finalproject.suppliersystem.supplier.restapi.restcontroller;
 
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
-import finalproject.suppliersystem.supplier.restapi.service.ICalculatorSupplierRiskLevelRestService;
+import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorSupplierRiskLevelRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 /**
  * @RestController is a specialized version of the Controller. It's a REST style controller

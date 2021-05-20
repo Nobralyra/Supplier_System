@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.supplier.restapi.service;
+package finalproject.suppliersystem.supplier.restapi.restservice;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.springframework.stereotype.Service;
