@@ -29,7 +29,7 @@ public class ExcelController {
     public @ResponseBody Serializable generateExcel() throws IOException {
 
         // var is explicit type
-        final var path = "C:\\C DATAMATIKER 2020\\Supplier_System\\src\\main\\resources\\files\\Suppliers_by_Spend.xlsx";
+        final var path = "src\\main\\resources\\files\\Suppliers_by_Spend.xlsx";
         workbookGenerator.createWorkbook();
         File file = new File(path);
 

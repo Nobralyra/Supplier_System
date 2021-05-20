@@ -3,7 +3,7 @@ package finalproject.suppliersystem.supplier.excelFile.service;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.domain.Criticality;
 import finalproject.suppliersystem.supplier.domain.ProductCategory;
-import finalproject.suppliersystem.supplier.restapi.service.CalculatorCriticalityRestService;
+import finalproject.suppliersystem.supplier.restapi.restservice.CalculatorCriticalityRestService;
 import finalproject.suppliersystem.supplier.service.AddressService;
 import finalproject.suppliersystem.supplier.service.CriticalityService;
 import finalproject.suppliersystem.supplier.service.SupplierService;
