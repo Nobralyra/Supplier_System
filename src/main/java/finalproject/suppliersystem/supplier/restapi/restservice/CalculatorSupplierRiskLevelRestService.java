@@ -79,7 +79,7 @@ public class CalculatorSupplierRiskLevelRestService implements ICalculatorSuppli
      * @return ENUM result of Supplier Risk Level
      */
     @Override
-    public Enum<CategoryLevel> calculateSupplierRiskLevel(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
+    public CategoryLevel calculateSupplierRiskLevel(CategoryLevel corporateSocialResponsibility, int issuesConcerningCooperation, int availabilityIssues)
     {
         CategoryLevel convertedIssuesConcerningCooperation = convertIssuesConcerningCooperation(issuesConcerningCooperation);
         CategoryLevel convertedAvailabilityIssues = convertAvailabilityIssues(availabilityIssues);

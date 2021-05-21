@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CalculatorCriticalityRestServiceTest {
 
-    private CalculatorCriticalityRestService calculatorCriticalityRestService;
+    private ICalculatorCriticalityRestService ICalculatorCriticalityRestService;
 
     @BeforeEach
     void setUp()
     {
-        calculatorCriticalityRestService = new CalculatorCriticalityRestService();
+        ICalculatorCriticalityRestService = new CalculatorCriticalityRestService();
     }
 
     /**
@@ -29,19 +29,19 @@ public class CalculatorCriticalityRestServiceTest {
     @ParameterizedTest
     @MethodSource("argumentProviderHigh")
     void calculateCriticalityHighTest(Long volume, CategoryLevel supplierRiskLevel){
-        assertEquals(CategoryLevel.HIGH, calculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
+        assertEquals(CategoryLevel.HIGH, ICalculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
     }
 
     @ParameterizedTest
     @MethodSource("argumentProviderMedium")
     void calculateCriticalityMediumTest(Long volume, CategoryLevel supplierRiskLevel){
-        assertEquals(CategoryLevel.MEDIUM, calculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
+        assertEquals(CategoryLevel.MEDIUM, ICalculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
     }
 
     @ParameterizedTest
     @MethodSource("argumentProviderLow")
     void calculateCriticalityLowTest(Long volume, CategoryLevel supplierRiskLevel){
-        assertEquals(CategoryLevel.LOW, calculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
+        assertEquals(CategoryLevel.LOW, ICalculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel));
     }
 
     /*
@@ -92,9 +92,9 @@ public class CalculatorCriticalityRestServiceTest {
 
     @Test
     void calculateVolumeLevelTest(){
-        assertEquals(CategoryLevel.LOW, calculatorCriticalityRestService.calculateVolumeLevel(0L));
-        assertEquals(CategoryLevel.MEDIUM, calculatorCriticalityRestService.calculateVolumeLevel(20000L));
-        assertEquals(CategoryLevel.HIGH, calculatorCriticalityRestService.calculateVolumeLevel(30001L));
+        assertEquals(CategoryLevel.LOW, ICalculatorCriticalityRestService.calculateVolumeLevel(0L));
+        assertEquals(CategoryLevel.MEDIUM, ICalculatorCriticalityRestService.calculateVolumeLevel(20000L));
+        assertEquals(CategoryLevel.HIGH, ICalculatorCriticalityRestService.calculateVolumeLevel(30001L));
 
     }
 

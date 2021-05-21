@@ -1,7 +1,7 @@
 package finalproject.suppliersystem.supplier.restapi.restcontroller;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
-import finalproject.suppliersystem.supplier.restapi.restservice.CalculatorCriticalityRestService;
+import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CalculatorCriticalityRestController
 {
-    private final CalculatorCriticalityRestService calculatorCriticalityRestService;
+    private final ICalculatorCriticalityRestService ICalculatorCriticalityRestService;
 
     /**
      * Constructor injection
@@ -24,12 +24,12 @@ public class CalculatorCriticalityRestController
      * https://stackoverflow.com/questions/40620000/spring-autowire-on-properties-vs-constructor
      * https://reflectoring.io/constructor-injection/
      *
-     * @param calculatorCriticalityRestService - interface of provided method
+     * @param ICalculatorCriticalityRestService - interface of provided method
      */
     @Autowired
-    public CalculatorCriticalityRestController(CalculatorCriticalityRestService calculatorCriticalityRestService)
+    public CalculatorCriticalityRestController(ICalculatorCriticalityRestService ICalculatorCriticalityRestService)
     {
-        this.calculatorCriticalityRestService = calculatorCriticalityRestService;
+        this.ICalculatorCriticalityRestService = ICalculatorCriticalityRestService;
     }
 
     /**
@@ -45,9 +45,9 @@ public class CalculatorCriticalityRestController
      * @return set the body, status, and headers of an HTTP response
      */
     @GetMapping(value = "/criticality_api", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Enum<CategoryLevel>> getCriticality(Long volume, CategoryLevel supplierRiskLevel)
+    public ResponseEntity<CategoryLevel> getCriticality(Long volume, CategoryLevel supplierRiskLevel)
     {
-        Enum<CategoryLevel> criticality = calculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel);
+        CategoryLevel criticality = ICalculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel);
         return new ResponseEntity<>(criticality, HttpStatus.OK);
     }
 

@@ -3,7 +3,7 @@ package finalproject.suppliersystem.supplier.excelfile.excelservice;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.domain.Criticality;
 import finalproject.suppliersystem.supplier.domain.ProductCategory;
-import finalproject.suppliersystem.supplier.restapi.restservice.CalculatorCriticalityRestService;
+import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
 import finalproject.suppliersystem.supplier.service.AddressService;
 import finalproject.suppliersystem.supplier.service.CriticalityService;
 import finalproject.suppliersystem.supplier.service.SupplierService;
@@ -22,7 +22,7 @@ import java.util.*;
 public class ExcelDataGenerator {
 
     private final CriticalityService criticalityService;
-    private final CalculatorCriticalityRestService calculatorCriticalityRestService;
+    private final ICalculatorCriticalityRestService ICalculatorCriticalityRestService;
     private final AddressService addressService;
     private final SupplierService supplierService;
 
@@ -31,9 +31,9 @@ public class ExcelDataGenerator {
     private Map<Long,Long> mediumSuppliers = new HashMap<>();
     private Map<Long,Long> highSuppliers = new HashMap<>();
 
-    public ExcelDataGenerator(CriticalityService criticalityService, CalculatorCriticalityRestService calculatorCriticalityRestService, AddressService addressService, SupplierService supplierService) {
+    public ExcelDataGenerator(CriticalityService criticalityService, ICalculatorCriticalityRestService ICalculatorCriticalityRestService, AddressService addressService, SupplierService supplierService) {
         this.criticalityService = criticalityService;
-        this.calculatorCriticalityRestService = calculatorCriticalityRestService;
+        this.ICalculatorCriticalityRestService = ICalculatorCriticalityRestService;
         this.addressService = addressService;
         this.supplierService = supplierService;
     }
@@ -51,7 +51,7 @@ public class ExcelDataGenerator {
 
         //comparison is done by converting volue to CategoryLevel
         for(Criticality c : allCriticalities){
-            Enum<CategoryLevel> volumeLevel = calculatorCriticalityRestService.calculateVolumeLevel(c.getVolume());
+            Enum<CategoryLevel> volumeLevel = ICalculatorCriticalityRestService.calculateVolumeLevel(c.getVolume());
             if(volumeLevel == CategoryLevel.LOW) lowSuppliers.put(c.getSupplierId(), c.getVolume());
             if(volumeLevel == CategoryLevel.MEDIUM) mediumSuppliers.put(c.getSupplierId(), c.getVolume());
             if(volumeLevel == CategoryLevel.HIGH) highSuppliers.put(c.getSupplierId(), c.getVolume());

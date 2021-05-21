@@ -4,7 +4,8 @@ import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CalculatorCriticalityRestService {
+public class CalculatorCriticalityRestService implements ICalculatorCriticalityRestService
+{
 
     /**
      * Criticality is a combination of Supplier Risk Level and Volume
@@ -14,7 +15,8 @@ public class CalculatorCriticalityRestService {
      * @param supplierRiskLevel ENUM of Supplier Risk Level
      * @return ENUM result of Supplier Risk Level
      */
-    public Enum<CategoryLevel> calculateCriticality(Long volume, Enum<CategoryLevel> supplierRiskLevel) {
+    @Override
+    public CategoryLevel calculateCriticality(Long volume, CategoryLevel supplierRiskLevel) {
 
         CategoryLevel answer = CategoryLevel.HIGH;
 
@@ -23,7 +25,7 @@ public class CalculatorCriticalityRestService {
         boolean supplierRiskLevelLow = supplierRiskLevel.equals(CategoryLevel.LOW);
         boolean supplierRiskLevelMedium = supplierRiskLevel.equals(CategoryLevel.MEDIUM);
         boolean supplierRiskLevelHigh = supplierRiskLevel.equals(CategoryLevel.HIGH);
-        Enum<CategoryLevel> volumeLevel = calculateVolumeLevel(volume);
+        CategoryLevel volumeLevel = calculateVolumeLevel(volume);
 
         if (volumeLevel == CategoryLevel.LOW) {
             if (supplierRiskLevelLow) answer = CategoryLevel.LOW;
@@ -43,7 +45,8 @@ public class CalculatorCriticalityRestService {
      * @param volume
      * @return
      */
-    public Enum<CategoryLevel> calculateVolumeLevel(Long volume){
+    @Override
+    public CategoryLevel calculateVolumeLevel(Long volume){
 
         if(volume >= 0 && volume <= 10000L) return CategoryLevel.LOW;
         if(volume > 10000L && volume <= 30000L) return CategoryLevel.MEDIUM;
