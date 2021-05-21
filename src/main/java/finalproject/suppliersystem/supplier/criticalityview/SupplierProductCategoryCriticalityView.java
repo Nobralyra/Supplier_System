@@ -29,4 +29,28 @@ public class SupplierProductCategoryCriticalityView
     private int issuesConcerningCooperation;
 
     private Long volume;
+
+    /**
+     * @Transient so Hibernate ignore ignore the field
+     * https://www.baeldung.com/jpa-transient-ignore-field
+     */
+    @Transient
+    private CategoryLevel supplierRiskLevel;
+
+    /**
+     * @Transient so Hibernate ignore ignore the field
+     * https://www.baeldung.com/jpa-transient-ignore-field
+     */
+    @Transient
+    private CategoryLevel criticality;
+
+    public void setSupplierRiskLevel(CategoryLevel supplierRiskLevel)
+    {
+        this.supplierRiskLevel = supplierRiskLevel;
+    }
+
+    public void setCriticality(CategoryLevel criticality)
+    {
+        this.criticality = criticality;
+    }
 }
