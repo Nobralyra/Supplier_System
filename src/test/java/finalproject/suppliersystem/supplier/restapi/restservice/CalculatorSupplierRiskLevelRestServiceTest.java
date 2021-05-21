@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class CalculatorSupplierRiskLevelRestServiceTest
 {
-    private CalculatorSupplierRiskLevelRestService testService;
+    private ICalculatorSupplierRiskLevelRestService testService;
 
     //Arrange
     @BeforeEach

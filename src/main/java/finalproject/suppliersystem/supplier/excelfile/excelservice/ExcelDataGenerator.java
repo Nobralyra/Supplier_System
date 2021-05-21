@@ -1,8 +1,11 @@
 package finalproject.suppliersystem.supplier.excelfile.excelservice;
 
+import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
+import finalproject.suppliersystem.supplier.domain.Address;
 import finalproject.suppliersystem.supplier.domain.Criticality;
 import finalproject.suppliersystem.supplier.domain.ProductCategory;
+import finalproject.suppliersystem.supplier.domain.Supplier;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
 import finalproject.suppliersystem.supplier.service.AddressService;
 import finalproject.suppliersystem.supplier.service.CriticalityService;
@@ -21,10 +24,10 @@ import java.util.*;
 @Component
 public class ExcelDataGenerator {
 
-    private final CriticalityService criticalityService;
+    private final IService<Criticality> iCriticalityService;
     private final ICalculatorCriticalityRestService ICalculatorCriticalityRestService;
-    private final AddressService addressService;
-    private final SupplierService supplierService;
+    private final IService<Address> iAddressService;
+    private final IService<Supplier> iSupplierService;
 
     /*
        supplierId (Long) is a key and volume (Long) is a value
@@ -34,11 +37,11 @@ public class ExcelDataGenerator {
     private Map<Long,Long> mediumSuppliers = new HashMap<>();
     private Map<Long,Long> highSuppliers = new HashMap<>();
 
-    public ExcelDataGenerator(CriticalityService criticalityService, ICalculatorCriticalityRestService ICalculatorCriticalityRestService, AddressService addressService, SupplierService supplierService) {
-        this.criticalityService = criticalityService;
+    public ExcelDataGenerator(IService<Criticality> iCriticalityService, ICalculatorCriticalityRestService ICalculatorCriticalityRestService, IService<Address> iAddressService, IService<Supplier> iSupplierService) {
+        this.iCriticalityService = iCriticalityService;
         this.ICalculatorCriticalityRestService = ICalculatorCriticalityRestService;
-        this.addressService = addressService;
-        this.supplierService = supplierService;
+        this.iAddressService = iAddressService;
+        this.iSupplierService = iSupplierService;
     }
 
     /**
@@ -62,7 +65,7 @@ public class ExcelDataGenerator {
     public List<Map<Long,Long>> generateSupplierAndVolumeToExcel(){
 
         //volume is a field in Criticality that is bound to supplier by supplierId
-        List<Criticality> allCriticalities = criticalityService.findAll();
+        List<Criticality> allCriticalities = iCriticalityService.findAll();
 
         for(Criticality c : allCriticalities){
             CategoryLevel volumeLevel = ICalculatorCriticalityRestService.calculateVolumeLevel(c.getVolume());
@@ -72,12 +75,12 @@ public class ExcelDataGenerator {
         }
 
         //all HashMaps are added to List, that this method returns
-        ArrayList<Map<Long,Long>> alMaps = new ArrayList<>();
-        alMaps.add(lowSuppliers);
-        alMaps.add(mediumSuppliers);
-        alMaps.add(highSuppliers);
+        ArrayList<Map<Long,Long>> allMaps = new ArrayList<>();
+        allMaps.add(lowSuppliers);
+        allMaps.add(mediumSuppliers);
+        allMaps.add(highSuppliers);
 
-        return alMaps;
+        return allMaps;
     }
 
     /**
@@ -95,7 +98,7 @@ public class ExcelDataGenerator {
         List<String> countryNames = new ArrayList<>();
         //we loop keys (supplierId) in map and get countryName through Address with supplierId
         for(Long supplierId : suppliersGroup.keySet()){
-            countryNames.add(addressService.findById(supplierId).getCountry().getCountryName());
+            countryNames.add(iAddressService.findById(supplierId).getCountry().getCountryName());
         }
         return countryNames;
     }
@@ -118,7 +121,7 @@ public class ExcelDataGenerator {
 
         //we loop keys (supplierId) in map and get countryName through Address with supplierId
         for(Long supplierId : suppliersGroup.keySet()){
-            productCategories.add(supplierService.findById(supplierId).getProductCategorySet());
+            productCategories.add(iSupplierService.findById(supplierId).getProductCategorySet());
         }
 
         return productCategories;
