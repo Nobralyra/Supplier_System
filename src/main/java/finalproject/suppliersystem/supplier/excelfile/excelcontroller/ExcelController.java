@@ -21,14 +21,28 @@ public class ExcelController {
 
     @GetMapping("/excelfile/supplier_reports")
     public String showDownloadPage(){
-
         return "/excelfile/supplier_reports";
     }
 
+    /**
+     * This GetMapping receives link "excel" from HTML "supplier_reports"
+     * It produces zip with ResponseBody,
+     * that includes the excel file "Suppliers_by_Spend", the user can download.
+     * Method has a @ResponseBody, that includes Seriazible, but it also could return byte[].
+     * But Serializable is more generic.
+     * //https://stackoverflow.com/questions/27952949/spring-rest-create-zip-file-and-send-it-to-the-client/40498539
+     * @return zip with the file as a Serializable
+     * @throws IOException
+     */
     @GetMapping(value = "/excel", produces = "application/zip")
     public @ResponseBody Serializable generateExcel() throws IOException {
 
-        // var is explicit type
+         /*
+            datatype "var":
+            "In Java 10, the var keyword allows local variable type inference, which means the type for
+            the local variable will be inferred by the compiler, so you don't need to declare that."
+            https://developers.redhat.com/blog/2018/05/25/simplify-local-variable-type-definition-using-the-java-10-var-keyword
+         */
         final var path = "src\\main\\resources\\files\\Suppliers_by_Spend.xlsx";
         workbookGenerator.createWorkbook();
         File file = new File(path);
@@ -52,6 +66,4 @@ public class ExcelController {
         return byteArrayOutputStream.toByteArray();
 
     }
-
-
 }
