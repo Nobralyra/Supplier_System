@@ -1,12 +1,15 @@
 package finalproject.suppliersystem.supplier.criticalityview.view;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
+import finalproject.suppliersystem.supplier.domain.ProductCategory;
 import lombok.Getter;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 import org.hibernate.annotations.Synchronize;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Immutable
@@ -19,6 +22,9 @@ public class SupplierProductCategoryCriticalityView
     private Long supplierId;
 
     private String supplierName;
+
+    @Transient
+    private List<ProductCategory> productCategoryList = new ArrayList<>();
 
     private int availabilityIssues;
 
@@ -41,6 +47,11 @@ public class SupplierProductCategoryCriticalityView
      */
     @Transient
     private CategoryLevel criticality;
+
+    public void setProductCategorySet(List<ProductCategory> productCategoryList)
+    {
+        this.productCategoryList = productCategoryList;
+    }
 
     public void setSupplierRiskLevel(CategoryLevel supplierRiskLevel)
     {
