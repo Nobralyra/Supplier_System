@@ -127,13 +127,12 @@ public class SupplierService implements IService<Supplier> {
     /**
      * Returns the supplier with given id from data base.
      * If there is not any match, a EntityNotFoundException is thrown.
-     * The double colon operator :: calls a method or constructor by referrring to the class.
+     * The double colon operator :: calls a method or constructor by referring to the class.
      * (class in this case: EntityNotFoundException)
      * Optional contains either Supplier or non-value, so this method can not throw NullPointerException
      * @param id that is given
      * @return Supplier with the given id
      */
-
     @Override
     public Supplier findById(Long id) {
         Optional<Supplier> supplier = iSupplierRepository.findById(id);
@@ -143,9 +142,8 @@ public class SupplierService implements IService<Supplier> {
     /**
      *  This method returns all suppliers. It is used, when controlling if the
      *  supplier already exists in data base.
-     * @return al suppliers
+     * @return all suppliers
      */
-
     @Override
     public List<Supplier> findAll() { return new ArrayList<>(iSupplierRepository.findAll()); }
 
