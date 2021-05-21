@@ -32,6 +32,7 @@ public class ExcelController {
      * But Serializable is more generic (sequence af bytes).
      * //https://stackoverflow.com/questions/27952949/spring-rest-create-zip-file-and-send-it-to-the-client/40498539
      * @return zip with the file as a Serializable
+     * TODO: zip-filen bliver ikke genereret i FireFox
      * @throws IOException
      */
     @GetMapping(value = "/excel", produces = "application/zip")
