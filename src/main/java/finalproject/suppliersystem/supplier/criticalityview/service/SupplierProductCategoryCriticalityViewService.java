@@ -1,6 +1,8 @@
-package finalproject.suppliersystem.supplier.criticalityview;
+package finalproject.suppliersystem.supplier.criticalityview.service;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
+import finalproject.suppliersystem.supplier.criticalityview.view.SupplierProductCategoryCriticalityView;
+import finalproject.suppliersystem.supplier.criticalityview.repository.ISupplierProductCategoryCriticalityViewRepository;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorSupplierRiskLevelRestService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -28,7 +28,7 @@
         </thead>
         <tbody>
 
-        <tr th:each="SupplierProductCategoryCriticalityView : ${supplierProductCategoryCriticalityView}" th:if="${SupplierProductCategoryCriticalityView.criticality eq 'HIGH'}">
+        <tr th:each="SupplierProductCategoryCriticalityView : ${supplierProductCategoryCriticalityView}" th:if="${SupplierProductCategoryCriticalityView.supplierId eq 10000}">
             <td hidden th:text="${SupplierProductCategoryCriticalityView.supplierId}"></td>
             <td th:text="${SupplierProductCategoryCriticalityView.supplierName}"></td>
             <td th:text="${SupplierProductCategoryCriticalityView.productCategoryId}"></td>

@@ -1,7 +1,6 @@
-package finalproject.suppliersystem.supplier.controller;
+package finalproject.suppliersystem.supplier.criticalityview.controller;
 
-import finalproject.suppliersystem.supplier.criticalityview.ISupplierProductCategoryCriticalityViewService;
-import finalproject.suppliersystem.supplier.criticalityview.SupplierProductCategoryCriticalityView;
+import finalproject.suppliersystem.supplier.criticalityview.service.ISupplierProductCategoryCriticalityViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

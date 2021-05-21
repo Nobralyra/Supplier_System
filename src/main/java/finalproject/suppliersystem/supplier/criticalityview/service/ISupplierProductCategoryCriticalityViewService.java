@@ -1,4 +1,6 @@
-package finalproject.suppliersystem.supplier.criticalityview;
+package finalproject.suppliersystem.supplier.criticalityview.service;
+
+import finalproject.suppliersystem.supplier.criticalityview.view.SupplierProductCategoryCriticalityView;
 
 import java.util.List;
 
