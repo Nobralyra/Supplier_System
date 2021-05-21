@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.supplier;
+package finalproject.suppliersystem.supplier.criticalityview;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import lombok.Getter;
