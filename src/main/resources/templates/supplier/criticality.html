@@ -9,7 +9,7 @@
 <!-- How the forms layout is made https://getbootstrap.com/docs/5.0/forms/layout/
     This form is connected to two buttons, so actions are mentioned in connection with buttons-->
 <div class="container-fluid page">
-<header th:replace="fragments/navbar :: navbarElement"></header>
+    <header th:replace="fragments/navbar :: navbarElement"></header>
 
     <div class="col-6">
         <h1>High Criticality</h1>
@@ -20,22 +20,30 @@
         <tr>
             <th hidden>Id</th>
             <th>Name</th>
+            <th>Product Category</th>
             <th>Volume</th>
             <th>Supplier Risk Level</th>
         </tr>
         </thead>
         <tbody>
 
-        <tr th:each="SupplierProductCategoryCriticalityView : ${supplierProductCategoryCriticalityView}" th:if="${SupplierProductCategoryCriticalityView.criticality.name() eq 'HIGH'}">
-            <td hidden th:text="${SupplierProductCategoryCriticalityView.supplierId}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.supplierName}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.volume}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.supplierRiskLevel}"></td>
+        <th:block th:each="SupplierCriticalityView : ${supplierCriticalityView}"
+                  th:if="${SupplierCriticalityView.criticality.name() eq 'HIGH'}">
+        <tr th:block th:each="productCategory  : ${SupplierCriticalityView.productCategoryList}"
+            th:if="${SupplierCriticalityView.criticality.name() eq 'HIGH'}">
+            <td hidden th:text="${SupplierCriticalityView.supplierId}"></td>
+            <td th:text="${SupplierCriticalityView.supplierName}"></td>
+
+            <td th:text="${productCategory.toString()}"></td>
+
+            <td th:text="${SupplierCriticalityView.volume}"></td>
+            <td th:text="${SupplierCriticalityView.supplierRiskLevel}"></td>
         </tr>
+        </th:block>
         </tbody>
     </table>
 
-<footer th:replace="fragments/footer :: footerElement"></footer>
+    <footer th:replace="fragments/footer :: footerElement"></footer>
 </div>
 </body>
 </html>
