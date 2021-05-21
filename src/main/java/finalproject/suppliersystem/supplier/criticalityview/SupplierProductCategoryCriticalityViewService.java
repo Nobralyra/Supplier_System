@@ -1,24 +1,28 @@
 package finalproject.suppliersystem.supplier.criticalityview;
 
-import finalproject.suppliersystem.core.IService;
-import finalproject.suppliersystem.supplier.domain.Supplier;
+import finalproject.suppliersystem.core.enums.CategoryLevel;
+import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
+import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorSupplierRiskLevelRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SupplierProductCategoryCriticalityViewService implements ISupplierProductCategoryCriticalityViewService
 {
-    private ISupplierProductCategoryCriticalityViewRepository iSupplierProductCategoryCriticalityViewRepository;
+    private final ISupplierProductCategoryCriticalityViewRepository iSupplierProductCategoryCriticalityViewRepository;
+    private final ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService;
+    private final ICalculatorCriticalityRestService iCalculatorCriticalityRestService;
 
     @Autowired
-    public SupplierProductCategoryCriticalityViewService(ISupplierProductCategoryCriticalityViewRepository iSupplierProductCategoryCriticalityViewRepository)
+    public SupplierProductCategoryCriticalityViewService(ISupplierProductCategoryCriticalityViewRepository iSupplierProductCategoryCriticalityViewRepository, ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService, ICalculatorCriticalityRestService iCalculatorCriticalityRestService)
     {
         this.iSupplierProductCategoryCriticalityViewRepository = iSupplierProductCategoryCriticalityViewRepository;
+        this.iCalculatorSupplierRiskLevelRestService = iCalculatorSupplierRiskLevelRestService;
+        this.iCalculatorCriticalityRestService = iCalculatorCriticalityRestService;
     }
 
     /**
@@ -45,6 +49,15 @@ public class SupplierProductCategoryCriticalityViewService implements ISupplierP
     @Override
     public List<SupplierProductCategoryCriticalityView> findAll()
     {
-        return new ArrayList<>(iSupplierProductCategoryCriticalityViewRepository.findAll());
+        List<SupplierProductCategoryCriticalityView> supplierProductCategoryCriticalityViewArrayList;
+        supplierProductCategoryCriticalityViewArrayList = iSupplierProductCategoryCriticalityViewRepository.findAll();
+        for (SupplierProductCategoryCriticalityView supplierProductCategoryCriticalityView: supplierProductCategoryCriticalityViewArrayList)
+        {
+            CategoryLevel getSupplierRiskLevel = iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(supplierProductCategoryCriticalityView.getCorporateSocialResponsibility(), supplierProductCategoryCriticalityView.getIssuesConcerningCooperation(), supplierProductCategoryCriticalityView.getAvailabilityIssues());
+            CategoryLevel getCriticality = iCalculatorCriticalityRestService.calculateCriticality(supplierProductCategoryCriticalityView.getVolume(), getSupplierRiskLevel);
+            supplierProductCategoryCriticalityView.setSupplierRiskLevel(getSupplierRiskLevel);
+            supplierProductCategoryCriticalityView.setCriticality(getCriticality);
+        }
+        return supplierProductCategoryCriticalityViewArrayList;
     }
 }
