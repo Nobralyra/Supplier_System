@@ -10,6 +10,7 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarWithDropdown">
             <ul class="navbar-nav me-auto">
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
@@ -18,11 +19,13 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" th:href="@{/registration/supplier}">Supplier</a>
                     </ul>
+                </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/supplier/criticality}">Supplier Criticality</a>
                 </li>
 
                 <li class="nav-item dropdown">
-
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLinkExcel" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         Download Reports
@@ -30,10 +33,6 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkExcel">
                         <li><a class="dropdown-item" th:href="@{/excelfile/supplier_reports}">Supplier</a>
                     </ul>
-
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/supplier/criticality}">Supplier Criticality</a>
                 </li>
             </ul>
         </div>
