@@ -1,2 +1,10 @@
-package finalproject.suppliersystem.supplier.criticalityview;public interface ISupplierProductCategoryCriticalityViewService {
+package finalproject.suppliersystem.supplier.criticalityview;
+
+import java.util.List;
+
+public interface ISupplierProductCategoryCriticalityViewService
+{
+    SupplierProductCategoryCriticalityView findById(Long id);
+
+    List<SupplierProductCategoryCriticalityView> findAll();
 }
