@@ -1,0 +1,2 @@
+package finalproject.suppliersystem.supplier.criticalityview;public class SupplierProductCategoryCriticalityViewService {
+}
