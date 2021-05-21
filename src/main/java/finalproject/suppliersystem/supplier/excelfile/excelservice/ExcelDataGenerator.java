@@ -65,7 +65,7 @@ public class ExcelDataGenerator {
         List<Criticality> allCriticalities = criticalityService.findAll();
 
         for(Criticality c : allCriticalities){
-            Enum<CategoryLevel> volumeLevel = ICalculatorCriticalityRestService.calculateVolumeLevel(c.getVolume());
+            CategoryLevel volumeLevel = ICalculatorCriticalityRestService.calculateVolumeLevel(c.getVolume());
             if(volumeLevel == CategoryLevel.LOW) lowSuppliers.put(c.getSupplierId(), c.getVolume());
             if(volumeLevel == CategoryLevel.MEDIUM) mediumSuppliers.put(c.getSupplierId(), c.getVolume());
             if(volumeLevel == CategoryLevel.HIGH) highSuppliers.put(c.getSupplierId(), c.getVolume());
