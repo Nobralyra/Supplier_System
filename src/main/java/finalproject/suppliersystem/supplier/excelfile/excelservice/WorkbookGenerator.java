@@ -1,7 +1,9 @@
 package finalproject.suppliersystem.supplier.excelfile.excelservice;
 
+import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.domain.ProductCategory;
+import finalproject.suppliersystem.supplier.domain.Supplier;
 import finalproject.suppliersystem.supplier.service.SupplierService;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -21,11 +23,11 @@ import java.util.*;
 @Component
 public class WorkbookGenerator {
 
-    private final SupplierService supplierService;
+    private final IService<Supplier> iSupplierService;
     private final ExcelDataGenerator excelDataGenerator;
 
-    public WorkbookGenerator(SupplierService supplierService, ExcelDataGenerator excelDataGenerator) {
-        this.supplierService = supplierService;
+    public WorkbookGenerator(IService<Supplier> iSupplierService, ExcelDataGenerator excelDataGenerator) {
+        this.iSupplierService = iSupplierService;
         this.excelDataGenerator = excelDataGenerator;
     }
 
@@ -80,7 +82,7 @@ public class WorkbookGenerator {
         createColumnNames(workbook,sheet);
 
         /*
-            Suppliers has to be ordered in descenting order by volume (= value in map)
+            Suppliers has to be ordered in descending order by volume (= value in map)
             LinkedHashMap preserves the ordering of elements in which they are inserted.
             We sort entries in a map:
             sorted() from Stream  represents a functional programming concept.This intermediate operation is
@@ -153,7 +155,7 @@ public class WorkbookGenerator {
             Cell productCategoryCell = sheet.getRow(rowCountCategories).createCell(2);
             StringBuilder productCategoryNames = new StringBuilder();
             /*
-               We loop a set and add porctCategory names in each cell.
+               We loop a set and add productCategory names in each cell.
                If the set includes multiple names, we separate them by comma
              */
             int lastElement = 0;
@@ -193,7 +195,7 @@ public class WorkbookGenerator {
         if (sheet.getRow(rowNumber) == null) sheet.createRow(rowNumber);
         Cell cellSupplierName = sheet.getRow(rowNumber).createCell(0);
         Cell cellVolume = sheet.getRow(rowNumber).createCell(3);
-        cellSupplierName.setCellValue(supplierService.findById(supplierId).getSupplierName());
+        cellSupplierName.setCellValue(iSupplierService.findById(supplierId).getSupplierName());
         cellVolume.setCellValue(volume);
     }
 

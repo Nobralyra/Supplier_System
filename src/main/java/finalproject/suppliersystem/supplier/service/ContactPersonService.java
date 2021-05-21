@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ContactPersonService implements IService<ContactPerson> {
-
+public class ContactPersonService implements IContactPersonService
+{
     private final IContactPersonRepository iContactPersonRepository;
 
     public ContactPersonService(IContactPersonRepository iContactPersonRepository) {
@@ -47,6 +47,7 @@ public class ContactPersonService implements IService<ContactPerson> {
      * @param supplierId
      * @return
      */
+    @Override
     public ContactPerson findBySupplierId(Long supplierId){
 
         List<ContactPerson> alContactPersons = findAll();

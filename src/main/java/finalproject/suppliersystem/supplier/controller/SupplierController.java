@@ -1,6 +1,9 @@
 package finalproject.suppliersystem.supplier.controller;
 
+import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.supplier.domain.*;
+import finalproject.suppliersystem.supplier.errorcheck.IExistsAlready;
+import finalproject.suppliersystem.supplier.errorcheck.IHasError;
 import finalproject.suppliersystem.supplier.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,28 +24,36 @@ import java.net.URL;
 public class SupplierController
 {
 
-    private final SupplierService supplierService;
-    private final CriticalityService criticalityService;
-    private final AddressService addressService;
-    private final ContactInformationService contactInformationService;
-    private final ContactPersonService contactPersonService;
-    private final CountryService countryService;
-    private final ProductCategoryService productCategoryService;
+    private final IService<Supplier> iSupplierService;
+    private final IService<Criticality> iCriticalityService;
+    private final IService<Address> iAddressService;
+    private final IService<ContactInformation> iContactInformationService;
+    private final IContactPersonService iContactPersonService;
+    private final IService<Country> iCountryService;
+    private final IService<ProductCategory> iProductCategoryService;
+    private final IExistsAlready iExistsAlready;
+    private final IHasError iHasError;
 
     @Autowired
-    public SupplierController(SupplierService supplierService,
-                              CriticalityService criticalityService, AddressService addressService,
-                              ContactInformationService contactInformationService,
-                              ContactPersonService contactPersonService,
-                              CountryService countryService, ProductCategoryService productCategoryService)
+    public SupplierController(IService<Supplier> iSupplierService,
+                              IService<Criticality> iCriticalityService,
+                              IService<Address> iAddressService,
+                              IService<ContactInformation> iContactInformationService,
+                              IContactPersonService iContactPersonService,
+                              IService<Country> iCountryService,
+                              IService<ProductCategory> iProductCategoryService,
+                              IExistsAlready iExistsAlready,
+                              IHasError iHasError)
     {
-        this.supplierService = supplierService;
-        this.criticalityService = criticalityService;
-        this.addressService = addressService;
-        this.contactInformationService = contactInformationService;
-        this.contactPersonService = contactPersonService;
-        this.countryService = countryService;
-        this.productCategoryService = productCategoryService;
+        this.iSupplierService = iSupplierService;
+        this.iCriticalityService = iCriticalityService;
+        this.iAddressService = iAddressService;
+        this.iContactInformationService = iContactInformationService;
+        this.iContactPersonService = iContactPersonService;
+        this.iCountryService = iCountryService;
+        this.iProductCategoryService = iProductCategoryService;
+        this.iExistsAlready = iExistsAlready;
+        this.iHasError = iHasError;
     }
 
     /**
@@ -74,8 +85,8 @@ public class SupplierController
         model.addAttribute("contactPerson", contactPerson);
         model.addAttribute("country", country);
         //the user chooses one or several ProductCategories
-        model.addAttribute("productCategory", productCategoryService.findAll());
-        model.addAttribute("countries", countryService.findAll());
+        model.addAttribute("productCategory", iProductCategoryService.findAll());
+        model.addAttribute("countries", iCountryService.findAll());
         return "/registration/supplier";
     }
 
@@ -116,22 +127,22 @@ public class SupplierController
                                    Model model)
     {
 
-        if(supplierService.hasErrors(bindingResultSupplier,
+        if(iHasError.hasErrors(bindingResultSupplier,
                 bindingResultCriticality,
                 bindingResultContactInformation,
                 bindingResultAddress,
                 bindingResultContactPerson,
                 model)){
-            model.addAttribute("productCategory", productCategoryService.findAll());
-            model.addAttribute("countries", countryService.findAll());
+            model.addAttribute("productCategory", iProductCategoryService.findAll());
+            model.addAttribute("countries", iCountryService.findAll());
             return "/registration/supplier";
         }
 
-        if (supplierService.existAlready(supplier, address))
+        if (iExistsAlready.existAlready(supplier, address))
         {
             String alreadyCreated = "Supplier is already registered";
-            model.addAttribute("productCategory", productCategoryService.findAll());
-            model.addAttribute("countries", countryService.findAll());
+            model.addAttribute("productCategory", iProductCategoryService.findAll());
+            model.addAttribute("countries", iCountryService.findAll());
             model.addAttribute("alreadyCreated", alreadyCreated);
             return "/registration/supplier";
         }
@@ -143,13 +154,13 @@ public class SupplierController
 
         criticality.setSupplier(supplier);
 
-        addressService.save(address);
-        contactPersonService.save(contactPerson);
-        contactInformationService.save(contactInformation);
+        iAddressService.save(address);
+        iContactPersonService.save(contactPerson);
+        iContactInformationService.save(contactInformation);
 
-        criticalityService.save(criticality);
+        iCriticalityService.save(criticality);
 
-        supplierService.save(supplier);
+        iSupplierService.save(supplier);
 
         Long supplierId = supplier.getSupplierId();
 
@@ -160,7 +171,7 @@ public class SupplierController
             URL url = new URL(request.getRequestURL().toString());
             path = url.getPath();
         }catch (MalformedURLException malformedURLException){
-            System.out.println(malformedURLException);
+            System.err.println(malformedURLException);
         }
 
         if (path.equals("/registration/supplier")) {
@@ -176,7 +187,7 @@ public class SupplierController
     @GetMapping("/registration/supplier_confirmation/{supplierId}")
     public String confirmRegistration(@PathVariable("supplierId") Long supplierId, Model model)
     {
-        Long supplierNumber = supplierService.findById(supplierId).getSupplierId();
+        Long supplierNumber = iSupplierService.findById(supplierId).getSupplierId();
         model.addAttribute("confirmation", "SupplierNumber " + supplierNumber + " is registered.");
         return "/registration/supplier_confirmation";
     }
@@ -194,8 +205,8 @@ public class SupplierController
     public String showNewRegistrationPage(@PathVariable("supplierId") Long supplierId,
                                           ContactPerson contactPerson, Model model){
 
-        Supplier supplier = supplierService.findById(supplierId);
-        ContactPerson contactPersonAlready = contactPersonService.findBySupplierId(supplierId);
+        Supplier supplier = iSupplierService.findById(supplierId);
+        ContactPerson contactPersonAlready = iContactPersonService.findBySupplierId(supplierId);
         model.addAttribute("supplier", supplier);
         model.addAttribute("contactPersonAlready", contactPersonAlready);
         model.addAttribute("contactPerson", contactPerson);
@@ -219,14 +230,14 @@ public class SupplierController
 
         if(bindingResultContactPerson.hasErrors()){
             model.addAttribute("contactPerson", contactPerson);
-            Supplier supplier = supplierService.findById(supplierId);
+            Supplier supplier = iSupplierService.findById(supplierId);
             model.addAttribute("supplier", supplier);
             return "/registration/supplier_with_extra_contact_person";
         }
 
-        ContactInformation contactInformation = contactInformationService.findById(supplierId);
+        ContactInformation contactInformation = iContactInformationService.findById(supplierId);
         contactPerson.setContactInformation(contactInformation);
-        contactPersonService.save(contactPerson);
+        iContactPersonService.save(contactPerson);
 
         model.addAttribute("confirmation", "SupplierNumber " + supplierId + " is registered.");
         return "/registration/supplier_confirmation";

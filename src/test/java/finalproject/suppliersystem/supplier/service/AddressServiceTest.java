@@ -1,5 +1,6 @@
 package finalproject.suppliersystem.supplier.service;
 
+import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.supplier.domain.Address;
 import finalproject.suppliersystem.supplier.repository.IAddressRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ import static org.mockito.Mockito.*;
 public class AddressServiceTest
 {
 
-    private AddressService addressService;
+    private IService<Address> iAddressService;
 
     /**
      * We create a mock of Repository that is connected to the addressService
@@ -55,7 +56,7 @@ public class AddressServiceTest
     @BeforeEach
     void setUp()
     {
-        addressService = new AddressService(iAddressRepository);
+        iAddressService = new AddressService(iAddressRepository);
     }
 
     /**
@@ -64,7 +65,7 @@ public class AddressServiceTest
     @Test
     public void contextLoads()
     {
-        assertNotNull(addressService);
+        assertNotNull(iAddressService);
     }
 
     @Test
@@ -85,7 +86,7 @@ public class AddressServiceTest
          and conduct assert-tests: is length 2?
          */
 
-        List<Address> allAdresses = addressService.findAll();
+        List<Address> allAdresses = iAddressService.findAll();
         assertEquals(2, allAdresses.size(), "Length should be 2");
 
         // verifies, that findAll() in Repository is called and only once
@@ -109,7 +110,7 @@ public class AddressServiceTest
              - do we have en instance?
              - is supplierId as expected?
          */
-        addressService.save(address);
+        iAddressService.save(address);
 
         assertNotNull(address, "We have an address");
         assertEquals(5, address.getSupplierId(), "SupplierId is 5");
@@ -134,7 +135,7 @@ public class AddressServiceTest
              - is it the same object?
              - is supplierId the same?
          */
-        Address address2 = addressService.findById(5L);
+        Address address2 = iAddressService.findById(5L);
         assertEquals(address2, address2, "It is the same object");
         assertEquals(address1.getSupplierId(), address2.getSupplierId(), "The same id");
 
@@ -152,7 +153,7 @@ public class AddressServiceTest
         Address address = new Address();
         address.setSupplierId(5L);
 
-        addressService.deleteByID(5L);
+        iAddressService.deleteByID(5L);
 
         //verifies, that deleteById() in Repository is called and only once
         verify(iAddressRepository, times(1)).deleteById(any());

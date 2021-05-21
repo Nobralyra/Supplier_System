@@ -59,6 +59,8 @@ public class SupplierProductCategoryCriticalityViewService implements ISupplierP
             CategoryLevel getCriticality = iCalculatorCriticalityRestService.calculateCriticality(supplierProductCategoryCriticalityView.getVolume(), getSupplierRiskLevel);
             supplierProductCategoryCriticalityView.setSupplierRiskLevel(getSupplierRiskLevel);
             supplierProductCategoryCriticalityView.setCriticality(getCriticality);
+
+            //iSupplierService.findById(supplierId).getProductCategorySet()
         }
         return supplierProductCategoryCriticalityViewArrayList;
     }

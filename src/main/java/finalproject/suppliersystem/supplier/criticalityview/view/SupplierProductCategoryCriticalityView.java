@@ -12,15 +12,13 @@ import javax.persistence.*;
 @Immutable
 @Subselect("select * from supplier_product_category_criticality_view")
 @Getter
-@Synchronize( {"supplier", "supplier_product_category", "criticality"} )
+@Synchronize( {"supplier", "criticality"} )
 public class SupplierProductCategoryCriticalityView
 {
     @Id
     private Long supplierId;
 
     private String supplierName;
-
-    private Long productCategoryId;
 
     private int availabilityIssues;
 

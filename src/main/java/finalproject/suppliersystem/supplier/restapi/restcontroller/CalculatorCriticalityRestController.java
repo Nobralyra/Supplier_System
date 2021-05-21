@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -45,7 +46,7 @@ public class CalculatorCriticalityRestController
      * @return set the body, status, and headers of an HTTP response
      */
     @GetMapping(value = "/criticality_api", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryLevel> getCriticality(Long volume, CategoryLevel supplierRiskLevel)
+    public ResponseEntity<CategoryLevel> getCriticality(@RequestParam Long volume, @RequestParam CategoryLevel supplierRiskLevel)
     {
         CategoryLevel criticality = ICalculatorCriticalityRestService.calculateCriticality(volume, supplierRiskLevel);
         return new ResponseEntity<>(criticality, HttpStatus.OK);
