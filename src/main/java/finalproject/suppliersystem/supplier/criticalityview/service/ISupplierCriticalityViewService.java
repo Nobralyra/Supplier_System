@@ -4,7 +4,7 @@ import finalproject.suppliersystem.supplier.criticalityview.view.SupplierCritica
 
 import java.util.List;
 
-public interface ISupplierProductCategoryCriticalityViewService
+public interface ISupplierCriticalityViewService
 {
     SupplierCriticalityView findById(Long id);
 

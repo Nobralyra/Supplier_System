@@ -13,10 +13,10 @@ import java.util.List;
 
 @Entity
 @Immutable
-@Subselect("select * from supplier_product_category_criticality_view")
+@Subselect("select * from supplier_criticality_view")
 @Getter
 @Synchronize( {"supplier", "criticality"} )
-public class SupplierProductCategoryCriticalityView
+public class SupplierCriticalityView
 {
     @Id
     private Long supplierId;
@@ -24,7 +24,7 @@ public class SupplierProductCategoryCriticalityView
     private String supplierName;
 
     @Transient
-    private List<ProductCategory> productCategoryList = new ArrayList<>();
+    private List<String> productCategoryList = new ArrayList<>();
 
     private int availabilityIssues;
 
@@ -48,7 +48,7 @@ public class SupplierProductCategoryCriticalityView
     @Transient
     private CategoryLevel criticality;
 
-    public void setProductCategorySet(List<ProductCategory> productCategoryList)
+    public void setProductCategorySet(List<String> productCategoryList)
     {
         this.productCategoryList = productCategoryList;
     }
@@ -61,5 +61,13 @@ public class SupplierProductCategoryCriticalityView
     public void setCriticality(CategoryLevel criticality)
     {
         this.criticality = criticality;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "SupplierCriticalityView{" +
+                "productCategoryList=" + productCategoryList +
+                '}';
     }
 }

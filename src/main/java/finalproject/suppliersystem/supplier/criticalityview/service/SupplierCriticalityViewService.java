@@ -3,7 +3,7 @@ package finalproject.suppliersystem.supplier.criticalityview.service;
 import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.criticalityview.view.SupplierCriticalityView;
-import finalproject.suppliersystem.supplier.criticalityview.repository.ISupplierProductCategoryCriticalityViewRepository;
+import finalproject.suppliersystem.supplier.criticalityview.repository.ISupplierCriticalityViewRepository;
 import finalproject.suppliersystem.supplier.domain.ProductCategory;
 import finalproject.suppliersystem.supplier.domain.Supplier;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
@@ -16,21 +16,21 @@ import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
-public class SupplierProductCategoryCriticalityViewService implements ISupplierProductCategoryCriticalityViewService
+public class SupplierCriticalityViewService implements ISupplierCriticalityViewService
 {
-    private final ISupplierProductCategoryCriticalityViewRepository iSupplierProductCategoryCriticalityViewRepository;
+    private final ISupplierCriticalityViewRepository iSupplierCriticalityViewRepository;
     private final ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService;
     private final ICalculatorCriticalityRestService iCalculatorCriticalityRestService;
     private final IService<Supplier> iSupplierService;
     private final IProductCategoryService iProductCategoryService;
 
     @Autowired
-    public SupplierProductCategoryCriticalityViewService(ISupplierProductCategoryCriticalityViewRepository iSupplierProductCategoryCriticalityViewRepository,
-                                                         ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService,
-                                                         ICalculatorCriticalityRestService iCalculatorCriticalityRestService,
-                                                         IService<Supplier> iSupplierService, IProductCategoryService iProductCategoryService)
+    public SupplierCriticalityViewService(ISupplierCriticalityViewRepository iSupplierCriticalityViewRepository,
+                                          ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService,
+                                          ICalculatorCriticalityRestService iCalculatorCriticalityRestService,
+                                          IService<Supplier> iSupplierService, IProductCategoryService iProductCategoryService)
     {
-        this.iSupplierProductCategoryCriticalityViewRepository = iSupplierProductCategoryCriticalityViewRepository;
+        this.iSupplierCriticalityViewRepository = iSupplierCriticalityViewRepository;
         this.iCalculatorSupplierRiskLevelRestService = iCalculatorSupplierRiskLevelRestService;
         this.iCalculatorCriticalityRestService = iCalculatorCriticalityRestService;
         this.iSupplierService = iSupplierService;
@@ -50,7 +50,7 @@ public class SupplierProductCategoryCriticalityViewService implements ISupplierP
     @Override
     public SupplierCriticalityView findById(Long id)
     {
-        Optional<SupplierCriticalityView> supplierProductCategoryCriticalityView = iSupplierProductCategoryCriticalityViewRepository.findById(id);
+        Optional<SupplierCriticalityView> supplierProductCategoryCriticalityView = iSupplierCriticalityViewRepository.findById(id);
         return supplierProductCategoryCriticalityView.orElseThrow(() -> new EntityNotFoundException("Supplier with id " + id + " was not found"));
     }
 
@@ -64,7 +64,7 @@ public class SupplierProductCategoryCriticalityViewService implements ISupplierP
     public List<SupplierCriticalityView> findAll()
     {
         List<SupplierCriticalityView> supplierCriticalityViewArrayList;
-        supplierCriticalityViewArrayList = iSupplierProductCategoryCriticalityViewRepository.findAll();
+        supplierCriticalityViewArrayList = iSupplierCriticalityViewRepository.findAll();
         for (SupplierCriticalityView supplierCriticalityView : supplierCriticalityViewArrayList)
         {
             CategoryLevel getSupplierRiskLevel = iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(supplierCriticalityView.getCorporateSocialResponsibility(), supplierCriticalityView.getIssuesConcerningCooperation(), supplierCriticalityView.getAvailabilityIssues());
@@ -72,7 +72,8 @@ public class SupplierProductCategoryCriticalityViewService implements ISupplierP
             supplierCriticalityView.setSupplierRiskLevel(getSupplierRiskLevel);
             supplierCriticalityView.setCriticality(getCriticality);
 
-            List<ProductCategory> productCategoryList = iProductCategoryService.findBySupplierSet_SupplierId(supplierCriticalityView.getSupplierId());
+            List<String> productCategoryList = new ArrayList<>();
+            productCategoryList.add(iProductCategoryService.findBySupplierSet_SupplierId(supplierCriticalityView.getSupplierId()).toString());
             supplierCriticalityView.setProductCategorySet(productCategoryList);
 
 //            List<ProductCategory> test = new ArrayList<>();
