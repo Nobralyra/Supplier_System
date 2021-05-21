@@ -20,21 +20,17 @@
         <tr>
             <th hidden>Id</th>
             <th>Name</th>
-            <th>Product Category</th>
             <th>Volume</th>
             <th>Supplier Risk Level</th>
-            <th>Criticality</th>
         </tr>
         </thead>
         <tbody>
 
-        <tr th:each="SupplierProductCategoryCriticalityView : ${supplierProductCategoryCriticalityView}" th:if="${SupplierProductCategoryCriticalityView.supplierId eq 10000}">
+        <tr th:each="SupplierProductCategoryCriticalityView : ${supplierProductCategoryCriticalityView}" th:if="${SupplierProductCategoryCriticalityView.criticality.name() eq 'HIGH'}">
             <td hidden th:text="${SupplierProductCategoryCriticalityView.supplierId}"></td>
             <td th:text="${SupplierProductCategoryCriticalityView.supplierName}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.productCategoryId}"></td>
             <td th:text="${SupplierProductCategoryCriticalityView.volume}"></td>
             <td th:text="${SupplierProductCategoryCriticalityView.supplierRiskLevel}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.criticality}"></td>
         </tr>
         </tbody>
     </table>
