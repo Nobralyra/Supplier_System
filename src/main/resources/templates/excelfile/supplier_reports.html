@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: headerElement">
+    <meta charset="UTF-8">
+    <title>Supplier Reports</title>
+</head>
+<style>
+
+    h1{
+        margin-bottom: 20px;
+    }
+
+    h6 {
+        margin-top: 10px;
+        margin-bottom: 10px
+    }
+</style>
+<body>
+
+<div class="container-fluid page">
+    <header th:replace="fragments/navbar :: navbarElement"></header>
+
+    <div class="col-12 d-flex justify-content-center">
+        <h1>Supplier Reports</h1>
+    </div>
+
+    <div class="col-12 d-flex justify-content-center">
+        <h6>Supplier by Spend</h6>
+        <a class="nav-item active nav-link" th:href="@{/excel}" >Download</a>
+    </div>
+
+    <footer th:replace="fragments/footer :: footerElement"></footer>
+</div>
+
+</body>
+</html>
