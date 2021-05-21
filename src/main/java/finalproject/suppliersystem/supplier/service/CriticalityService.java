@@ -32,7 +32,7 @@ public class CriticalityService implements IService<Criticality> {
 
     @Override
     public List<Criticality> findAll() {
-        return new ArrayList<>();
+        return new ArrayList<>(iCriticalityRepository.findAll());
     }
 
     @Override
