@@ -29,7 +29,7 @@ public class ExcelController {
      * It produces zip with ResponseBody,
      * that includes the excel file "Suppliers_by_Spend", the user can download.
      * Method has a @ResponseBody, that includes Seriazible, but it also could return byte[].
-     * But Serializable is more generic.
+     * But Serializable is more generic (sequence af bytes).
      * //https://stackoverflow.com/questions/27952949/spring-rest-create-zip-file-and-send-it-to-the-client/40498539
      * @return zip with the file as a Serializable
      * @throws IOException
