@@ -1,6 +1,6 @@
-package finalproject.suppliersystem.supplier.excelFile.controller;
+package finalproject.suppliersystem.supplier.excelfile.excelcontroller;
 
-import finalproject.suppliersystem.supplier.excelFile.service.WorkbookGenerator;
+import finalproject.suppliersystem.supplier.excelfile.excelservice.WorkbookGenerator;
 import org.apache.poi.util.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

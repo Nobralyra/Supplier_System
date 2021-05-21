@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.supplier.excelFile.service;
+package finalproject.suppliersystem.supplier.excelfile.excelservice;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.domain.ProductCategory;

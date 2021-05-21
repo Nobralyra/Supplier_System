@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @RestController is a specialized version of the Controller. It's a REST style controller
+ * @RestController is a specialized version of the Controller. It's a REST style excelcontroller
  * Handles methods that shall return JSON/XML response directly to the client
  * Has @Controller and @ResponseBody
  * https://howtodoinjava.com/spring-boot2/rest/controller-restcontroller/
