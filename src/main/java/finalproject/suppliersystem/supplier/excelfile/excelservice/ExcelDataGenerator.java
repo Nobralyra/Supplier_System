@@ -26,7 +26,10 @@ public class ExcelDataGenerator {
     private final AddressService addressService;
     private final SupplierService supplierService;
 
-    //supplierId (Long) is a key and volume (Long) is a value in each TreeMap
+    /*
+       supplierId (Long) is a key and volume (Long) is a value
+       These fields are updated in generateSupplierAndVolumeToExcel()
+     */
     private Map<Long,Long> lowSuppliers = new HashMap<>();
     private Map<Long,Long> mediumSuppliers = new HashMap<>();
     private Map<Long,Long> highSuppliers = new HashMap<>();
@@ -39,17 +42,28 @@ public class ExcelDataGenerator {
     }
 
     /**
-     * This method divids al supplier in three categories by their volume
-     * and stores them in respective TreeMaps, that are sorted by unique keys
-     * key = supplierId (the same as id in Criticality), value = volume (from Criticality)
-     * @return array with three maps (lowSuppliers, mediumSuppliers, highSuppliers)
+     * This method generates interconnected volumes and supplierId's to the excel file
+     * divided in three sheets (LOW, MEDIUM, HIGH).
+     *
+     * There are also two other columns in every sheet (country and product categories),
+     * but they are generated separately. This is because suppliers has to be sorted
+     * by the volume, that is not unique and can't be the key, but
+     * is the value in each map. It is possible to sort by values with
+     * Map.Entry.comparingByValue(Comparator.reverseOrder()) - cf. WorkbookGenerator -
+     * and here the value can't not consist of a List with different elements.
+     * So the value is only volume.
+     *
+     * It divides all supplier in three categories by their volume
+     * and stores them in respective HashMaps (private fields in this class)
+     * key in HashMap is supplierId from Criticality (the same as supplierId in Supplier)
+     * value in HashMap = volume from Criticality
+     * @return List with these Hashmaps (lowSuppliers, mediumSuppliers, highSuppliers)
      */
     public List<Map<Long,Long>> generateSupplierAndVolumeToExcel(){
 
-        //Supplier and Criticality has one-to-one relationship and ID in Criticality is supplierId
+        //volume is a field in Criticality that is bound to supplier by supplierId
         List<Criticality> allCriticalities = criticalityService.findAll();
 
-        //comparison is done by converting volue to CategoryLevel
         for(Criticality c : allCriticalities){
             Enum<CategoryLevel> volumeLevel = ICalculatorCriticalityRestService.calculateVolumeLevel(c.getVolume());
             if(volumeLevel == CategoryLevel.LOW) lowSuppliers.put(c.getSupplierId(), c.getVolume());
@@ -57,6 +71,7 @@ public class ExcelDataGenerator {
             if(volumeLevel == CategoryLevel.HIGH) highSuppliers.put(c.getSupplierId(), c.getVolume());
         }
 
+        //all HashMaps are added to List, that this method returns
         ArrayList<Map<Long,Long>> alMaps = new ArrayList<>();
         alMaps.add(lowSuppliers);
         alMaps.add(mediumSuppliers);
@@ -65,20 +80,43 @@ public class ExcelDataGenerator {
         return alMaps;
     }
 
+    /**
+     * This method generates countries to the excel-file.
+     * It loops a map with either lowSuppliers, mediumSuppliers or highSuppliers
+     * (parameter is called suppliersGroup) and returns a List with
+     * countryNames in the same order as suppliers are in the map.
+     * Each countyName is connected to the supplier by supplierId through Address.
+     * Address has a country as its field and id in Address is supplierId (same as in Supplier).
+     * @param suppliersGroup map with supplierId as a key and volume as a value
+     * @return List with countryNames
+     */
     public List<String> generateCountriesToExcel(Map<Long,Long> suppliersGroup){
 
         List<String> countryNames = new ArrayList<>();
-
+        //we loop keys (supplierId) in map and get countryName through Address with supplierId
         for(Long supplierId : suppliersGroup.keySet()){
             countryNames.add(addressService.findById(supplierId).getCountry().getCountryName());
         }
         return countryNames;
     }
 
-    public List<Set<ProductCategory>> generateProductCategories(Map<Long,Long> suppliersGroup){
+    /**
+     * This method generates productCategories to the excel-file.
+     * It loops a map with either lowSuppliers, mediumSuppliers or highSuppliers
+     * (parameter is called suppliersGroup)
+     * It returns a List with Set of productCategories for each supplier
+     * in the same order as suppliers are in the map.
+     * Each Set of ProductCategories is connected to the supplier by supplierId.
+     * Supplier has productCategories as its field
+     *
+     * @param suppliersGroup
+     * @return
+     */
+    public List<Set<ProductCategory>> generateProductCategoriesToExcel(Map<Long,Long> suppliersGroup){
 
         List<Set<ProductCategory>> productCategories = new ArrayList<>();
 
+        //we loop keys (supplierId) in map and get countryName through Address with supplierId
         for(Long supplierId : suppliersGroup.keySet()){
             productCategories.add(supplierService.findById(supplierId).getProductCategorySet());
         }
