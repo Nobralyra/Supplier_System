@@ -15,7 +15,7 @@
         <h1>High Criticality</h1>
     </div>
 
-    <table class="table table-hover">
+    <table id="criticalityTable" class="table table-hover">
         <thead class="thead">
         <tr>
             <th hidden>Id</th>
@@ -26,24 +26,70 @@
         </tr>
         </thead>
         <tbody>
-
-        <th:block th:each="SupplierCriticalityView : ${supplierCriticalityView}"
-                  th:if="${SupplierCriticalityView.criticality.name() eq 'HIGH'}">
-        <tr th:block th:each="productCategory  : ${SupplierCriticalityView.productCategoryList}"
-            th:if="${SupplierCriticalityView.criticality.name() eq 'HIGH'}">
-            <td hidden th:text="${SupplierCriticalityView.supplierId}"></td>
-            <td th:text="${SupplierCriticalityView.supplierName}"></td>
-
-            <td th:text="${productCategory.toString()}"></td>
-
-            <td th:text="${SupplierCriticalityView.volume}"></td>
-            <td th:text="${SupplierCriticalityView.supplierRiskLevel}"></td>
+        <tr>
         </tr>
-        </th:block>
         </tbody>
     </table>
 
     <footer th:replace="fragments/footer :: footerElement"></footer>
+
 </div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        table = $('#criticalityTable').DataTable({
+            // ajax make the connection to the external Api and fetch data from it
+            // https://api.jquery.com/jQuery.ajax/
+            "ajax": {
+                // The external API
+                "url": '/supplier_criticality_table_api',
+                // Type of data we are expecting back from the server
+                "dataType": "json",
+                // To read data from a plain array rather than an array in an object
+                // https://datatables.net/reference/option/ajax.dataSrc#:~:text=dataSrc(%20data%20),processing%20and%20display%20by%20DataTables.
+                "dataSrc": ""
+            },
+
+            // How to escape the dot notation
+            // https://datatables.net/forums/discussion/44017/a-dot-in-data-name-fires-the-datatables-net-manual-tech-notes-4-error
+            // https://datatables.net/reference/option/columns.data
+
+            // Data render to put multiple data in same column
+            // https://stackoverflow.com/questions/49224048/how-to-display-multiple-values-in-the-same-cell-in-a-datatable
+            // https://stackoverflow.com/questions/15174560/how-to-put-multiple-data-in-a-datatable-column
+            // https://stackoverflow.com/questions/40075556/render-datatables-columns-fetched-via-ajax
+            // https://datatables.net/reference/option/columns.render
+
+            // Manipulate data before datatable is rendering it in columns
+            // https://stackoverflow.com/questions/45571257/manipulating-data-before-drawing-columns-with-datatables-jquery-library
+            "columns": [
+                {"data": "supplierId"},
+                {"data": "supplierName"},
+                {"data": "productCategoryViewsList.0"},
+                {"data": "volume"},
+                {"data": "supplierRiskLevel"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            // Show all data on same page
+            // https://datatables.net/reference/option/paging
+            "paging": false,
+
+            // Letters used for dom configuration
+            // https://datatables.net/reference/option/dom
+            dom: 'Bfrtip',
+
+            // Fixed header so it is always visible when scrolling
+            // https://datatables.net/reference/option/fixedHeader
+            fixedHeader: {
+                header: true
+            }
+        });
+    });
+</script>
 </html>
