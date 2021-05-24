@@ -1,7 +1,9 @@
 package finalproject.suppliersystem.supplier.criticalityview.view;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
-import finalproject.suppliersystem.supplier.domain.ProductCategory;
 import lombok.Getter;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
@@ -24,12 +26,19 @@ public class SupplierCriticalityView
     private String supplierName;
 
     @Transient
-    private List<String> productCategoryList = new ArrayList<>();
+    private List<String> productCategoryViewsList = new ArrayList<>();
 
+    /**
+     * @JsonIgnore
+     * https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+     */
+    @JsonIgnore
     private int availabilityIssues;
 
+    @JsonIgnore
     private CategoryLevel corporateSocialResponsibility;
 
+    @JsonIgnore
     private int issuesConcerningCooperation;
 
     private Long volume;
@@ -48,9 +57,9 @@ public class SupplierCriticalityView
     @Transient
     private CategoryLevel criticality;
 
-    public void setProductCategorySet(List<String> productCategoryList)
+    public void setProductCategoryList(List<String> productCategoryViewsList)
     {
-        this.productCategoryList = productCategoryList;
+        this.productCategoryViewsList = productCategoryViewsList;
     }
 
     public void setSupplierRiskLevel(CategoryLevel supplierRiskLevel)
@@ -67,7 +76,15 @@ public class SupplierCriticalityView
     public String toString()
     {
         return "SupplierCriticalityView{" +
-                "productCategoryList=" + productCategoryList +
+                "supplierId=" + supplierId +
+                ", supplierName='" + supplierName + '\'' +
+                ", productCategoryList=" + productCategoryViewsList +
+                ", availabilityIssues=" + availabilityIssues +
+                ", corporateSocialResponsibility=" + corporateSocialResponsibility +
+                ", issuesConcerningCooperation=" + issuesConcerningCooperation +
+                ", volume=" + volume +
+                ", supplierRiskLevel=" + supplierRiskLevel +
+                ", criticality=" + criticality +
                 '}';
     }
 }
