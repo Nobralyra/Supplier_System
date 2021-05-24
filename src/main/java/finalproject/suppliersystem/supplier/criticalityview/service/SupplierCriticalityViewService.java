@@ -4,7 +4,6 @@ import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.criticalityview.view.SupplierCriticalityView;
 import finalproject.suppliersystem.supplier.criticalityview.repository.ISupplierCriticalityViewRepository;
-import finalproject.suppliersystem.supplier.domain.ProductCategory;
 import finalproject.suppliersystem.supplier.domain.Supplier;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorSupplierRiskLevelRestService;
@@ -73,13 +72,11 @@ public class SupplierCriticalityViewService implements ISupplierCriticalityViewS
             supplierCriticalityView.setCriticality(getCriticality);
 
             List<String> productCategoryList = new ArrayList<>();
-            productCategoryList.add(iProductCategoryService.findBySupplierSet_SupplierId(supplierCriticalityView.getSupplierId()).toString());
-            supplierCriticalityView.setProductCategorySet(productCategoryList);
 
-//            List<ProductCategory> test = new ArrayList<>();
-//            test.add(iSupplierService.findById(supplierCriticalityView.getSupplierId()).getProductCategorySet().);
-//            Set<ProductCategory> productCategoriesSet = iSupplierService.findById(supplierCriticalityView.getSupplierId()).getProductCategorySet();
-//            supplierCriticalityView.setProductCategorySet(productCategoriesSet);
+            productCategoryList.add(iProductCategoryService.findBySupplierSet_SupplierId(supplierCriticalityView.getSupplierId()).toString());
+
+           supplierCriticalityView.setProductCategoryList(productCategoryList);
+
         }
         return supplierCriticalityViewArrayList;
     }
