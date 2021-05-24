@@ -67,4 +67,10 @@ public class ProductCategory
     {
         return getClass().hashCode();
     }
+
+    @Override
+    public String toString()
+    {
+        return productCategoryName;
+    }
 }
