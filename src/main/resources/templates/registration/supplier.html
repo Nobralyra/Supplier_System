@@ -191,7 +191,7 @@
 
         <div class="row g-2 justify-content-start" style="padding-left: 25%">
             <div class="col-sm-4">
-                <label class="form-label">Country</label>
+                <label class="form-label">Country <span style="color: red">*</span></label>
                 <select class="form-select" id="countries" th:field="*{address.country}">
                     <option th:each="country : ${countries}"
                             th:value="${country.countryId}"
