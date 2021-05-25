@@ -1,8 +1,6 @@
 package finalproject.suppliersystem.supplier.criticalityview.view;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import lombok.Getter;
 import org.hibernate.annotations.Immutable;
@@ -26,7 +24,7 @@ public class SupplierCriticalityView
     private String supplierName;
 
     @Transient
-    private List<String> productCategoryViewsList = new ArrayList<>();
+    private List<String> productCategoryList = new ArrayList<>();
 
     /**
      * @JsonIgnore
@@ -57,9 +55,9 @@ public class SupplierCriticalityView
     @Transient
     private CategoryLevel criticality;
 
-    public void setProductCategoryList(List<String> productCategoryViewsList)
+    public void setProductCategoryList(List<String> productCategoryList)
     {
-        this.productCategoryViewsList = productCategoryViewsList;
+        this.productCategoryList = productCategoryList;
     }
 
     public void setSupplierRiskLevel(CategoryLevel supplierRiskLevel)
@@ -78,7 +76,7 @@ public class SupplierCriticalityView
         return "SupplierCriticalityView{" +
                 "supplierId=" + supplierId +
                 ", supplierName='" + supplierName + '\'' +
-                ", productCategoryList=" + productCategoryViewsList +
+                ", productCategoryList=" + productCategoryList +
                 ", availabilityIssues=" + availabilityIssues +
                 ", corporateSocialResponsibility=" + corporateSocialResponsibility +
                 ", issuesConcerningCooperation=" + issuesConcerningCooperation +

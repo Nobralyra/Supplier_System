@@ -19,7 +19,7 @@ import java.util.List;
  * Has @Controller and @ResponseBody
  * https://howtodoinjava.com/spring-boot2/rest/controller-restcontroller/
  */
- @RestController
+@RestController
 public class OverviewCriticalityRestController
 {
     private final ISupplierCriticalityViewService iSupplierCriticalityViewService;
@@ -30,7 +30,6 @@ public class OverviewCriticalityRestController
         this.iSupplierCriticalityViewService = iSupplierCriticalityViewService;
     }
 
-
     /**
      * Gets executed when a request that matches the url specified in the @GetMapping.
      * https://www.baeldung.com/jackson-vs-gson
@@ -39,21 +38,19 @@ public class OverviewCriticalityRestController
     @GetMapping(value = "/supplier_criticality_table_api", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getSupplierCriticalityData()
     {
-        List<SupplierCriticalityView> test =  iSupplierCriticalityViewService.findAll();
+        List<SupplierCriticalityView> supplierCriticalityViewList =  iSupplierCriticalityViewService.findAll();
         //create ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper();
         String newJsonData = "Data";
         try
         {
-            newJsonData = objectMapper.writeValueAsString(test);
+            newJsonData = objectMapper.writeValueAsString(supplierCriticalityViewList);
         }
         catch (JsonProcessingException e)
         {
             e.printStackTrace();
             System.err.println(e);
         }
-
-        System.out.println(newJsonData);
 
         return newJsonData;
     }

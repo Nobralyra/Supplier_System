@@ -20,19 +20,17 @@ public class SupplierCriticalityViewService implements ISupplierCriticalityViewS
     private final ISupplierCriticalityViewRepository iSupplierCriticalityViewRepository;
     private final ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService;
     private final ICalculatorCriticalityRestService iCalculatorCriticalityRestService;
-    private final IService<Supplier> iSupplierService;
     private final IProductCategoryService iProductCategoryService;
 
     @Autowired
     public SupplierCriticalityViewService(ISupplierCriticalityViewRepository iSupplierCriticalityViewRepository,
                                           ICalculatorSupplierRiskLevelRestService iCalculatorSupplierRiskLevelRestService,
                                           ICalculatorCriticalityRestService iCalculatorCriticalityRestService,
-                                          IService<Supplier> iSupplierService, IProductCategoryService iProductCategoryService)
+                                          IProductCategoryService iProductCategoryService)
     {
         this.iSupplierCriticalityViewRepository = iSupplierCriticalityViewRepository;
         this.iCalculatorSupplierRiskLevelRestService = iCalculatorSupplierRiskLevelRestService;
         this.iCalculatorCriticalityRestService = iCalculatorCriticalityRestService;
-        this.iSupplierService = iSupplierService;
         this.iProductCategoryService = iProductCategoryService;
     }
 
@@ -76,7 +74,6 @@ public class SupplierCriticalityViewService implements ISupplierCriticalityViewS
             productCategoryList.add(iProductCategoryService.findBySupplierSet_SupplierId(supplierCriticalityView.getSupplierId()).toString());
 
            supplierCriticalityView.setProductCategoryList(productCategoryList);
-
         }
         return supplierCriticalityViewArrayList;
     }
