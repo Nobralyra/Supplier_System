@@ -23,33 +23,45 @@ public class SupplierCriticalityView
 
     private String supplierName;
 
+    /**
+     * @Transient make Hibernate ignore ignore the field
+     * https://www.baeldung.com/jpa-transient-ignore-field
+     */
     @Transient
     private List<String> productCategoryList = new ArrayList<>();
 
     /**
-     * @JsonIgnore
+     * @JsonIgnore gets ignore when making the object to JSON format
      * https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
      */
     @JsonIgnore
     private int availabilityIssues;
 
+    /**
+     * @JsonIgnore gets ignore when making the object to JSON format
+     * https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+     */
     @JsonIgnore
     private CategoryLevel corporateSocialResponsibility;
 
+    /**
+     * @JsonIgnore gets ignore when making the object to JSON format
+     * https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+     */
     @JsonIgnore
     private int issuesConcerningCooperation;
 
     private Long volume;
 
     /**
-     * @Transient so Hibernate ignore ignore the field
+     * @Transient make Hibernate ignore ignore the field
      * https://www.baeldung.com/jpa-transient-ignore-field
      */
     @Transient
     private CategoryLevel supplierRiskLevel;
 
     /**
-     * @Transient so Hibernate ignore ignore the field
+     * @Transient make Hibernate ignore ignore the field
      * https://www.baeldung.com/jpa-transient-ignore-field
      */
     @Transient

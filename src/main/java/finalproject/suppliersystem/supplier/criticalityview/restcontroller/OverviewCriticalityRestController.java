@@ -32,19 +32,31 @@ public class OverviewCriticalityRestController
 
     /**
      * Gets executed when a request that matches the url specified in the @GetMapping.
-     * https://www.baeldung.com/jackson-vs-gson
-     * @return String
+     * @return criticalityTableJsonData that is the data to get displayed
      */
     @GetMapping(value = "/supplier_criticality_table_api", produces = MediaType.APPLICATION_JSON_VALUE)
     public String getSupplierCriticalityData()
     {
         List<SupplierCriticalityView> supplierCriticalityViewList =  iSupplierCriticalityViewService.findAll();
+        String criticalityTableJsonData = getJsonData(supplierCriticalityViewList);
+
+        return criticalityTableJsonData;
+    }
+
+    /**
+     * Convert the List object to JSON format with Jackson
+     * https://www.baeldung.com/jackson-vs-gson
+     * @param supplierCriticalityViewList
+     * @return
+     */
+    private String getJsonData(List<SupplierCriticalityView> supplierCriticalityViewList)
+    {
         //create ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper();
-        String newJsonData = "Data";
+        String jsonData = "Data";
         try
         {
-            newJsonData = objectMapper.writeValueAsString(supplierCriticalityViewList);
+            jsonData = objectMapper.writeValueAsString(supplierCriticalityViewList);
         }
         catch (JsonProcessingException e)
         {
@@ -52,6 +64,7 @@ public class OverviewCriticalityRestController
             System.err.println(e);
         }
 
-        return newJsonData;
+        System.out.println(jsonData);
+        return jsonData;
     }
 }
