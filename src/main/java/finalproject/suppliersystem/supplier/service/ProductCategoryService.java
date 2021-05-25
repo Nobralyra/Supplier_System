@@ -10,7 +10,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
-public class ProductCategoryService implements IService<ProductCategory>
+public class ProductCategoryService implements IProductCategoryService
 {
     private final IProductCategoryRepository iProductCategoryRepository;
 
@@ -51,9 +51,11 @@ public class ProductCategoryService implements IService<ProductCategory>
         return new ArrayList<>(iProductCategoryRepository.findAll());
     }
 
-    public Set<ProductCategory> setFindAll()
+    @Override
+    public List<ProductCategory> findBySupplierSet_SupplierId(Long supplierId)
     {
-        return new HashSet<>(iProductCategoryRepository.findAll());
+        List<ProductCategory> productCategoryList = iProductCategoryRepository.findBySupplierSet_SupplierId(supplierId);
+        return productCategoryList;
     }
 
     @Override

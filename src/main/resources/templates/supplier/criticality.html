@@ -9,33 +9,77 @@
 <!-- How the forms layout is made https://getbootstrap.com/docs/5.0/forms/layout/
     This form is connected to two buttons, so actions are mentioned in connection with buttons-->
 <div class="container-fluid page">
-<header th:replace="fragments/navbar :: navbarElement"></header>
+    <header th:replace="fragments/navbar :: navbarElement"></header>
 
     <div class="col-6">
-        <h1>High Criticality</h1>
+        <h1>Criticality</h1>
     </div>
 
-    <table class="table table-hover">
+    <table id="criticalityTable" class="table table-hover">
         <thead class="thead">
         <tr>
             <th hidden>Id</th>
             <th>Name</th>
+            <th>Product Category</th>
             <th>Volume</th>
             <th>Supplier Risk Level</th>
+            <th>Criticality</th>
         </tr>
         </thead>
         <tbody>
-
-        <tr th:each="SupplierProductCategoryCriticalityView : ${supplierProductCategoryCriticalityView}" th:if="${SupplierProductCategoryCriticalityView.criticality.name() eq 'HIGH'}">
-            <td hidden th:text="${SupplierProductCategoryCriticalityView.supplierId}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.supplierName}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.volume}"></td>
-            <td th:text="${SupplierProductCategoryCriticalityView.supplierRiskLevel}"></td>
+        <tr>
         </tr>
         </tbody>
     </table>
 
-<footer th:replace="fragments/footer :: footerElement"></footer>
+    <footer th:replace="fragments/footer :: footerElement"></footer>
+
 </div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        table = $('#criticalityTable').DataTable({
+            // ajax make the connection to the external Api and fetch data from it
+            // https://api.jquery.com/jQuery.ajax/
+            "ajax": {
+                // The external API
+                "url": '/supplier_criticality_table_api',
+                // Type of data we are expecting back from the server
+                "dataType": "json",
+                // To read data from a plain array rather than an array in an object
+                // https://datatables.net/reference/option/ajax.dataSrc#:~:text=dataSrc(%20data%20),processing%20and%20display%20by%20DataTables.
+                "dataSrc": ""
+            },
+
+            "columns": [
+                {"data": "supplierId"},
+                {"data": "supplierName"},
+                {"data": "productCategoryList"},
+                {"data": "volume"},
+                {"data": "supplierRiskLevel"},
+                {"data": "criticality"}
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            // Show all data on same page
+            // https://datatables.net/reference/option/paging
+            "paging": false,
+
+            // Letters used for dom configuration
+            // https://datatables.net/reference/option/dom
+            dom: 'Bfrtip',
+
+            // Fixed header so it is always visible when scrolling
+            // https://datatables.net/reference/option/fixedHeader
+            fixedHeader: {
+                header: true
+            }
+        });
+    });
+</script>
 </html>
