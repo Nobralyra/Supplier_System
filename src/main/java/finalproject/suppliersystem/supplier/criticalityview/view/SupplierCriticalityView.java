@@ -11,6 +11,19 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * View of table supplier and criticality
+ * @Immutable to make it a read-only, so updates of the entity will be ignored and not exception thrown
+ * https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#entity-immutability
+ * https://docs.jboss.org/hibernate/orm/5.4/javadocs/org/hibernate/annotations/Immutable.html
+ *
+ * @Subselect map the entity to a custom SQL query and tells Hibernate that there no physical table but an immutable and read-only entity
+ * https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#annotations-hibernate-subselect
+ *
+ * @Synchronize used in conjunction with @Subselect and specify the list of database tables used by the @Subselect
+ * and prevent @Subselect from getting stale data when executing its SQL query
+ * https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html#annotations-hibernate-synchronize
+ */
 @Entity
 @Immutable
 @Subselect("select * from supplier_criticality_view")
@@ -18,6 +31,9 @@ import java.util.List;
 @Synchronize( {"supplier", "criticality"} )
 public class SupplierCriticalityView
 {
+    /**
+     * The identifier property
+     */
     @Id
     private Long supplierId;
 
