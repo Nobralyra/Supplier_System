@@ -31,7 +31,6 @@ public class ProductCategory
     @ManyToMany(mappedBy = "productCategorySet")
     private Set<Supplier> supplierSet = new HashSet<>();
 
-
     /**
      * Can't rely on a natural identifier for equality checks, so instead we use the entity identifier.
      * The equality has to be consistent across all entity state transitions.

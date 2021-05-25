@@ -3,6 +3,7 @@ package finalproject.suppliersystem.supplier.criticalityview.view;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 import org.hibernate.annotations.Synchronize;
@@ -29,6 +30,7 @@ import java.util.List;
 @Subselect("select * from supplier_criticality_view")
 @Getter
 @Synchronize( {"supplier", "criticality"} )
+@NoArgsConstructor
 public class SupplierCriticalityView
 {
     /**
@@ -48,21 +50,21 @@ public class SupplierCriticalityView
 
     /**
      * @JsonIgnore gets ignore when making the object to JSON format
-     * https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+     * https://www.baeldung.com/jackson-annotations#2-jsonignore
      */
     @JsonIgnore
     private int availabilityIssues;
 
     /**
      * @JsonIgnore gets ignore when making the object to JSON format
-     * https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+     * https://www.baeldung.com/jackson-annotations#2-jsonignore
      */
     @JsonIgnore
     private CategoryLevel corporateSocialResponsibility;
 
     /**
      * @JsonIgnore gets ignore when making the object to JSON format
-     * https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
+     * https://www.baeldung.com/jackson-annotations#2-jsonignore
      */
     @JsonIgnore
     private int issuesConcerningCooperation;
@@ -74,28 +76,28 @@ public class SupplierCriticalityView
      * https://www.baeldung.com/jpa-transient-ignore-field
      */
     @Transient
-    private CategoryLevel supplierRiskLevel;
+    private CategoryLevel calculatedSupplierRiskLevel;
 
     /**
      * @Transient make Hibernate ignore ignore the field
      * https://www.baeldung.com/jpa-transient-ignore-field
      */
     @Transient
-    private CategoryLevel criticality;
+    private CategoryLevel calculatedCriticality;
 
     public void setProductCategoryList(List<String> productCategoryList)
     {
         this.productCategoryList = productCategoryList;
     }
 
-    public void setSupplierRiskLevel(CategoryLevel supplierRiskLevel)
+    public void setCalculatedSupplierRiskLevel(CategoryLevel calculatedSupplierRiskLevel)
     {
-        this.supplierRiskLevel = supplierRiskLevel;
+        this.calculatedSupplierRiskLevel = calculatedSupplierRiskLevel;
     }
 
-    public void setCriticality(CategoryLevel criticality)
+    public void setCalculatedCriticality(CategoryLevel calculatedCriticality)
     {
-        this.criticality = criticality;
+        this.calculatedCriticality = calculatedCriticality;
     }
 
     @Override
@@ -109,8 +111,8 @@ public class SupplierCriticalityView
                 ", corporateSocialResponsibility=" + corporateSocialResponsibility +
                 ", issuesConcerningCooperation=" + issuesConcerningCooperation +
                 ", volume=" + volume +
-                ", supplierRiskLevel=" + supplierRiskLevel +
-                ", criticality=" + criticality +
+                ", supplierRiskLevel=" + calculatedSupplierRiskLevel +
+                ", criticality=" + calculatedCriticality +
                 '}';
     }
 }
