@@ -44,27 +44,28 @@ public class OverviewCriticalityRestController
     }
 
     /**
-     * Convert the List object to JSON format with Jackson
+     * Convert the List of SupplierCriticalityView to JSON with Jackson
+     * ObjectMapper is the Jackson serializer/deserializer
      * https://www.baeldung.com/jackson-vs-gson
-     * @param supplierCriticalityViewList
-     * @return
+     * @param supplierCriticalityViewList the given List of SupplierCriticalityView
+     * @return jsonData the List object to JSON
      */
     private String getJsonData(List<SupplierCriticalityView> supplierCriticalityViewList)
     {
         //create ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonData = "Data";
+        String jsonData = "";
         try
         {
+            // Generates JSON from a Java object and return the as a String
+            // https://www.baeldung.com/jackson-object-mapper-tutorial
             jsonData = objectMapper.writeValueAsString(supplierCriticalityViewList);
         }
-        catch (JsonProcessingException e)
+        catch (JsonProcessingException jsonProcessingException)
         {
-            e.printStackTrace();
-            System.err.println(e);
+            jsonProcessingException.printStackTrace();
         }
 
-        System.out.println(jsonData);
         return jsonData;
     }
 }

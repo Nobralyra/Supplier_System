@@ -37,7 +37,12 @@
 </div>
 </body>
 <script>
+
+    // Gets fired when the DOM is created
+    //https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
     document.addEventListener("DOMContentLoaded", function (event) {
+        // DataTables is a plug-in for jQuery to have advanced features on HTML tables
+        // https://datatables.net/
         table = $('#criticalityTable').DataTable({
             // ajax make the connection to the external Api and fetch data from it
             // https://api.jquery.com/jQuery.ajax/
@@ -46,11 +51,15 @@
                 "url": '/supplier_criticality_table_api',
                 // Type of data we are expecting back from the server
                 "dataType": "json",
+                // dataSrc is used to telle DataTables where the data array is in the JSON structure
+                // https://datatables.net/manual/ajax
                 // To read data from a plain array rather than an array in an object
                 // https://datatables.net/reference/option/ajax.dataSrc#:~:text=dataSrc(%20data%20),processing%20and%20display%20by%20DataTables.
                 "dataSrc": ""
             },
 
+            // Tells DataTables where the data should go for each cell in that row
+            // https://datatables.net/manual/ajax
             "columns": [
                 {"data": "supplierId"},
                 {"data": "supplierName"},
@@ -59,6 +68,8 @@
                 {"data": "supplierRiskLevel"},
                 {"data": "criticality"}
             ],
+            // columnDefs - Assign specific option to columns in the table
+            // Here it tells that supplierId (column number 0) should not be visiavisibleble or searchable
             "columnDefs": [
                 {
                     "targets": [0],

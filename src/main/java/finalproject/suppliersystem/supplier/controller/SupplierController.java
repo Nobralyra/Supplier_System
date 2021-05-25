@@ -57,7 +57,7 @@ public class SupplierController
     }
 
     /**
-     * Al entities containing information about the supplier is sent to
+     * All entities containing information about the supplier is sent to
      * registration/supplier-site within the model
      *
      * @param supplier

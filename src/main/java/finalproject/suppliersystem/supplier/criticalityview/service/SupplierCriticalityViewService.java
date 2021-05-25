@@ -52,17 +52,19 @@ public class SupplierCriticalityViewService implements ISupplierCriticalityViewS
     }
 
     /**
-     * This method returns all suppliers. It is used, when controlling if the
-     * supplier already exists in data base.
+     * This method returns view data from supplier_criticality_view.
+     * To set all fields in SupplierCriticalityView it is needed to loop each supplierCriticalityView and set
+     * the missing fields:
+     * Calculated Supplier Risk Level and Criticality
+     * Find the product categories a supplier has relation too.
      *
-     * @return list of SupplierCriticalityView
+     * @return List of SupplierCriticalityView
      */
     @Override
     public List<SupplierCriticalityView> findAll()
     {
-        List<SupplierCriticalityView> supplierCriticalityViewArrayList;
-        supplierCriticalityViewArrayList = iSupplierCriticalityViewRepository.findAll();
-        for (SupplierCriticalityView supplierCriticalityView : supplierCriticalityViewArrayList)
+        List<SupplierCriticalityView> supplierCriticalityViewList = iSupplierCriticalityViewRepository.findAll();
+        for (SupplierCriticalityView supplierCriticalityView : supplierCriticalityViewList)
         {
             CategoryLevel getSupplierRiskLevel = iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(supplierCriticalityView.getCorporateSocialResponsibility(), supplierCriticalityView.getIssuesConcerningCooperation(), supplierCriticalityView.getAvailabilityIssues());
             CategoryLevel getCriticality = iCalculatorCriticalityRestService.calculateCriticality(supplierCriticalityView.getVolume(), getSupplierRiskLevel);
@@ -75,6 +77,6 @@ public class SupplierCriticalityViewService implements ISupplierCriticalityViewS
 
            supplierCriticalityView.setProductCategoryList(productCategoryList);
         }
-        return supplierCriticalityViewArrayList;
+        return supplierCriticalityViewList;
     }
 }
