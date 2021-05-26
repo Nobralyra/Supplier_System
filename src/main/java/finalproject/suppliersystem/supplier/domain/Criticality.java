@@ -14,8 +14,6 @@ import javax.validation.constraints.PositiveOrZero;
 /**
  * This class includes fields concerning categorizing of supplier by criticality
  */
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

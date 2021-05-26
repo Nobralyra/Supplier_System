@@ -1,10 +1,8 @@
 package finalproject.suppliersystem.supplier.criticalityview.service;
 
-import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.criticalityview.view.SupplierCriticalityView;
 import finalproject.suppliersystem.supplier.criticalityview.repository.ISupplierCriticalityViewRepository;
-import finalproject.suppliersystem.supplier.domain.Supplier;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorCriticalityRestService;
 import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorSupplierRiskLevelRestService;
 import finalproject.suppliersystem.supplier.service.IProductCategoryService;
@@ -66,10 +64,10 @@ public class SupplierCriticalityViewService implements ISupplierCriticalityViewS
         List<SupplierCriticalityView> supplierCriticalityViewList = iSupplierCriticalityViewRepository.findAll();
         for (SupplierCriticalityView supplierCriticalityView : supplierCriticalityViewList)
         {
-            CategoryLevel getSupplierRiskLevel = iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(supplierCriticalityView.getCorporateSocialResponsibility(), supplierCriticalityView.getIssuesConcerningCooperation(), supplierCriticalityView.getAvailabilityIssues());
-            CategoryLevel getCriticality = iCalculatorCriticalityRestService.calculateCriticality(supplierCriticalityView.getVolume(), getSupplierRiskLevel);
-            supplierCriticalityView.setSupplierRiskLevel(getSupplierRiskLevel);
-            supplierCriticalityView.setCriticality(getCriticality);
+            CategoryLevel getCalculatedSupplierRiskLevel = iCalculatorSupplierRiskLevelRestService.calculateSupplierRiskLevel(supplierCriticalityView.getCorporateSocialResponsibility(), supplierCriticalityView.getIssuesConcerningCooperation(), supplierCriticalityView.getAvailabilityIssues());
+            CategoryLevel getCalculatedCriticality = iCalculatorCriticalityRestService.calculateCriticality(supplierCriticalityView.getVolume(), getCalculatedSupplierRiskLevel);
+            supplierCriticalityView.setCalculatedSupplierRiskLevel(getCalculatedSupplierRiskLevel);
+            supplierCriticalityView.setCalculatedCriticality(getCalculatedCriticality);
 
             List<String> productCategoryList = new ArrayList<>();
 
