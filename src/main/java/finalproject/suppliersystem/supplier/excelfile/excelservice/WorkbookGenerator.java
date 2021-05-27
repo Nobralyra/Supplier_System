@@ -2,9 +2,8 @@ package finalproject.suppliersystem.supplier.excelfile.excelservice;
 
 import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
-import finalproject.suppliersystem.supplier.domain.ProductCategory;
-import finalproject.suppliersystem.supplier.domain.Supplier;
-import finalproject.suppliersystem.supplier.service.SupplierService;
+import finalproject.suppliersystem.supplier.registration.domain.ProductCategory;
+import finalproject.suppliersystem.supplier.registration.domain.Supplier;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.springframework.stereotype.Component;
