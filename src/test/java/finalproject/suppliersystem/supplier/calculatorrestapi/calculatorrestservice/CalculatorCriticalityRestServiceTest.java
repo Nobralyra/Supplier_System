@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/test/java/finalproject/suppliersystem/supplier/calculatorrestapi/restservice/CalculatorCriticalityRestServiceTest.java
-package finalproject.suppliersystem.supplier.calculatorrestapi.restservice;
-=======
 package finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestservice;
->>>>>>> master:src/test/java/finalproject/suppliersystem/supplier/calculatorrestapi/calculatorrestservice/CalculatorCriticalityRestServiceTest.java
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.junit.jupiter.api.BeforeEach;

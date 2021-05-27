@@ -1,8 +1,5 @@
-<<<<<<< HEAD:src/main/java/finalproject/suppliersystem/supplier/calculatorrestapi/restservice/CalculatorCriticalityRestService.java
-package finalproject.suppliersystem.supplier.calculatorrestapi.restservice;
-=======
+
 package finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestservice;
->>>>>>> master:src/main/java/finalproject/suppliersystem/supplier/calculatorrestapi/calculatorrestservice/CalculatorCriticalityRestService.java
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.springframework.stereotype.Service;

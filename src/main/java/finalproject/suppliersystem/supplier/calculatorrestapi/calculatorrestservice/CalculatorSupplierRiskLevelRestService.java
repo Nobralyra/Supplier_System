@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/main/java/finalproject/suppliersystem/supplier/calculatorrestapi/restservice/CalculatorSupplierRiskLevelRestService.java
-package finalproject.suppliersystem.supplier.calculatorrestapi.restservice;
-=======
 package finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestservice;
->>>>>>> master:src/main/java/finalproject/suppliersystem/supplier/calculatorrestapi/calculatorrestservice/CalculatorSupplierRiskLevelRestService.java
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.springframework.beans.factory.annotation.Autowired;

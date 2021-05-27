@@ -2,19 +2,12 @@ package finalproject.suppliersystem.supplier.excelfile.excelservice;
 
 import finalproject.suppliersystem.core.IService;
 import finalproject.suppliersystem.core.enums.CategoryLevel;
-<<<<<<< HEAD
-import finalproject.suppliersystem.supplier.domain.Address;
-import finalproject.suppliersystem.supplier.domain.Criticality;
-import finalproject.suppliersystem.supplier.domain.ProductCategory;
-import finalproject.suppliersystem.supplier.domain.Supplier;
-import finalproject.suppliersystem.supplier.calculatorrestapi.restservice.ICalculatorCriticalityRestService;
-=======
 import finalproject.suppliersystem.supplier.registration.domain.Address;
 import finalproject.suppliersystem.supplier.registration.domain.Criticality;
 import finalproject.suppliersystem.supplier.registration.domain.ProductCategory;
 import finalproject.suppliersystem.supplier.registration.domain.Supplier;
 import finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestservice.ICalculatorCriticalityRestService;
->>>>>>> master
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

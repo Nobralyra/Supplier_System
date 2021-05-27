@@ -1,14 +1,7 @@
-<<<<<<< HEAD:src/main/java/finalproject/suppliersystem/supplier/calculatorrestapi/restcontroller/CalculatorCriticalityRestController.java
-package finalproject.suppliersystem.supplier.calculatorrestapi.restcontroller;
-
-import finalproject.suppliersystem.core.enums.CategoryLevel;
-import finalproject.suppliersystem.supplier.calculatorrestapi.restservice.ICalculatorCriticalityRestService;
-=======
 package finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestcontroller;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestservice.ICalculatorCriticalityRestService;
->>>>>>> master:src/main/java/finalproject/suppliersystem/supplier/calculatorrestapi/calculatorrestcontroller/CalculatorCriticalityRestController.java
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
