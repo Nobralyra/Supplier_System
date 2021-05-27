@@ -1,8 +1,8 @@
-package finalproject.suppliersystem.supplier.restapi.restcontroller;
+package finalproject.suppliersystem.supplier.calculatorrestapi.restcontroller;
 
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
-import finalproject.suppliersystem.supplier.restapi.restservice.ICalculatorSupplierRiskLevelRestService;
+import finalproject.suppliersystem.supplier.calculatorrestapi.restservice.ICalculatorSupplierRiskLevelRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

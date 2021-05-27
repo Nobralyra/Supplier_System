@@ -1,4 +1,4 @@
-package finalproject.suppliersystem.supplier.restapi.restservice;
+package finalproject.suppliersystem.supplier.calculatorrestapi.restservice;
 
 import finalproject.suppliersystem.core.enums.CategoryLevel;
 import org.junit.jupiter.api.BeforeEach;
