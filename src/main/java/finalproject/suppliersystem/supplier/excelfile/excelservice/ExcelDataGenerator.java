@@ -7,6 +7,7 @@ import finalproject.suppliersystem.supplier.registration.domain.Criticality;
 import finalproject.suppliersystem.supplier.registration.domain.ProductCategory;
 import finalproject.suppliersystem.supplier.registration.domain.Supplier;
 import finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestservice.ICalculatorCriticalityRestService;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;

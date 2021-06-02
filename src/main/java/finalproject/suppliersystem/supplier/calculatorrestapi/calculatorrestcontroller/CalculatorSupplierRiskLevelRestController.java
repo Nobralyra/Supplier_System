@@ -1,7 +1,7 @@
 package finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestcontroller;
 
-
 import finalproject.suppliersystem.core.enums.CategoryLevel;
+
 import finalproject.suppliersystem.supplier.calculatorrestapi.calculatorrestservice.ICalculatorSupplierRiskLevelRestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
