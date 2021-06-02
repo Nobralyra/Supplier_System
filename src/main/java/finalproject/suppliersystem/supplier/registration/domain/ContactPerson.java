@@ -38,9 +38,10 @@ public class ContactPerson extends Audition
 
     /**
      * Child (owner)
+     * We have chosen to use an unidirectional relationship with ContactInformation
      * https://vladmihalcea.com/manytoone-jpa-hibernate/
+     * https://discourse.hibernate.org/t/unidirectional-vs-bidirectional-manytoone/951
      */
-
     @ManyToOne (fetch = FetchType.LAZY)
     private ContactInformation contactInformation;
 }

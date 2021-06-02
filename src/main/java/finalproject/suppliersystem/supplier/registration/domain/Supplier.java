@@ -55,18 +55,6 @@ public class Supplier extends Audition
     private Set<ProductCategory> productCategorySet = new HashSet<>();
 
     /**
-     * This guarantees they are not any orphan-contactInformation
-     */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private ContactInformation contactInformation;
-
-    /**
-     * This guarantees they are not any orphan-criticalities
-     */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Criticality criticality;
-
-    /**
      * Can't rely on a natural identifier for equality checks, so instead we use the entity identifier.
      * The equality has to be consistent across all entity state transitions.
      *
