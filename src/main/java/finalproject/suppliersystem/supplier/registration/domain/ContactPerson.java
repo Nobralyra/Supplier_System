@@ -43,15 +43,4 @@ public class ContactPerson extends Audition
 
     @ManyToOne (fetch = FetchType.LAZY)
     private ContactInformation contactInformation;
-
-
-
-
-/* var før:
-    @ManyToOne (fetch = FetchType.LAZY)
-    @MapsId
-    private ContactInformation contactInformation;*/
-
-
-
 }
