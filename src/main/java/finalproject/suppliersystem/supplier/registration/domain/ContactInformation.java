@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -39,9 +40,23 @@ public class ContactInformation extends Audition
      * ContactInformation child (owner) of Supplier
      * https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/
      */
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(table="contact_information", name = "supplier_id")
     private Supplier supplier;
+
+    /**
+     * This guarantees they are not any orphan-address
+     * (address refers to PK in ContactInformation)
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Address address;
+
+    /**
+     * This guarantees they are not any orphan-contactPersons
+     * (contactPerson refers to PK in ContactInformation)
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ContactPerson> contactPersons;
 
 }
