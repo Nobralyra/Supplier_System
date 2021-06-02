@@ -22,7 +22,7 @@ public class ContactInformation extends Audition
     @Id
     private Long supplierId;
 
-    @Column(length = 20)
+    @Column(length = 30)
     @Size(max = 30, message = "Phone number must be between 0 and 30 characters")
     private String businessPhoneNumber;
 

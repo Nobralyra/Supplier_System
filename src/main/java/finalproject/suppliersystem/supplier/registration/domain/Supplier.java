@@ -32,8 +32,8 @@ public class Supplier extends Audition
     @SequenceGenerator(name="my_generator", sequenceName = "supplier_seq", initialValue = 10_000, allocationSize=1)
     private Long supplierId;
 
-    @Column(length = 100)
-    @Size(max = 100, message = "Supplier Name must be between 0 and 45 characters")
+    @Column(length = 45)
+    @Size(max = 45, message = "Supplier Name must be between 0 and 45 characters")
     @NotBlank(message = "Please add the supplier name")
     private String supplierName;
 

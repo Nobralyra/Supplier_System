@@ -22,8 +22,8 @@ public class Country
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long countryId;
 
-    @Column(length = 60)
+    @Column(length = 56)
     @NotBlank(message = "Please choose a country")
-    @Size(max = 60, message =" Country name must be between 0 and 56 characters\"")
+    @Size(max = 56, message ="Country name must be between 0 and 56 characters")
     private String countryName;
 }
