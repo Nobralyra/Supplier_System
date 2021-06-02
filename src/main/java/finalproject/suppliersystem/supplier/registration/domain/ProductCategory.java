@@ -28,7 +28,10 @@ public class ProductCategory
      * In a many to many relationship it is not efficient to use a List, but instead use a Set
      * https://vladmihalcea.com/the-best-way-to-use-the-manytomany-annotation-with-jpa-and-hibernate/
      */
-    @ManyToMany(mappedBy = "productCategorySet")
+    @ManyToMany(mappedBy = "productCategorySet", cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     private Set<Supplier> supplierSet = new HashSet<>();
 
     /**

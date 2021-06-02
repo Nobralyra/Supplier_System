@@ -39,7 +39,7 @@ public class ContactInformation extends Audition
      * ContactInformation child (owner) of Supplier
      * https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(table="contact_information", name = "supplier_id")
     private Supplier supplier;

@@ -49,7 +49,7 @@ public class Criticality extends Audition {
      * child (owner) of Supplier
      * https://vladmihalcea.com/the-best-way-to-map-a-onetoone-relationship-with-jpa-and-hibernate/
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId
     @JoinColumn(name = "supplier_id")
     private Supplier supplier;
