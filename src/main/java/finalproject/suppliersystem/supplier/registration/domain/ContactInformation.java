@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -43,5 +44,19 @@ public class ContactInformation extends Audition
     @MapsId
     @JoinColumn(table="contact_information", name = "supplier_id")
     private Supplier supplier;
+
+    /**
+     * This guarantees they are not any orphan-address
+     * (address refers to PK in ContactInformation)
+     */
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Address address;
+
+    /**
+     * This guarantees they are not any orphan-contactPersons
+     * (contactPerson refers to PK in ContactInformation)
+     */
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ContactPerson> contactPersons;
 
 }
